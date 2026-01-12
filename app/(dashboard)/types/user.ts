@@ -1,6 +1,6 @@
 interface IAccountInfo { name: string; email: string }
 
-interface ITags {
+type TTags = {
   id: string;
   text: string
 }[]
@@ -15,8 +15,8 @@ interface IProfile {
   email: IAccountInfo["email"];
   tagline: string;
   biography: string;
-  roles: ITags;
-  skills: ITags;
+  roles: TTags;
+  skills: TTags;
   social_links: ISocialLinks;
   cv_url: string;
 }
