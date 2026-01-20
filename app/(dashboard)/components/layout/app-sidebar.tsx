@@ -28,31 +28,29 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { UserAvatarProfile } from "../user-avatar-profile";
 import { useMediaQuery } from "../../hooks/use-media-query";
-// import { UserData } from "@/utils/supabase/queries";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import * as React from "react";
+import { UserAvatarProfile } from "../user-avatar-profile";
 import { Icons } from "@/components/icons";
+import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { NavItem } from "../../types/items";
 import { IAccountInfo } from "../../types/user";
-// import SignOutButton from "@/features/auth/components/sign-out-button";
+import SignOutButton from "../sign-out-button";
 
-export default function AppSidebar({
+const AppSidebar = ({
   items,
   user,
 }: {
   items: NavItem[];
   user: IAccountInfo;
-}) {
+}) => {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { isOpen } = useMediaQuery();
+  const fullUrl = `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
 
-  // const role = user?.role || "owner";
-  // const navItems = getNavItemsByRole(role);
-
-  React.useEffect(() => {
+  useEffect(() => {
     // Side effects based on sidebar state changes
   }, [isOpen]);
 
@@ -90,6 +88,7 @@ export default function AppSidebar({
                       <SidebarMenuButton
                         tooltip={item.title}
                         isActive={pathname === item.url}
+                        className="cursor-pointer"
                       >
                         {item.icon && <Icon />}
                         <span>{item.title}</span>
@@ -98,18 +97,24 @@ export default function AppSidebar({
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <SidebarMenuSub>
-                        {item.items?.map((subItem) => (
-                          <SidebarMenuSubItem key={subItem.title}>
-                            <SidebarMenuSubButton
-                              asChild
-                              isActive={pathname === subItem.url}
-                            >
-                              <Link href={subItem.url}>
-                                <span>{subItem.title}</span>
-                              </Link>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>
-                        ))}
+                        {item.items?.map((subItem) => {
+                          const SubIcon = subItem.icon
+                            ? Icons[subItem.icon]
+                            : Icons.logo;
+                          return (
+                            <SidebarMenuSubItem key={subItem.title}>
+                              <SidebarMenuSubButton
+                                asChild
+                                isActive={fullUrl === subItem.url}
+                              >
+                                <Link href={subItem.url}>
+                                  <SubIcon />
+                                  <span>{subItem.title}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          );
+                        })}
                       </SidebarMenuSub>
                     </CollapsibleContent>
                   </SidebarMenuItem>
@@ -171,8 +176,14 @@ export default function AppSidebar({
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem className="cursor-pointer">
-                    <Icons.logout className="mr-2 h-4 w-4" />
-                    {/* <SignOutButton /> */}
+                    <Icons.home className="size-5" />
+                    <Link href="/" target="_blank">
+                      Homepage
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <Icons.logout className="size-5" />
+                    <SignOutButton />
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
@@ -184,3 +195,5 @@ export default function AppSidebar({
     </Sidebar>
   );
 }
+
+export default AppSidebar
