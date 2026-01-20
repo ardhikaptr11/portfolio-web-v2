@@ -9,7 +9,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { BaseFormFieldProps, ImageUploadConfig } from "../../types/base-form";
+import { BaseFormFieldProps, AssetsUploadConfig } from "../../types/base-form";
 import { FieldPath, FieldValues } from "react-hook-form";
 import { FileWithPreview } from "@/hooks/use-file-upload";
 
@@ -17,7 +17,7 @@ interface FormAvatarUploadProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends BaseFormFieldProps<TFieldValues, TName> {
-  config: ImageUploadConfig;
+  config: AssetsUploadConfig;
   defaultAvatar: string;
 }
 
@@ -35,7 +35,6 @@ function FormAvatarUpload<
   className,
   defaultAvatar,
 }: FormAvatarUploadProps<TFieldValues, TName>) {
-  const { maxSize, acceptedTypes } = config;
 
   return (
     <FormField
@@ -52,13 +51,12 @@ function FormAvatarUpload<
 
           <FormControl>
             <AvatarUpload
-              maxSize={maxSize}
-              acceptedTypes={acceptedTypes}
               defaultAvatar={defaultAvatar}
               onFileChange={(fileWithPreview: FileWithPreview | null) =>
                 field.onChange(fileWithPreview?.file)
               }
               disabled={disabled}
+              {...config}
             />
           </FormControl>
 

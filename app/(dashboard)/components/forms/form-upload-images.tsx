@@ -1,6 +1,6 @@
 "use client";
 
-import FileUploadCompact from "@/components/file-upload-compact";
+import GalleryUpload from "@/components/gallery-upload";
 import {
   FormControl,
   FormDescription,
@@ -11,17 +11,16 @@ import {
 } from "@/components/ui/form";
 import { FileWithPreview } from "@/hooks/use-file-upload";
 import { FieldPath, FieldValues } from "react-hook-form";
-import { BaseFormFieldProps, FileUploadConfig } from "../../types/base-form";
+import { AssetsUploadConfig, BaseFormFieldProps } from "../../types/base-form";
 
-interface FormAvatarUploadProps<
+interface FormUploadImagesProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends BaseFormFieldProps<TFieldValues, TName> {
-  defaultFile: string;
-  config: FileUploadConfig;
+  config: AssetsUploadConfig;
 }
 
-function FormFileUpload<
+function FormUploadImages<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
@@ -32,9 +31,8 @@ function FormFileUpload<
   required,
   disabled,
   className,
-  defaultFile,
   config,
-}: FormAvatarUploadProps<TFieldValues, TName>) {
+}: FormUploadImagesProps<TFieldValues, TName>) {
   return (
     <FormField
       control={control}
@@ -49,12 +47,11 @@ function FormFileUpload<
           )}
 
           <FormControl>
-            <FileUploadCompact
+            <GalleryUpload
               id={field.name}
-              onFilesChange={(fileWithPreview: FileWithPreview[] | null) =>
-                field.onChange(fileWithPreview?.[0].file)
+              onFilesChange={(files: FileWithPreview[]) =>
+                field.onChange(files.map((file) => file.file))
               }
-              defaultFile={defaultFile}
               disabled={disabled}
               {...config}
             />
@@ -68,4 +65,5 @@ function FormFileUpload<
   );
 }
 
-export { FormFileUpload };
+export { FormUploadImages };
+

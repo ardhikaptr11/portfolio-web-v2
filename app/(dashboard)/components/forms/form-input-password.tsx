@@ -69,7 +69,7 @@ function FormInputPassword<
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="absolute top-1/2 right-0 -translate-y-1/2 cursor-pointer text-muted-foreground hover:bg-transparent"
+                className="absolute top-1/2 right-0 -translate-y-1/2 text-muted-foreground hover:bg-transparent"
                 onClick={setShowPassword}
               >
                 {showPassword ? (
