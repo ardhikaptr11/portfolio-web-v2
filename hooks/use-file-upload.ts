@@ -17,6 +17,12 @@ export type FileWithPreview = {
   preview?: string;
 };
 
+export type FileUploadItem = FileWithPreview & {
+  progress: number;
+  status: 'uploading' | 'completed' | 'error';
+  error?: string;
+}
+
 export type FileUploadOptions = {
   maxFiles?: number; // Only used when multiple is true, defaults to Infinity
   maxSize?: number; // in bytes
@@ -103,7 +109,7 @@ export const useFileUpload = (options: FileUploadOptions = {}): [FileUploadState
         });
 
         if (!isAccepted) {
-          return `File "${file instanceof File ? file.name : file.name}" is not an supported file type.`;
+          return `File "${file instanceof File ? file.name : file.name}" is not an accepted file type.`;
         }
       }
 

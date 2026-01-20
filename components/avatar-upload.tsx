@@ -1,25 +1,26 @@
 "use client";
 
-import { useFileUpload, type FileWithPreview } from "@/hooks/use-file-upload";
 import { Button } from "@/components/ui/button";
-import { User, X } from "lucide-react";
+import { useFileUpload, type FileWithPreview } from "@/hooks/use-file-upload";
 import { cn } from "@/lib/utils";
+import { User } from "lucide-react";
 import Image from "next/image";
-import { Input } from "./ui/input";
 import { toast } from "sonner";
+import { Icons } from "./icons";
+import { Input } from "./ui/input";
 
 export interface AvatarUploadProps {
   maxSize?: number;
   className?: string;
   onFileChange?: (file: FileWithPreview | null) => void;
   defaultAvatar: string;
-  acceptedTypes: string;
+  accept: string;
   disabled?: boolean;
 }
 
 const AvatarUpload = ({
   maxSize,
-  acceptedTypes,
+  accept,
   className,
   onFileChange,
   defaultAvatar,
@@ -39,7 +40,7 @@ const AvatarUpload = ({
   ] = useFileUpload({
     maxFiles: 1,
     maxSize,
-    accept: acceptedTypes,
+    accept,
     multiple: false,
     onFilesChange: (files) => {
       if (files.length > 0) {
@@ -105,7 +106,7 @@ const AvatarUpload = ({
             className="absolute end-1 top-1 size-6 rounded-full"
             aria-label="Remove avatar"
           >
-            <X className="size-3.5" />
+            <Icons.close className="size-3.5" />
           </Button>
         )}
       </div>

@@ -12,6 +12,7 @@ import { XIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Input } from "./ui/input";
+import { Icons } from "./icons";
 
 interface FileUploadCompactProps {
   id: string;
@@ -121,7 +122,7 @@ const FileUploadCompact = ({
             variant="ghost"
             className={cn("cursor-pointer", isDragging && "animate-bounce")}
           >
-            <IconCloudUpload className="size-4" />
+            <Icons.upload className="size-4" />
             Upload File
           </Button>
         )}
