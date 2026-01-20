@@ -1,6 +1,6 @@
 import AuthForm from "../components/views/Auth/auth-form";
 
-const LoginPage = async () => {
+const LoginPage = () => {
   return <AuthForm />;
 };
 
