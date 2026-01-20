@@ -9,7 +9,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { FileWithPreview } from "@/hooks/use-file-upload";
+import { FileWithPreview } from "@/app/(dashboard)/hooks/use-file-upload";
 import { FieldPath, FieldValues } from "react-hook-form";
 import { BaseFormFieldProps, FileUploadConfig } from "../../types/base-form";
 

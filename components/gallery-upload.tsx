@@ -6,7 +6,7 @@ import {
   useFileUpload,
   type FileMetadata,
   type FileWithPreview,
-} from "@/hooks/use-file-upload";
+} from "@/app/(dashboard)/hooks/use-file-upload";
 import { cn } from "@/lib/utils";
 import { ImageIcon, XIcon, ZoomInIcon } from "lucide-react";
 import Image from "next/image";

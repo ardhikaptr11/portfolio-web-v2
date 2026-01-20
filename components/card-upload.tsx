@@ -11,7 +11,7 @@ import {
   formatBytes,
   useFileUpload,
   type FileWithPreview,
-} from "@/hooks/use-file-upload";
+} from "@/app/(dashboard)/hooks/use-file-upload";
 import { cn } from "@/lib/utils";
 import { CloudUpload, ImageIcon, RefreshCwIcon, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";

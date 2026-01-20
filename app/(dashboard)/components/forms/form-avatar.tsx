@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { BaseFormFieldProps, AssetsUploadConfig } from "../../types/base-form";
 import { FieldPath, FieldValues } from "react-hook-form";
-import { FileWithPreview } from "@/hooks/use-file-upload";
+import { FileWithPreview } from "@/app/(dashboard)/hooks/use-file-upload";
 
 interface FormAvatarUploadProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -35,7 +35,6 @@ function FormAvatarUpload<
   className,
   defaultAvatar,
 }: FormAvatarUploadProps<TFieldValues, TName>) {
-
   return (
     <FormField
       control={control}

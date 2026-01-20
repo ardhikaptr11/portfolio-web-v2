@@ -1,7 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useFileUpload, type FileWithPreview } from "@/hooks/use-file-upload";
+import {
+  useFileUpload,
+  type FileWithPreview,
+} from "@/app/(dashboard)/hooks/use-file-upload";
 import { cn } from "@/lib/utils";
 import { User } from "lucide-react";
 import Image from "next/image";
