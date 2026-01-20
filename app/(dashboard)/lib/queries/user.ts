@@ -6,6 +6,7 @@ import { TUpdateProfile } from "../../components/views/Profile/profile-info";
 import { IAccountInfo, IProfile } from "../../types/user";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { extractPathFromPublicUrl } from "@/lib/utils";
+import { getCurrentDate } from "@/lib/helpers";
 
 // Get name and email
 const getAccountInfo = async () => {
@@ -15,7 +16,7 @@ const getAccountInfo = async () => {
 
   const { data, error } = await supabase
     .from('profile')
-    .select('name')
+    .select('name, avatar_url')
     .eq('id', authUser?.id)
     .single();
 
@@ -73,17 +74,9 @@ const uploadAvatar = async (client: SupabaseClient, avatarFile: File) => {
 
 // Upload Avatar
 const uploadCV = async (client: SupabaseClient, cvFile: File) => {
-  const now = new Date();
-
-  const day = String(now.getDate()).padStart(2, '0');
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const year = now.getFullYear();
-
-  const formattedDate = `${day}${month}${year}`;
-
   const ext = cvFile.name.split(".").pop()
 
-  const fileName = `cv-ardhika-putra-${formattedDate}.${ext}`;
+  const fileName = `cv-ardhika-putra-${getCurrentDate()}.${ext}`;
 
   const { error: errorUpload } = await client.storage
     .from("assets")
