@@ -116,7 +116,7 @@ const AuthForm = () => {
             />
             <Button
               disabled={loading}
-              className={cn("mt-2 ml-auto w-full cursor-pointer", {
+              className={cn("mt-2 ml-auto w-full", {
                 "flex gap-1": loading,
               })}
               type="submit"
