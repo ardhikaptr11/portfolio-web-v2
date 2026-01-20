@@ -1,4 +1,4 @@
-interface IAccountInfo { name: string; email: string }
+interface IAccountInfo { name: string; email: string; avatar_url: string }
 
 type TTags = {
   id: string;
@@ -10,7 +10,7 @@ interface ISocialLinks {
 }
 
 interface IProfile {
-  avatar_url: string;
+  avatar_url: IAccountInfo["avatar_url"];
   name: IAccountInfo["name"];
   email: IAccountInfo["email"];
   tagline: string;

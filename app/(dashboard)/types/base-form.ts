@@ -22,17 +22,13 @@ export interface FormOption {
 }
 
 export interface BaseUploadConfig {
-  maxFiles?: string;
+  maxFiles?: number;
   maxSize: number;
 }
 
 // Image upload specific types
-export interface ImageUploadConfig extends BaseUploadConfig {
-  acceptedTypes: string;
-}
-
-export interface FileUploadConfig extends BaseUploadConfig {
-  acceptedTypes: string;
+export interface AssetsUploadConfig extends BaseUploadConfig {
+  accept: string;
   multiple?: boolean;
 }
 
