@@ -1,0 +1,201 @@
+"use client";
+
+import type { Column, Table } from "@tanstack/react-table";
+
+import { Icons } from "@/components/icons";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ComponentProps, useCallback, useMemo } from "react";
+import { toast } from "sonner";
+import { deleteSelectedAssets } from "../../lib/queries/assets";
+import { DataTableDateFilter } from "./data-table-date-filter";
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { DataTableSliderFilter } from "./data-table-slider-filter";
+import { DataTableViewOptions } from "./data-table-view-options";
+
+interface DataTableToolbarProps<TData> extends ComponentProps<"div"> {
+  table: Table<TData>;
+}
+
+export function DataTableToolbar<TData extends { id: string }>({
+  table,
+  children,
+  className,
+  ...props
+}: DataTableToolbarProps<TData>) {
+  const isFiltered = table.getState().columnFilters.length > 0;
+  const selectedRows = table.getFilteredSelectedRowModel().rows;
+
+  const router = useRouter();
+
+  const columns = useMemo(
+    () => table.getAllColumns().filter((column) => column.getCanFilter()),
+    [table],
+  );
+
+  const onReset = useCallback(() => {
+    table.resetColumnFilters();
+  }, [table]);
+
+  const handleDeleteSelected = async () => {
+    const ids = selectedRows.map((row) => row.original.id);
+
+    try {
+      await deleteSelectedAssets(ids);
+
+      toast.success(`${selectedRows.length} rows successfully deleted.`);
+      table.resetRowSelection();
+      router.refresh();
+    } catch (error) {
+      toast.error("Failed to delete selected assets.", {
+        description: (error as Error).message,
+      });
+    }
+  };
+
+  return (
+    <div
+      role="toolbar"
+      aria-orientation="horizontal"
+      className={cn(
+        "flex w-full items-start justify-between gap-2 p-1",
+        className,
+      )}
+      {...props}
+    >
+      <div className="flex flex-1 flex-wrap items-center gap-2">
+        {columns.map((column) => (
+          <DataTableToolbarFilter key={column.id} column={column} />
+        ))}
+        {isFiltered && (
+          <Button
+            aria-label="Reset filters"
+            variant="outline"
+            size="sm"
+            className="border-dashed"
+            onClick={onReset}
+          >
+            <Icons.closeCircle />
+            Reset
+          </Button>
+        )}
+        {selectedRows.length > 0 && (
+          <Button
+            variant="outline"
+            size="sm"
+            // className="border-dashed"
+            onClick={() => table.setRowSelection({})}
+          >
+            <Icons.closeCircle />
+            Clear selection
+          </Button>
+        )}
+        {selectedRows.length > 1 && (
+          <Button variant="outline" size="sm" onClick={handleDeleteSelected}>
+            <Icons.trash />
+            Delete {selectedRows.length} rows
+          </Button>
+        )}
+      </div>
+      <div className="flex items-center gap-2">
+        {children}
+        <DataTableViewOptions table={table} />
+        <Button
+          aria-label="Go to assets library"
+          role="link"
+          variant="outline"
+          size="sm"
+          className="ml-auto hidden h-8 lg:flex"
+          asChild
+        >
+          <Link href="/dashboard/assets/library" className="inline-flex">
+            <Icons.folders />
+            <span>Assets Library</span>
+          </Link>
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+interface DataTableToolbarFilterProps<TData> {
+  column: Column<TData>;
+}
+
+function DataTableToolbarFilter<TData>({
+  column,
+}: DataTableToolbarFilterProps<TData>) {
+  const columnMeta = column.columnDef.meta;
+
+  const onFilterRender = useCallback(() => {
+    if (!columnMeta?.variant) return null;
+
+    switch (columnMeta.variant) {
+      case "text":
+        return (
+          <Input
+            placeholder={columnMeta.placeholder ?? columnMeta.label}
+            value={(column.getFilterValue() as string) ?? ""}
+            onChange={(event) => column.setFilterValue(event.target.value)}
+            className="h-8 w-40 lg:w-56"
+          />
+        );
+
+      case "number":
+        return (
+          <div className="relative">
+            <Input
+              type="number"
+              inputMode="numeric"
+              placeholder={columnMeta.placeholder ?? columnMeta.label}
+              value={(column.getFilterValue() as string) ?? ""}
+              onChange={(event) => column.setFilterValue(event.target.value)}
+              className={cn("h-8 w-30", columnMeta.unit && "pr-8")}
+            />
+            {columnMeta.unit && (
+              <span className="absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-sm text-muted-foreground">
+                {columnMeta.unit}
+              </span>
+            )}
+          </div>
+        );
+
+      case "range":
+        return (
+          <DataTableSliderFilter
+            column={column}
+            title={columnMeta.label ?? column.id}
+          />
+        );
+
+      case "date":
+      case "dateRange":
+        return (
+          <DataTableDateFilter
+            column={column}
+            title={columnMeta.label ?? column.id}
+            multiple={columnMeta.variant === "dateRange"}
+          />
+        );
+
+      case "select":
+      case "multiSelect":
+        return (
+          <DataTableFacetedFilter
+            column={column}
+            title={columnMeta.label ?? column.id}
+            options={columnMeta.options ?? []}
+            multiple={columnMeta.variant === "multiSelect"}
+          />
+        );
+
+      default:
+        return null;
+    }
+  }, [column, columnMeta]);
+
+  return onFilterRender();
+}
