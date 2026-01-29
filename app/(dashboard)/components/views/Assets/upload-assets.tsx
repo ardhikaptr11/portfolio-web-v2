@@ -3,7 +3,7 @@
 import {
   batchUploadAssets,
   uploadSingleImage,
-} from "@/app/(dashboard)/lib/queries/assets";
+} from "@/app/(dashboard)/lib/queries/assets/client";
 import { AssetsUploadConfig } from "@/app/(dashboard)/types/base-form";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -34,6 +34,7 @@ import {
   MAX_TOTAL_FILE,
   MAX_UPLOAD_FILE,
 } from "@/app/(dashboard)/constants/items.constants";
+import { getTotalAssets } from "@/app/(dashboard)/lib/queries/assets/client";
 
 const UploadImageFormSchema = z
   .object({
@@ -76,36 +77,6 @@ const UploadFileFormSchema = z.object({
 
 type TUploadFile = z.infer<typeof UploadFileFormSchema>;
 
-const getTotalAssets = async () => {
-  const supabase = createClient();
-
-  const countImageAssets = await supabase
-    .from("assets")
-    .select("*", { count: "exact", head: true })
-    .eq("category", "image");
-
-  const countFileAssets = await supabase
-    .from("assets")
-    .select("*", { count: "exact", head: true })
-    .eq("category", "image");
-
-  const [imageRes, fileRes] = await Promise.all([
-    countImageAssets,
-    countFileAssets,
-  ]);
-
-  if (imageRes.error || fileRes.error)
-    throw new Error("Failed to count total assets");
-
-  const { count: totalImageAssets } = imageRes;
-  const { count: totalFileAssets } = fileRes;
-
-  return {
-    totalImageAssets,
-    totalFileAssets,
-  };
-};
-
 const UploadAssets = () => {
   const router = useRouter();
   const [loading, startTransition] = useTransition();
@@ -135,7 +106,7 @@ const UploadAssets = () => {
     try {
       const { totalImageAssets, totalFileAssets } = await getTotalAssets();
       setTotalImageAssets(totalImageAssets);
-      setTotalImageAssets(totalFileAssets);
+      setTotalFileAssets(totalFileAssets);
     } catch (error) {
       toast.error("Error fetching total assets", {
         description: (error as Error).message,
@@ -166,7 +137,7 @@ const UploadAssets = () => {
   });
 
   const onSubmitUploadImages = (data: TUploadImage) => {
-    if (totalImageAssets === MAX_TOTAL_FILE.image) {
+    if (totalImageAssets === MAX_TOTAL_FILE.image + 1) {
       toast.info("Maximum limit of image assets reached", {
         description: "Free up some space by deleting unused images.",
         action: (
@@ -223,7 +194,6 @@ const UploadAssets = () => {
       });
     }
 
-    // console.log(data)
     startTransition(async () => {
       try {
         await batchUploadAssets(data.files);
@@ -240,7 +210,7 @@ const UploadAssets = () => {
 
   return (
     <PageContainer scrollable>
-      <Tabs defaultValue="image" className="w-full">
+      <Tabs defaultValue="image">
         <TabsList className="mb-0!">
           <TabsTrigger value="image" className="cursor-pointer">
             Image

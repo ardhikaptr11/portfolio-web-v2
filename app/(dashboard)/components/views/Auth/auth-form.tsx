@@ -49,7 +49,7 @@ const AuthForm = () => {
     email: string;
     password: string;
   }) => {
-    const supabase = await createClient();
+    const supabase = createClient();
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -85,7 +85,7 @@ const AuthForm = () => {
             Login to Dashboard
           </h2>
           <p className="text-sm text-muted-foreground">
-            Welcome back! Enter credentials to continue.
+            Provide your secure credentials to gain access
           </p>
         </CardHeader>
         <CardContent>
@@ -95,7 +95,7 @@ const AuthForm = () => {
             className="flex flex-col gap-4"
           >
             <FormInput
-              className="text-blue-950 dark:text-white"
+              // className="text-blue-950 dark:text-white"
               control={form.control}
               name="email"
               label="Email"
@@ -104,7 +104,7 @@ const AuthForm = () => {
               required
             />
             <FormInputPassword
-              className="text-blue-950 dark:text-white"
+              // className="text-blue-950 dark:text-white"
               control={form.control}
               type={showPassword ? "text" : "password"}
               name="password"
@@ -116,7 +116,7 @@ const AuthForm = () => {
             />
             <Button
               disabled={loading}
-              className={cn("mt-2 ml-auto w-full", {
+              className={cn("mt-2 ml-auto w-full text-white", {
                 "flex gap-1": loading,
               })}
               type="submit"

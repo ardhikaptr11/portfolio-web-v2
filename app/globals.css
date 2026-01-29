@@ -116,15 +116,8 @@
 }
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
   body {
     @apply bg-background text-foreground selection:bg-chart-2 selection:text-white;
-  }
-
-  main {
-    @apply mx-auto flex-col-center max-w-360;
   }
 }
 
@@ -166,6 +159,9 @@
 }
 @utility flex-col-center {
   @apply flex flex-col items-center justify-center;
+}
+@utility custom-scrollbar {
+  @apply [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-[#212224]/60 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 dark:[&::-webkit-scrollbar-track]:bg-neutral-700
 }
 
 @keyframes shine {

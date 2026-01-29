@@ -6,11 +6,10 @@ import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { XIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { ComponentProps, useCallback, useMemo } from "react";
-import { toast } from "sonner";
-import { deleteSelectedAssets } from "../../lib/queries/assets";
+import { usePathname } from "next/navigation";
+import { ComponentProps, Dispatch, SetStateAction, useCallback, useMemo } from "react";
 import { DataTableDateFilter } from "./data-table-date-filter";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { DataTableSliderFilter } from "./data-table-slider-filter";
@@ -18,18 +17,24 @@ import { DataTableViewOptions } from "./data-table-view-options";
 
 interface DataTableToolbarProps<TData> extends ComponentProps<"div"> {
   table: Table<TData>;
+  handleClickDelete?: (ids: string[]) => void;
+  disabled?: boolean;
 }
 
 export function DataTableToolbar<TData extends { id: string }>({
   table,
   children,
   className,
+  handleClickDelete,
+  disabled,
   ...props
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const selectedRows = table.getFilteredSelectedRowModel().rows;
 
-  const router = useRouter();
+  const ids = selectedRows.map((row) => row.original.id);
+
+  const pathname = usePathname();
 
   const columns = useMemo(
     () => table.getAllColumns().filter((column) => column.getCanFilter()),
@@ -39,22 +44,6 @@ export function DataTableToolbar<TData extends { id: string }>({
   const onReset = useCallback(() => {
     table.resetColumnFilters();
   }, [table]);
-
-  const handleDeleteSelected = async () => {
-    const ids = selectedRows.map((row) => row.original.id);
-
-    try {
-      await deleteSelectedAssets(ids);
-
-      toast.success(`${selectedRows.length} rows successfully deleted.`);
-      table.resetRowSelection();
-      router.refresh();
-    } catch (error) {
-      toast.error("Failed to delete selected assets.", {
-        description: (error as Error).message,
-      });
-    }
-  };
 
   return (
     <div
@@ -86,15 +75,20 @@ export function DataTableToolbar<TData extends { id: string }>({
           <Button
             variant="outline"
             size="sm"
-            // className="border-dashed"
+            className="inline-flex items-center"
             onClick={() => table.setRowSelection({})}
           >
-            <Icons.closeCircle />
-            Clear selection
+            <XIcon className="size-5"/>
+            <span className="leading-none">Clear selection</span>
           </Button>
         )}
         {selectedRows.length > 1 && (
-          <Button variant="outline" size="sm" onClick={handleDeleteSelected}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleClickDelete?.(ids)}
+            disabled={disabled}
+          >
             <Icons.trash />
             Delete {selectedRows.length} rows
           </Button>
@@ -103,19 +97,21 @@ export function DataTableToolbar<TData extends { id: string }>({
       <div className="flex items-center gap-2">
         {children}
         <DataTableViewOptions table={table} />
-        <Button
-          aria-label="Go to assets library"
-          role="link"
-          variant="outline"
-          size="sm"
-          className="ml-auto hidden h-8 lg:flex"
-          asChild
-        >
-          <Link href="/dashboard/assets/library" className="inline-flex">
-            <Icons.folders />
-            <span>Assets Library</span>
-          </Link>
-        </Button>
+        {pathname === "/dashboard/assets" && (
+          <Button
+            aria-label="Go to assets library"
+            role="link"
+            variant="outline"
+            size="sm"
+            className="ml-auto hidden h-8 lg:flex"
+            asChild
+          >
+            <Link href="/dashboard/assets/library" className="inline-flex">
+              <Icons.folders />
+              <span>Assets Library</span>
+            </Link>
+          </Button>
+        )}
       </div>
     </div>
   );

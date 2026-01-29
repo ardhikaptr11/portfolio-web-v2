@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { getCurrentDate } from './helpers';
 
 /**
  * Merges Tailwind class names, resolving any conflicts.
@@ -29,4 +30,12 @@ export function extractPathFromPublicUrl(url: string, bucket: string) {
   const idx = url.indexOf(marker);
   if (idx === -1) return null;
   return url.substring(idx + marker.length);
+}
+
+export const generateFilenameWithDatetime = (filename: string) => {
+  const [name, ext] = filename.split(".");
+
+  const formattedName = `${name}-${getCurrentDate()}`;
+
+  return { formattedName, ext }
 }

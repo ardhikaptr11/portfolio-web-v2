@@ -1,6 +1,10 @@
 "use client";
 
-import { updateProfile } from "@/app/(dashboard)/lib/queries/user";
+import {
+  ACCEPTED_TYPES,
+  MAX_FILE_SIZE,
+} from "@/app/(dashboard)/constants/items.constants";
+import { updateProfile } from "@/app/(dashboard)/lib/queries/user/actions";
 import { IProfile } from "@/app/(dashboard)/types/user";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -18,6 +22,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Tag } from "emblor";
+import { isEqual } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -31,7 +36,6 @@ import { FormInputGroup } from "../../forms/form-input-group";
 import { FormInputTag } from "../../forms/form-tag-input";
 import { FormTextarea } from "../../forms/form-textarea";
 import PageContainer from "../../layout/page-container";
-import { ACCEPTED_TYPES, MAX_FILE_SIZE } from "@/app/(dashboard)/constants/items.constants";
 
 const FormSchema = z.object({
   avatar: z
@@ -79,9 +83,33 @@ const FormSchema = z.object({
     )
     .min(5, "At least 5 must be selected"),
   social_links: z.object({
-    github: z.string().optional(),
-    linkedin: z.string().optional(),
-    threads: z.string().optional(),
+    github: z.union([
+      z.literal(""),
+      z
+        .string()
+        .regex(
+          /^(https:\/\/)?(www\.)?github\.com\/\S+$/i,
+          "Invalid GitHub URL",
+        ),
+    ]),
+    linkedin: z.union([
+      z.literal(""),
+      z
+        .string()
+        .regex(
+          /^(https:\/\/)?(www\.)?linkedin\.com\/in\/\S+$/i,
+          "Invalid LinkedIn URL",
+        ),
+    ]),
+    threads: z.union([
+      z.literal(""),
+      z
+        .string()
+        .regex(
+          /^(https:\/\/)?(www\.)?linkedin\.com\/in\/\S+$/i,
+          "Invalid Threads URL",
+        ),
+    ]),
   }),
   cv: z
     .union([
@@ -106,7 +134,7 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
   const [resetKey, setResetKey] = useState(0);
 
   const defaultValues = {
-    avatar: profile.avatar_url || "",
+    avatar: profile.avatar.url || "",
     name: profile.name || "",
     tagline: profile.tagline || "",
     biography: profile.biography || "",
@@ -117,7 +145,7 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
       linkedin: profile.social_links?.linkedin.split("/").at(-1) || "",
       threads: profile.social_links?.threads.split("/").at(-1) || "",
     },
-    cv: profile.cv_url || "",
+    cv: profile.cv.url || "",
   };
 
   const form = useForm<TUpdateProfile>({
@@ -134,18 +162,12 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
     null,
   );
 
-  const { setValue } = form;
+  const {
+    setValue,
+    formState: { dirtyFields },
+  } = form;
 
   const onSubmit = (data: TUpdateProfile) => {
-    const modifiedData = {
-      ...data,
-      social_links: {
-        github: `https://github.com/${data.social_links.github}`,
-        linkedin: `https://linkedin.com/in/${data.social_links.linkedin}`,
-        threads: `https://threads.com/${data.social_links.threads}`,
-      },
-    };
-
     if (!data.avatar) {
       return toast.warning("Avatar is required", {
         description: "Please upload an image for your profile",
@@ -158,21 +180,26 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
       });
     }
 
-    if (JSON.stringify(data) === JSON.stringify(defaultValues)) {
-      return toast.warning("Cannot update profile", {
-        description: "No changes has been made",
-      });
+    const dataToUpdate = (
+      Object.keys(dirtyFields) as Array<keyof TUpdateProfile>
+    ).reduce((acc, key) => {
+      const currentValue = data[key];
+      const defaultValue = defaultValues[key];
+
+      if (!isEqual(currentValue, defaultValue)) {
+        (acc as any)[key] = currentValue;
+      }
+
+      return acc;
+    }, {} as Partial<TUpdateProfile>);
+
+    if (Object.keys(dataToUpdate).length === 0) {
+      return toast.info("No changes detected.");
     }
 
     startTransition(async () => {
-      const res = await updateProfile(modifiedData);
-
-      if (res.error) {
-        toast.error("Failed to update profile", {
-          position: "top-right",
-          description: res.error,
-        });
-      } else {
+      try {
+        await updateProfile(dataToUpdate);
         toast.success("Profile successfully updated", {
           position: "top-right",
         });
@@ -181,14 +208,19 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
 
         setResetKey((prev) => prev + 1);
         router.refresh();
+      } catch (error) {
+        toast.error("Failed to update profile", {
+          position: "top-right",
+          description: (error as Error).message,
+        });
       }
     });
   };
 
   return (
-    <PageContainer scrollable>
-      <div className="mx-auto flex-center">
-        <Card className="max-w-3xl">
+    <PageContainer scrollable={false}>
+      <div className="mx-auto w-full max-w-3xl">
+        <Card className="no-scrollbar max-h-145 overflow-y-auto">
           <CardHeader>
             <CardTitle>Profile</CardTitle>
             <CardDescription>
@@ -213,44 +245,27 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
                   defaultAvatar={defaultValues.avatar}
                 />
                 <div className="mt-2 flex-center w-full max-w-25 space-x-2">
-                  {defaultValues.social_links.github && (
-                    <Link
-                      href={
-                        defaultValues.social_links.github.includes("https")
-                          ? defaultValues.social_links.github
-                          : `https://github.com/${defaultValues.social_links.github}`
-                      }
-                      className="hover:animate-pulse"
-                      rel="noreferrer noopener"
-                    >
-                      <Icons.github className="size-6" />
-                    </Link>
-                  )}
-                  {defaultValues.social_links.linkedin && (
-                    <Link
-                      href={
-                        defaultValues.social_links.linkedin.includes("https")
-                          ? defaultValues.social_links.linkedin
-                          : `https://linkedin.com/in/${defaultValues.social_links.linkedin}`
-                      }
-                      className="hover:animate-pulse"
-                      rel="noreferrer noopener"
-                    >
-                      <Icons.linkedin className="size-6" />
-                    </Link>
-                  )}
-                  {defaultValues.social_links.threads && (
-                    <Link
-                      href={
-                        defaultValues.social_links.threads.includes("https")
-                          ? defaultValues.social_links.threads
-                          : `https://threads.com/${defaultValues.social_links.threads}`
-                      }
-                      className="hover:animate-pulse"
-                      rel="noreferrer noopener"
-                    >
-                      <Icons.threads className="size-6" />
-                    </Link>
+                  {Object.entries(defaultValues.social_links).map(
+                    ([key, value]) => {
+                      const Icon = Icons[key as keyof typeof Icons];
+                      const params = (key === "linkedin" && "in/") || "";
+
+                      return (
+                        <Link
+                          key={key}
+                          href={
+                            value.includes("https")
+                              ? value
+                              : `https://${key}.com/${params}${value}`
+                          }
+                          className="hover:animate-pulse"
+                          target="_blank"
+                          rel="noreferrer noopener"
+                        >
+                          <Icon className="size-6" />
+                        </Link>
+                      );
+                    },
                   )}
                 </div>
               </div>
@@ -359,18 +374,19 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
                 label="Social Links"
                 inputs={{
                   github: {
+                    label: "GitHub",
                     icon: <Icons.github className="size-5" />,
-                    disabled: loading,
                   },
                   linkedin: {
+                    label: "LinkedIn",
                     icon: <Icons.linkedin className="size-5" />,
-                    disabled: loading,
                   },
                   threads: {
+                    label: "Threads",
                     icon: <Icons.threads className="size-5" />,
-                    disabled: loading,
                   },
                 }}
+                disabled={loading}
               />
               <FormFileUpload
                 key={`cv-upload-${resetKey}`}
@@ -393,12 +409,13 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
               />
               <Button
                 disabled={loading}
-                className={cn("mt-2 ml-auto w-full", {
+                className={cn("mt-2 ml-auto w-full space-x-1 text-white", {
                   "flex gap-1": loading,
                 })}
                 type="submit"
               >
-                {loading ? <Spinner variant="circle" /> : "Save Changes"}
+                {loading && <Spinner variant="circle" />}
+                <span>{loading ? "Saving..." : "Save Changes"}</span>
               </Button>
             </Form>
           </CardContent>

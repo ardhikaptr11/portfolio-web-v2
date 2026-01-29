@@ -31,16 +31,22 @@ function FormTextarea<
   description,
   required,
   placeholder,
-  config = {},
+  config: userDefinedConfig,
   disabled,
   className,
 }: FormTextareaProps<TFieldValues, TName>) {
-  const {
-    maxLength,
-    showCharCount = true,
-    rows = 4,
-    resize = "vertical",
-  } = config;
+  const defaultConfig: TextareaConfig = {
+    showCharCount: false,
+    rows: 4,
+    resize: "none",
+  };
+
+  const config = {
+    ...defaultConfig,
+    ...userDefinedConfig,
+  };
+
+  const { maxLength, showCharCount, rows, resize } = config;
 
   return (
     <FormField
@@ -61,11 +67,14 @@ function FormTextarea<
                 placeholder={placeholder}
                 disabled={disabled}
                 rows={rows}
-                style={{ resize }}
+                style={{
+                  resize,
+                  minHeight: rows ? `${rows * 1.5}em` : undefined,
+                }}
                 maxLength={maxLength}
                 {...field}
               />
-              {showCharCount && maxLength && (
+              {showCharCount && (
                 <div className="flex justify-between text-sm">
                   <FormMessage />
                   <p className="ml-auto text-muted-foreground">

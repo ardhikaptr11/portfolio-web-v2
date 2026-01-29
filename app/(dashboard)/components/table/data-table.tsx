@@ -28,7 +28,7 @@ export function DataTable<TData>({
     <div className="flex flex-1 flex-col space-y-4">
       {children}
       <div className="relative flex flex-1">
-        <div className="flex w-full overflow-hidden rounded-lg border">
+        <div className="absolute inset-0 flex overflow-hidden rounded-lg border">
           <ScrollArea className="size-full">
             <Table>
               <TableHeader className="sticky top-0 z-10 bg-muted">
@@ -42,7 +42,8 @@ export function DataTable<TData>({
                           ...getCommonPinningStyles({ column: header.column }),
                         }}
                         className={cn({
-                          "text-center": header.column.id !== "search",
+                          "text-center":
+                            header.column.columnDef.meta?.label !== "File Name",
                         })}
                       >
                         {header.isPlaceholder
@@ -73,15 +74,14 @@ export function DataTable<TData>({
                               }),
                             }}
                             className={cn({
-                              "max-w-sm overflow-hidden text-ellipsis whitespace-nowrap":
-                                cell.column.id === "description",
-                              "text-center": cell.column.id !== "search",
+                              "max-w-50 whitespace-nowrap":
+                                cell.column.id === "description" ||
+                                cell.column.id === "tech_stack",
+                              "text-center":
+                                cell.column.columnDef.meta?.label !==
+                                  "File Name" &&
+                                cell.column.columnDef.meta?.label !== "Related Links",
                             })}
-                            title={
-                              cell.column.id === "description"
-                                ? (cell.getValue() as string)
-                                : undefined
-                            }
                           >
                             {flexRender(
                               cell.column.columnDef.cell,
@@ -96,7 +96,7 @@ export function DataTable<TData>({
                   <TableRow>
                     <TableCell
                       colSpan={table.getAllColumns().length}
-                      className="h-full text-center"
+                      className="h-24 text-center"
                     >
                       No results
                     </TableCell>

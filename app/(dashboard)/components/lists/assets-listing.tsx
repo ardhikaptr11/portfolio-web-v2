@@ -1,26 +1,24 @@
+import { getFilteredAssets } from "../../lib/queries/assets/actions";
 import { searchParamsCache } from "../../lib/search-params";
-import { AssetsTable } from "../views/Assets/table";
-import { getFilteredAssets } from "../../lib/queries/assets";
 import { columns } from "../views/Assets/table/column";
+import { AssetsTable } from "../views/Assets/table";
 
 type TAssetsListing = {};
 
 export const AssetsListing = async ({}: TAssetsListing) => {
   // Showcasing the use of search params cache in nested RSCs
-  const page = searchParamsCache.get("page");
-  const search = searchParamsCache.get("search");
-  const pageLimit = searchParamsCache.get("perPage");
-  const category = searchParamsCache.get("category");
-  const sort = searchParamsCache.get("sort");
-
-  const sortArray = sort && JSON.parse(sort);
+  const page = searchParamsCache.get("page") as number;
+  const search = searchParamsCache.get("search") as string;
+  const pageLimit = searchParamsCache.get("perPage") as number;
+  const category = searchParamsCache.get("category") as string;
+  const sort = JSON.parse(searchParamsCache.get("sort") as string);
 
   const { assets, total } = await getFilteredAssets({
-    category: category as string,
-    limit: pageLimit as number,
-    page: page as number,
-    search: search as string,
-    sort: sortArray,
+    category,
+    pageLimit,
+    page,
+    search,
+    sort,
   });
 
   return <AssetsTable data={assets} totalItems={total} columns={columns} />;

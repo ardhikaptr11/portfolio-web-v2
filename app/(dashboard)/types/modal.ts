@@ -22,7 +22,7 @@ type TModalProps = IClosableModalProps | INonClosableModalProps;
 interface IModalButton {
   text: string;
   variant?: "link" | "default" | "destructive" | "outline";
-  onClick?: () => void;
+  onClick?: (val?: any) => void;
 }
 
 interface IAlertModalBaseProps extends Omit<TModalProps, "children"> {
@@ -68,10 +68,10 @@ interface IFormModalProps {
 
 type TAlertModalProps =
   | IAlertModalClosableWithButton
-  | IAlertModalClosableWithoutButton
+  | IAlertModalClosableWithoutButton;
 
 export type {
   IFormModalProps,
   TModalProps,
   TAlertModalProps
-}
+};

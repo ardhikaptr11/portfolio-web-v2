@@ -15,7 +15,12 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className="no-scrollbar"
+      suppressHydrationWarning
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -38,11 +43,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body
-        className={`${fontVariables} antialiased`}
-      >
-        {children}
-      </body>
+      <body className={`${fontVariables} antialiased`}>{children}</body>
     </html>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { slugToTitle } from "@/lib/helpers";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 
@@ -10,25 +11,6 @@ const routeMapping: Record<string, BreadcrumbItem[]> = {
   "/dashboard/profile": [
     { title: "Dashboard", link: "#" },
     { title: "Profile", link: "/dashboard/profile" },
-  ],
-  "/dashboard/articles/new": [
-    { title: "Dashboard", link: "/dashboard" },
-    { title: "Artikel", link: "/dashboard/articles/manage" },
-    { title: "Tulis", link: "/dashboard/articles/new" },
-  ],
-  "/dashboard/users/manage": [
-    { title: "Dashboard", link: "/dashboard" },
-    { title: "Kelola User", link: "/dashboard/users/manage" },
-  ],
-  "/dashboard/users/profile": [
-    { title: "Dashboard", link: "/dashboard" },
-    { title: "Users", link: "#" },
-    { title: "Profil", link: "/dashboard/users/profile" },
-  ],
-  "/dashboard/articles/manage": [
-    { title: "Dashboard", link: "/dashboard" },
-    { title: "Artikel", link: "#" },
-    { title: "Kelola", link: "/dashboard/articles/manage" },
   ],
 };
 
@@ -87,6 +69,23 @@ export function useBreadcrumbs() {
         : [
             { title: "Dashboard", link: "/dashboard" },
             { title: "Assets", link: "#" },
+          ];
+    }
+
+    if (pathname === "/dashboard/projects/edit") {
+      const slug = `${searchParams.get("slug")}`;
+      return searchParams.has("slug")
+        ? [
+            { title: "Dashboard", link: "/dashboard" },
+            { title: "Projects", link: "/dashboard/projects" },
+            {
+              title: `${slugToTitle(slug)}`,
+              link: "#",
+            },
+          ]
+        : [
+            { title: "Dashboard", link: "/dashboard" },
+            { title: "Projects", link: "#" },
           ];
     }
 

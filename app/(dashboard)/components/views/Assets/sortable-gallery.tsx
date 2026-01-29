@@ -2,10 +2,12 @@
 
 import PageContainer from "@/app/(dashboard)/components/layout/page-container";
 import { MAX_TOTAL_FILE } from "@/app/(dashboard)/constants/items.constants";
+import { useIsMobile } from "@/app/(dashboard)/hooks/use-mobile";
+
 import {
-  downloadAssetById,
+  downloadAsset,
   updateAssetOrder,
-} from "@/app/(dashboard)/lib/queries/assets";
+} from "@/app/(dashboard)/lib/queries/assets/client";
 import { IAssetPreview } from "@/app/(dashboard)/types/data";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -15,14 +17,12 @@ import {
   SortableItemHandle,
 } from "@/components/ui/sortable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { XIcon, ZoomInIcon } from "lucide-react";
 import Image from "next/image";
-import { use, useCallback, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { Heading } from "../../heading";
-import { formatBytes } from "@/app/(dashboard)/hooks/use-file-upload";
-import { usePathname } from "next/navigation";
 
 const SortableGallery = ({
   data,
@@ -50,7 +50,6 @@ const SortableGallery = ({
   // Files state
   const [allFiles, setAllFiles] = useState(files);
   const [activeFileId, setActiveFileId] = useState<string | null>(null);
-  // const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
   const isMobile = useIsMobile();
 
@@ -94,7 +93,7 @@ const SortableGallery = ({
 
   const handleDownloadFile = useCallback(async (assetId: string) => {
     try {
-      const { fileToDownload, fileName } = await downloadAssetById(assetId);
+      const { fileToDownload, fileName } = await downloadAsset({ id: assetId });
 
       const url = window.URL.createObjectURL(fileToDownload);
 
@@ -118,7 +117,7 @@ const SortableGallery = ({
   }, []);
 
   return (
-    <PageContainer scrollable={false}>
+    <PageContainer scrollable>
       <Tabs
         value={currentTab}
         onValueChange={handleTabChange}
@@ -240,7 +239,7 @@ const SortableGallery = ({
                 description="All uploaded files can be found here. Drag and drop to reorder them."
               />
               <p className="text-muted-foreground">
-                {allImages.length}/{MAX_TOTAL_FILE.file}
+                {allFiles.length}/{MAX_TOTAL_FILE.file}
               </p>
             </div>
 

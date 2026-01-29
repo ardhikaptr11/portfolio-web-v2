@@ -11,14 +11,14 @@ import {
 } from "@/components/ui/form";
 import { FileWithPreview } from "@/app/(dashboard)/hooks/use-file-upload";
 import { FieldPath, FieldValues } from "react-hook-form";
-import { BaseFormFieldProps, FileUploadConfig } from "../../types/base-form";
+import { BaseFormFieldProps, AssetsUploadConfig } from "../../types/base-form";
 
 interface FormAvatarUploadProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends BaseFormFieldProps<TFieldValues, TName> {
   defaultFile: string;
-  config: FileUploadConfig;
+  config: AssetsUploadConfig;
 }
 
 function FormFileUpload<

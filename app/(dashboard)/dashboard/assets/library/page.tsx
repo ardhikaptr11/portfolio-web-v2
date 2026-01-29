@@ -1,5 +1,5 @@
 import SortableGallery from "@/app/(dashboard)/components/views/Assets/sortable-gallery";
-import { getAllAssets } from "@/app/(dashboard)/lib/queries/assets";
+import { getAllAssets } from "@/app/(dashboard)/lib/queries/assets/actions";
 
 type PageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

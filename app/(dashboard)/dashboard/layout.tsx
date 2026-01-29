@@ -8,7 +8,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 import { SIDEBAR_ITEMS } from "../constants/items.constants";
-import { getAccountInfo } from "../lib/queries/user";
+import { getAccountInfo } from "../lib/queries/user/actions";
 
 const DashboardLayout = async ({ children }: { children: ReactNode }) => {
   // Persisting the sidebar state in the cookie.

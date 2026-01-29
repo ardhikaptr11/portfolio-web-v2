@@ -1,10 +1,9 @@
 "use client";
 
-// import { deleteDocumentById } from "@/app/dashboard/articles/actions";
 import {
   deleteAssetById,
   updateAssetById,
-} from "@/app/(dashboard)/lib/queries/assets";
+} from "@/app/(dashboard)/lib/queries/assets/actions";
 import { IAsset } from "@/app/(dashboard)/types/data";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";

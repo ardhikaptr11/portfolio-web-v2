@@ -1,18 +1,19 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   formatBytes,
   useFileUpload,
   type FileWithPreview,
 } from "@/app/(dashboard)/hooks/use-file-upload";
+import { downloadAsset } from "@/app/(dashboard)/lib/queries/assets/client";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { IconCloudUpload, IconFileCvFilled } from "@tabler/icons-react";
+import { IconFileCvFilled } from "@tabler/icons-react";
 import { XIcon } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
-import { Input } from "./ui/input";
 import { Icons } from "./icons";
+import { Input } from "./ui/input";
 
 interface FileUploadCompactProps {
   id: string;
@@ -69,12 +70,44 @@ const FileUploadCompact = ({
   });
 
   const currentFile = files[0];
+  const fileName = defaultFile
+    ?.split(
+      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/`,
+    )[1]
+    .split(".")[0];
 
   const handleRemove = () => {
     if (currentFile) {
       removeFile(currentFile.id);
     }
   };
+
+  const handleDownloadFile = useCallback(async (name: string) => {
+    try {
+      const { fileToDownload, fileName } = await downloadAsset({
+        file_name: name,
+      });
+
+      const url = window.URL.createObjectURL(fileToDownload);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      link.style.display = "none";
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      link.parentNode?.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      toast.error("Failed to download file", {
+        description: (error as Error).message,
+        position: "top-right",
+      });
+    }
+  }, []);
 
   const simulateUpload = () => {
     const interval = setInterval(() => {
@@ -176,13 +209,11 @@ const FileUploadCompact = ({
                     <p>
                       {currentFile
                         ? `${currentFile?.file.name} (${formatBytes(currentFile?.file.size)})`
-                        : defaultFile?.split(
-                            `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/`,
-                          )[1]}
+                        : fileName}
                     </p>
                   </div>
                   {/* Remove Button */}
-                  {!defaultFile && (
+                  {!defaultFile ? (
                     <Button
                       onClick={handleRemove}
                       variant="outline"
@@ -190,6 +221,16 @@ const FileUploadCompact = ({
                       className="size-5 cursor-pointer rounded-full border-2 border-background opacity-0 transition-opacity group-hover:opacity-100"
                     >
                       <XIcon className="size-3" />
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      onClick={() => handleDownloadFile(`${fileName}`)}
+                      variant="ghost"
+                      size="icon"
+                      className="size-7 cursor-pointer"
+                    >
+                      <Icons.download className="size-4" />
                     </Button>
                   )}
                 </div>

@@ -126,7 +126,7 @@ export const getCurrentDate = (): string => {
   const month = String(now.getMonth() + 1).padStart(2, '0');
   const year = now.getFullYear();
 
-  const formattedDate = `${day}${month}${year}`;
+  const formattedDate = `${day}${month}${year}-${now.getTime()}`;
   return formattedDate;
 }
 
@@ -215,4 +215,11 @@ export function getSlug(title: string): string {
     .replaceAll(/\s+/g, "-") // Replace spaces with single hyphen
     .replace(/-+/g, "-") // Collapse multiple hyphens
     .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
+}
+
+export function slugToTitle(slug: string): string {
+  const whitespaceIndex = slug.indexOf(" ");
+  if (whitespaceIndex === -1) return slug.charAt(0).toUpperCase() + slug.slice(1);
+
+  return slug.split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 }

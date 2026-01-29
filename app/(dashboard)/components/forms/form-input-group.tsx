@@ -1,6 +1,6 @@
 "use client";
 
-import { FieldPath, FieldValues } from "react-hook-form";
+import { FieldErrors, FieldPath, FieldValues } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -16,6 +16,7 @@ import {
 import { BaseFormFieldProps } from "../../types/base-form";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 
 interface InputProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -38,8 +39,13 @@ interface FormInputGroupProps<
   "type" | "description" | "disabled"
 > {
   inputs: {
-    [key: string]: Omit<InputProps<TFieldValues, TName>, "control" | "name">;
+    [key: string]: Omit<
+      InputProps<TFieldValues, TName>,
+      "control" | "name" | "disabled"
+    >;
   };
+  disabled?: boolean;
+  // errors?: FieldErrors
 }
 
 function FormInputGroup<
@@ -52,6 +58,8 @@ function FormInputGroup<
   inputs,
   className,
   required,
+  disabled,
+  // errors
 }: FormInputGroupProps<TFieldValues, TName>) {
   return (
     <div className={className}>
@@ -62,25 +70,35 @@ function FormInputGroup<
         </p>
       )}
 
-      <div className="grid space-y-2">
+      <div className="space-y-2">
         {Object.entries(inputs).map(([key, config]) => (
           <FormField
             key={key}
             control={control}
             name={`${name}.${key}` as TName}
-            render={({ field }) => (
+            render={({ field, fieldState }) => (
               <FormItem>
                 <FormControl>
-                  <InputGroup>
-                    <InputGroupInput
-                      {...field}
-                      {...config}
-                      id={`${name}.${key}`}
-                    />
-                    {config.icon && (
-                      <InputGroupAddon>{config.icon}</InputGroupAddon>
+                  <Field>
+                    {config.label && (
+                      <FieldLabel htmlFor={`${name}.${key}`} className="text-muted-foreground">
+                        {config.label}
+                      </FieldLabel>
                     )}
-                  </InputGroup>
+                    <InputGroup>
+                      <InputGroupInput
+                        {...field}
+                        {...config}
+                        id={`${name}.${key}`}
+                        disabled={disabled}
+                      />
+                      {config.icon && (
+                        <InputGroupAddon align="inline-start">
+                          {config.icon}
+                        </InputGroupAddon>
+                      )}
+                    </InputGroup>
+                  </Field>
                 </FormControl>
                 <FormMessage />
               </FormItem>

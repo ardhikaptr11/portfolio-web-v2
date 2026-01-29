@@ -1,4 +1,5 @@
 "use client";
+import { Icons } from "@/components/icons";
 import {
   Collapsible,
   CollapsibleContent,
@@ -28,15 +29,16 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { useMediaQuery } from "../../hooks/use-media-query";
-import { UserAvatarProfile } from "../user-avatar-profile";
-import { Icons } from "@/components/icons";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useTransition } from "react";
+import { toast } from "sonner";
+import { logout } from "../../auth/actions";
+import { useMediaQuery } from "../../hooks/use-media-query";
 import { NavItem } from "../../types/items";
 import { IAccountInfo } from "../../types/user";
-import SignOutButton from "../sign-out-button";
+import { UserAvatarProfile } from "../user-avatar-profile";
+
 
 const AppSidebar = ({
   items,
@@ -48,11 +50,30 @@ const AppSidebar = ({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { isOpen } = useMediaQuery();
+
+  const [_isLoading, startTransition] = useTransition();
+  const router = useRouter();
+
   const fullUrl = `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
 
   useEffect(() => {
     // Side effects based on sidebar state changes
   }, [isOpen]);
+
+    const handleLogout = () => {
+      startTransition(async () => {
+        try {
+          await logout();
+          toast.success("You have successfully logged out");
+  
+          router.push("/auth");
+        } catch (err) {
+          toast.error("Logout failed", {
+            description: (err as Error).message,
+          });
+        }
+      });
+    };
 
   return (
     <Sidebar collapsible="icon">
@@ -177,13 +198,13 @@ const AppSidebar = ({
                 <DropdownMenuGroup>
                   <DropdownMenuItem className="cursor-pointer">
                     <Icons.home className="size-5" />
-                    <Link href="/" target="_blank">
+                    <Link href="/" target="_blank" rel="noopener noreferrer">
                       Homepage
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer">
+                  <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
                     <Icons.logout className="size-5" />
-                    <SignOutButton />
+                    Logout
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
@@ -194,6 +215,6 @@ const AppSidebar = ({
       <SidebarRail />
     </Sidebar>
   );
-}
+};
 
-export default AppSidebar
+export default AppSidebar;

@@ -23,6 +23,7 @@ interface FormInputProps<
   min?: string | number;
   max?: string | number;
   autoComplete?: "off" | "email" | "current-password";
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function FormInput<
@@ -42,6 +43,7 @@ function FormInput<
   autoComplete = "off",
   disabled,
   className,
+  onChange,
 }: FormInputProps<TFieldValues, TName>) {
   return (
     <FormField
@@ -71,6 +73,7 @@ function FormInput<
                   const value = e.target.value;
                   field.onChange(value === "" ? undefined : parseFloat(value));
                 } else {
+                  onChange && onChange(e);
                   field.onChange(e.target.value);
                 }
               }}
