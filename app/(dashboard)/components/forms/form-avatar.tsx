@@ -1,6 +1,6 @@
 "use client";
 
-import AvatarUpload from "@/components/avatar-upload";
+import AvatarUpload from "@/app/(dashboard)/components/avatar-upload";
 import {
   FormControl,
   FormDescription,

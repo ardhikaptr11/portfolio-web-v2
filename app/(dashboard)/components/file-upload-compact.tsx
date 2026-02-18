@@ -12,8 +12,9 @@ import { IconFileCvFilled } from "@tabler/icons-react";
 import { XIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
-import { Icons } from "./icons";
-import { Input } from "./ui/input";
+import { Icons } from "../../../components/icons";
+import { Input } from "../../../components/ui/input";
+import { environments } from "@/app/environments";
 
 interface FileUploadCompactProps {
   id: string;
@@ -71,9 +72,7 @@ const FileUploadCompact = ({
 
   const currentFile = files[0];
   const fileName = defaultFile
-    ?.split(
-      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/`,
-    )[1]
+    ?.split(`${environments.SUPABASE_URL}/storage/v1/object/public/assets/`)[1]
     .split(".")[0];
 
   const handleRemove = () => {
@@ -129,7 +128,7 @@ const FileUploadCompact = ({
       {/* Compact Upload Area */}
       <div
         className={cn(
-          "flex items-center gap-3 rounded-lg border border-dashed border-border p-4 transition-colors",
+          "border-border flex items-center gap-3 rounded-lg border border-dashed p-4 transition-colors",
           isDragging
             ? "border-primary bg-primary/5"
             : "border-muted-foreground/25 hover:border-muted-foreground/50",
@@ -163,7 +162,7 @@ const FileUploadCompact = ({
         {/* File Previews */}
         <div className="flex flex-1 items-center gap-2">
           {files.length === 0 && !defaultFile ? (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Drop files here or click to browse{" "}
               {maxFiles > 1 && <span>(max {maxFiles} files)</span>}
             </p>
@@ -171,7 +170,7 @@ const FileUploadCompact = ({
             <div className="group w-full shrink-0">
               {/* File Preview */}
               {isUploading ? (
-                <div className="inset-0 flex items-center justify-center">
+                <div className="inset-0 flex-center">
                   <div className="flex items-center space-x-2">
                     <svg className="size-5 -rotate-90" viewBox="0 0 64 64">
                       <circle
@@ -205,7 +204,7 @@ const FileUploadCompact = ({
               ) : (
                 <div className="flex justify-between">
                   <div className="flex items-center space-x-2">
-                    <IconFileCvFilled className="hidden size-5 text-muted-foreground sm:block" />
+                    <IconFileCvFilled className="text-muted-foreground hidden size-5 sm:block" />
                     <p>
                       {currentFile
                         ? `${currentFile?.file.name} (${formatBytes(currentFile?.file.size)})`
@@ -218,7 +217,7 @@ const FileUploadCompact = ({
                       onClick={handleRemove}
                       variant="outline"
                       size="icon"
-                      className="size-5 cursor-pointer rounded-full border-2 border-background opacity-0 transition-opacity group-hover:opacity-100"
+                      className="border-background size-5 cursor-pointer rounded-full border-2 opacity-0 transition-opacity group-hover:opacity-100"
                     >
                       <XIcon className="size-3" />
                     </Button>
@@ -241,7 +240,7 @@ const FileUploadCompact = ({
 
         {/* File Count */}
         {files.length > 0 && maxFiles > 1 && (
-          <div className="shrink-0 text-xs text-muted-foreground">
+          <div className="text-muted-foreground shrink-0 text-xs">
             {files.length}/{maxFiles}
           </div>
         )}

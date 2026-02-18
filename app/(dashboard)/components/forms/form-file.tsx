@@ -1,6 +1,6 @@
 "use client";
 
-import FileUploadCompact from "@/components/file-upload-compact";
+import FileUploadCompact from "@/app/(dashboard)/components/file-upload-compact";
 import {
   FormControl,
   FormDescription,

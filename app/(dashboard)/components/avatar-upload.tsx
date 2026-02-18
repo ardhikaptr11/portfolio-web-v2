@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 import { User } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
-import { Icons } from "./icons";
-import { Input } from "./ui/input";
+import { Icons } from "../../../components/icons";
+import { Input } from "../../../components/ui/input";
 
 export interface AvatarUploadProps {
   maxSize?: number;
@@ -92,10 +92,11 @@ const AvatarUpload = ({
               className="h-full w-full object-cover"
               width={75}
               height={75}
+              loading="eager"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center">
-              <User className="size-8 text-muted-foreground" />
+              <User className="text-muted-foreground size-8" />
             </div>
           )}
         </div>

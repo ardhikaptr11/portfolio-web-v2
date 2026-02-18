@@ -1,4 +1,3 @@
-import { FieldPath, FieldValues } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -8,8 +7,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { TagInput, TagInputProps } from "emblor";
+import { FieldPath, FieldValues } from "react-hook-form";
 import { BaseFormFieldProps } from "../../types/base-form";
-import { cn } from "@/lib/utils";
 
 interface FormInputTagProps<
   TFieldValues extends FieldValues = FieldValues,

@@ -1,6 +1,6 @@
 "use client";
 
-import GalleryUpload from "@/components/gallery-upload";
+import GalleryUpload from "@/app/(dashboard)/components/gallery-upload";
 import {
   FormControl,
   FormDescription,

@@ -25,7 +25,7 @@ import { Tag } from "emblor";
 import { isEqual } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -36,6 +36,11 @@ import { FormInputGroup } from "../../forms/form-input-group";
 import { FormInputTag } from "../../forms/form-tag-input";
 import { FormTextarea } from "../../forms/form-textarea";
 import PageContainer from "../../layout/page-container";
+import { FormCombobox } from "../../forms/form-combobox";
+import {
+  addNewTechStack,
+  getAllAvailableTechStack,
+} from "@/app/(dashboard)/lib/queries";
 
 const FormSchema = z.object({
   avatar: z
@@ -56,16 +61,16 @@ const FormSchema = z.object({
     .trim()
     .nonempty("Name cannot be empty")
     .min(2, "Fill in with at least two characters"),
+  motto: z
+    .string()
+    .trim()
+    .nonempty("Motto cannot be empty")
+    .min(10, "Fill in with at least 10 characters"),
   tagline: z
     .string()
     .trim()
     .nonempty("Tagline cannot be empty")
     .min(5, "Fill in with at least 5 characters"),
-  biography: z
-    .string()
-    .trim()
-    .nonempty("Biography cannot be empty")
-    .min(10, "Fill in with at least 10 characters"),
   roles: z
     .array(
       z.object({
@@ -75,16 +80,12 @@ const FormSchema = z.object({
     )
     .min(3, "At least 3 must be selected"),
   skills: z
-    .array(
-      z.object({
-        id: z.string(),
-        text: z.string(),
-      }),
-    )
-    .min(5, "At least 5 must be selected"),
+    .array(z.string().nonempty("Skills is required"))
+    .min(3, "At least 3 must be selected"),
   social_links: z.object({
     github: z.union([
       z.literal(""),
+      z.string(),
       z
         .string()
         .regex(
@@ -94,6 +95,7 @@ const FormSchema = z.object({
     ]),
     linkedin: z.union([
       z.literal(""),
+      z.string(),
       z
         .string()
         .regex(
@@ -103,6 +105,7 @@ const FormSchema = z.object({
     ]),
     threads: z.union([
       z.literal(""),
+      z.string(),
       z
         .string()
         .regex(
@@ -136,8 +139,8 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
   const defaultValues = {
     avatar: profile.avatar.url || "",
     name: profile.name || "",
+    motto: profile.motto || "",
     tagline: profile.tagline || "",
-    biography: profile.biography || "",
     roles: profile.roles || [],
     skills: profile.skills || [],
     social_links: {
@@ -153,12 +156,37 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
     defaultValues,
   });
 
+  const [techStack, setTechStack] = useState<string[]>([]);
+
+  const fetchTechStack = async () => {
+    try {
+      const res = await getAllAvailableTechStack();
+      setTechStack(res.map((stack) => stack.label));
+    } catch (error) {
+      toast.error("Failed to fetch tech stack", {
+        description: (error as Error).message,
+        position: "top-right",
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchTechStack();
+  }, []);
+
+  const handleCreateNew = async (value: string) => {
+    try {
+      const newAddedTechStack = await addNewTechStack(value);
+      setTechStack((prev) => [...prev, newAddedTechStack.label]);
+    } catch (error) {
+      toast.error("Failed to create new tech stack", {
+        description: (error as Error).message,
+      });
+    }
+  };
+
   const [roleTags, setRoleTags] = useState<Tag[]>(defaultValues.roles);
-  const [skillTags, setSkillTags] = useState<Tag[]>(defaultValues.skills);
   const [activeRoleTagIndex, setActiveRoleTagIndex] = useState<number | null>(
-    null,
-  );
-  const [activeSkillTagIndex, setActiveSkillTagIndex] = useState<number | null>(
     null,
   );
 
@@ -298,16 +326,12 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
                 disabled={loading}
                 required
               />
-              <FormTextarea
+              <FormInput
                 className="w-full gap-3"
                 control={form.control}
-                name="biography"
-                label="Biography"
+                name="motto"
+                label="Motto"
                 required
-                config={{
-                  maxLength: 500,
-                  resize: "none",
-                }}
               />
               <FormInputTag
                 className="w-full gap-3"
@@ -339,31 +363,14 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
                 disabled={loading}
                 required
               />
-              <FormInputTag
-                className="w-full gap-3"
+              <FormCombobox
+                className="w-full"
                 control={form.control}
                 name="skills"
                 label="Skills"
-                placeholder="Add a skill"
-                tags={skillTags}
-                setTags={(newTags) => {
-                  setSkillTags(newTags);
-                  setValue("skills", newTags as [Tag, ...Tag[]]);
-                }}
-                activeTagIndex={activeSkillTagIndex}
-                setActiveTagIndex={setActiveSkillTagIndex}
-                config={{
-                  shape: "rounded",
-                  size: "sm",
-                  interaction: "clickable",
-                  styleClasses: {
-                    inlineTagsContainer: "dark:bg-input/30 mb-2",
-                    input: "outline-none border-none shadow-none w-full",
-                    tag: {
-                      closeButton: "cursor-pointer",
-                    },
-                  },
-                }}
+                options={techStack}
+                defaultSelected={profile.skills}
+                onCreate={(value) => handleCreateNew(value)}
                 disabled={loading}
                 required
               />
@@ -409,7 +416,7 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
               />
               <Button
                 disabled={loading}
-                className={cn("mt-2 ml-auto w-full space-x-1 text-white", {
+                className={cn("mt-2 ml-auto w-full space-x-1", {
                   "flex gap-1": loading,
                 })}
                 type="submit"

@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { BaseFormFieldProps } from "../../types/base-form";
 import { Button } from "@/components/ui/button";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { Icons } from "@/components/icons";
 
 interface FormInputPasswordProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -69,13 +70,13 @@ function FormInputPassword<
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="absolute top-1/2 right-0 -translate-y-1/2 text-muted-foreground hover:bg-transparent"
+                className="absolute top-1/2 right-0 -translate-y-1/2 text-muted-foreground hover:bg-transparent!"
                 onClick={setShowPassword}
               >
                 {showPassword ? (
-                  <EyeOffIcon className="size-4" />
+                  <Icons.eye className="size-4" />
                 ) : (
-                  <EyeIcon className="size-4" />
+                  <Icons.eyeClosed className="size-4" />
                 )}
               </Button>
             </div>

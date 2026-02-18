@@ -16,10 +16,10 @@ interface IProfile {
   }
   name: IAccountInfo["name"];
   email: IAccountInfo["email"];
+  motto: string;
   tagline: string;
-  biography: string;
   roles: TTags;
-  skills: TTags;
+  skills: string[];
   social_links: ISocialLinks;
   cv: {
     id: string,

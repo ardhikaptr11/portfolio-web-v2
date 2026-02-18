@@ -1,6 +1,6 @@
 "use client";
 
-import CardUpload from "@/components/card-upload";
+import CardUpload from "@/app/(dashboard)/components/card-upload";
 import {
   FormControl,
   FormDescription,

@@ -1,3 +1,5 @@
+import { Locale } from 'date-fns';
+import { Matcher } from 'react-day-picker';
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 
 // Base props that all form components will share
@@ -38,6 +40,15 @@ export interface DatePickerConfig {
   maxDate?: Date;
   disabledDates?: Date[];
   placeholder?: string;
+}
+
+export interface ExtendedDatePickerConfig extends Omit<DatePickerConfig, "minDate" | "maxDate" | "disabledDates"> {
+  locale?: Locale;
+  startMonth?: Date;
+  endMonth?: Date;
+  defaultMonth?: Date | undefined;
+  disabledDateRules?: Matcher | Matcher[] | undefined;
+  disabledState?: boolean;
 }
 
 // Slider specific types

@@ -32,13 +32,7 @@ import * as React from 'react';
 import { useDebouncedCallback } from './use-debounced-callback';
 import { getSortingStateParser } from '../lib/parsers';
 import type { ExtendedColumnSort } from '../types/data-table';
-
-const PAGE_KEY = 'page';
-const PER_PAGE_KEY = 'perPage';
-const SORT_KEY = 'sort';
-const ARRAY_SEPARATOR = ',';
-const DEBOUNCE_MS = 300;
-const THROTTLE_MS = 50;
+import { ARRAY_SEPARATOR, DEBOUNCE_MS, PAGE_KEY, PER_PAGE_KEY, SORT_KEY, THROTTLE_MS } from '../constants/items.constants';
 
 interface UseDataTableProps<TData>
   extends Omit<

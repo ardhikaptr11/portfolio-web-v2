@@ -28,8 +28,38 @@ interface IProject {
   updated_at: Date;
 }
 
+enum WORK_TYPE {
+  ONLINE = "online",
+  OFFLINE = "offline",
+}
+
+enum WORK_CATEGORY {
+  FULL_TIME = "full_time",
+  CONTRACT = "contract",
+  INTERNSHIP = "internship",
+  FREELANCE = "freelance",
+}
+
+interface IExperience {
+  id: string;
+  role: string;
+  organization: string;
+  location: string;
+  work_type: WORK_TYPE;
+  work_category: WORK_CATEGORY;
+  responsibilities: string[];
+  start_date: Date;
+  is_current?: boolean;
+  end_date: Date | null;
+  duration?: string;
+  related_asset?: string | null;
+  file_name?: string;
+}
+
 export type {
   IAsset,
   IAssetPreview,
-  IProject
+  IProject,
+  IExperience,
+  WORK_CATEGORY
 };

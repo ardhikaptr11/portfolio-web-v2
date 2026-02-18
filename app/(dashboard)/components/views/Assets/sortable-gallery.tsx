@@ -2,7 +2,7 @@
 
 import PageContainer from "@/app/(dashboard)/components/layout/page-container";
 import { MAX_TOTAL_FILE } from "@/app/(dashboard)/constants/items.constants";
-import { useIsMobile } from "@/app/(dashboard)/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import {
   downloadAsset,
@@ -162,7 +162,7 @@ const SortableGallery = ({
                       />
 
                       {/* Overlay */}
-                      <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-lg opacity-0 transition-opacity group-hover:opacity-100">
+                      <div className="absolute inset-0 flex-center gap-2 rounded-lg opacity-0 transition-opacity group-hover:opacity-100">
                         {allImages.length !== 1 && (
                           <SortableItemHandle className="group absolute start-2 top-2 opacity-0 group-hover:opacity-100">
                             <Button
@@ -197,9 +197,9 @@ const SortableGallery = ({
                 ))}
               </Sortable>
             ) : (
-              <div className="flex-col-center h-full space-y-1 text-muted-foreground">
-                <div className="flex-center size-10 rounded-full border-2 border-muted-foreground">
-                  <Icons.imageOff className="size-6 text-muted-foreground" />
+              <div className="text-muted-foreground flex-col-center h-full space-y-1">
+                <div className="border-muted-foreground flex-center size-10 rounded-full border-2">
+                  <Icons.imageOff className="text-muted-foreground size-6" />
                 </div>
                 <h3 className="text-lg">No image uploaded</h3>
               </div>
@@ -257,14 +257,14 @@ const SortableGallery = ({
               >
                 {allFiles.map((item) => (
                   <SortableItem key={item.id} value={item.id}>
-                    <div className="relative overflow-hidden rounded-lg border bg-card transition-all duration-200 hover:z-10 data-[dragging=true]:z-99">
-                      <div className="group relative aspect-square border-border bg-muted">
-                        <div className="flex h-full items-center justify-center text-muted-foreground/80">
+                    <div className="bg-card relative overflow-hidden rounded-lg border transition-all duration-200 hover:z-10 data-[dragging=true]:z-99">
+                      <div className="group border-border bg-muted relative aspect-square">
+                        <div className="text-muted-foreground/80 flex h-full items-center justify-center">
                           <Icons.file className="size-8 group-hover:opacity-0" />
                         </div>
 
                         {/* Overlay */}
-                        <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-lg opacity-0 transition-opacity group-hover:opacity-100">
+                        <div className="absolute inset-0 flex-center gap-2 rounded-lg opacity-0 transition-opacity group-hover:opacity-100">
                           {allFiles.length !== 1 && (
                             <SortableItemHandle className="group absolute start-2 top-2 opacity-0 group-hover:opacity-100">
                               <Button
@@ -280,18 +280,11 @@ const SortableGallery = ({
                             onClick={() => handleDownloadFile(item.id)}
                             variant="secondary"
                             size="icon"
-                            className="size-7 hover:bg-background/30"
+                            className="hover:bg-background/30 size-7"
                           >
                             <Icons.download className="opacity-100/80 size-5" />
                           </Button>
                         </div>
-
-                        {/* File Info */}
-                        {/* <div className="absolute right-0 bottom-0 left-0 rounded-b-lg bg-black/30 p-2 text-white opacity-0 transition-opacity group-hover:opacity-100">
-                          <p className="truncate text-xs font-medium">
-                            {item.file_name}
-                          </p>
-                        </div> */}
                       </div>
 
                       <div className="p-3">
@@ -304,9 +297,9 @@ const SortableGallery = ({
                 ))}
               </Sortable>
             ) : (
-              <div className="flex-col-center h-full space-y-1 text-muted-foreground">
-                <div className="flex-center size-10 rounded-full border-2 border-muted-foreground">
-                  <Icons.fileOff className="size-6 text-muted-foreground" />
+              <div className="text-muted-foreground flex-col-center h-full space-y-1">
+                <div className="border-muted-foreground flex-center size-10 rounded-full border-2">
+                  <Icons.fileOff className="text-muted-foreground size-6" />
                 </div>
                 <h3 className="text-lg">No file uploaded</h3>
               </div>

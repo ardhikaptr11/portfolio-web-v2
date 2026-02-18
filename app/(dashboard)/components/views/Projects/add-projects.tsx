@@ -4,7 +4,7 @@ import {
   addNewTechStack,
   getAllAvailableTechStack,
 } from "@/app/(dashboard)/lib/queries";
-import { getALlImages } from "@/app/(dashboard)/lib/queries/assets/client";
+import { getAllImages } from "@/app/(dashboard)/lib/queries/assets/client";
 import { bulkAddProjects } from "@/app/(dashboard)/lib/queries/projects/actions";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,7 @@ import { FormImage } from "../../forms/form-image";
 import { FormInput } from "../../forms/form-input";
 import { FormInputGroup } from "../../forms/form-input-group";
 import { FormTextarea } from "../../forms/form-textarea";
-import ImageDropdown from "../../image-dropdown";
+import ImageDropdown from "../../searchable-dropdown";
 import PageContainer from "../../layout/page-container";
 
 const SingleProjectSchema = z.object({
@@ -77,7 +77,7 @@ const AddProjects = () => {
 
   const fetchImages = async () => {
     try {
-      const res = await getALlImages();
+      const res = await getAllImages();
 
       const images = res.map((image) => ({
         id: image.id,
@@ -156,17 +156,17 @@ const AddProjects = () => {
   const onSubmit = (data: TAddProjectsFormValues) => {
     startTransition(async () => {
       toast.promise(bulkAddProjects(data.projects), {
-        loading: "Adding project(s)...",
+        loading: "Adding all projects...",
         success: () => {
           return {
             duration: 1500,
             onAutoClose: () => router.replace("/dashboard/projects"),
-            message: "All project(s) added successfully",
+            message: "All projects added successfully",
           };
         },
         error: (error: Error) => {
           return {
-            message: "Error while inserting project(s)",
+            message: "Error while inserting projects",
             description: error.message,
           };
         },
@@ -219,7 +219,7 @@ const AddProjects = () => {
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <FormImage
-                      className="w-full space-y-3"
+                      className="w-full"
                       name={`projects.${index}.thumbnail`}
                       control={form.control}
                       label="Thumbnail Image"
@@ -227,7 +227,7 @@ const AddProjects = () => {
                       required
                     />
                     <ImageDropdown
-                      title="image"
+                      item="image"
                       options={images}
                       onChange={(value) => {
                         setValue(`projects.${index}.thumbnail`, value, {
@@ -237,7 +237,7 @@ const AddProjects = () => {
                       className="w-full"
                     />
                     <FormInput
-                      className="w-full space-y-3"
+                      className="w-full"
                       control={form.control}
                       type="text"
                       name={`projects.${index}.title`}
@@ -259,7 +259,7 @@ const AddProjects = () => {
                       }}
                     />
                     <FormInput
-                      className="w-full space-y-3"
+                      className="w-full"
                       control={form.control}
                       type="text"
                       name={`projects.${index}.slug`}
@@ -267,7 +267,7 @@ const AddProjects = () => {
                       disabled
                     />
                     <FormTextarea
-                      className="w-full space-y-3"
+                      className="w-full"
                       control={form.control}
                       name={`projects.${index}.description`}
                       label="Project Description"
@@ -280,7 +280,7 @@ const AddProjects = () => {
                       required
                     />
                     <FormTextarea
-                      className="w-full space-y-3"
+                      className="w-full"
                       control={form.control}
                       name={`projects.${index}.overview`}
                       label="Project Overview"
@@ -292,7 +292,7 @@ const AddProjects = () => {
                       required
                     />
                     <FormCombobox
-                      className="w-full space-y-3"
+                      className="w-full"
                       control={form.control}
                       name={`projects.${index}.tech_stack`}
                       label="Tech Stack"
@@ -327,33 +327,21 @@ const AddProjects = () => {
               type="button"
               variant="outline"
               className={cn(
-                "w-full border-dashed border-muted-foreground text-muted-foreground",
+                "border-muted-foreground text-muted-foreground w-full border-dashed",
                 {
                   hidden: fields.length === 5,
                 },
               )}
               onClick={() => {
                 if (fields.length < 5) {
-                  append({
-                    thumbnail: "",
-                    title: "",
-                    slug: "",
-                    description: "",
-                    overview: "",
-                    tech_stack: [],
-                    urls: { demo: "", github: "" },
-                  });
+                  append(defaultValues.projects[0]);
                 }
               }}
             >
               <Icons.circlePlus className="size-6" />
               Add New
             </Button>
-            <Button
-              disabled={loading}
-              className="w-full text-white"
-              type="submit"
-            >
+            <Button disabled={loading} className="w-full" type="submit">
               {loading && <Spinner variant="circle" />}
               {loading ? "Submitting..." : "Submit"}
             </Button>

@@ -12,10 +12,14 @@ import { ImageIcon, XIcon, ZoomInIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Icons } from "./icons";
-import { Input } from "./ui/input";
-import { Spinner } from "./ui/spinner";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { Icons } from "../../../components/icons";
+import { Input } from "../../../components/ui/input";
+import { Spinner } from "../../../components/ui/spinner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "../../../components/ui/tooltip";
 
 interface GalleryUploadProps {
   id: string;
@@ -120,10 +124,10 @@ export default function GalleryUpload({
             <h3 className="text-lg font-semibold">
               Upload images to assets library
             </h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Drag and drop images here or click to browse
             </p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-xs">
               {getMessage(accept)} up to {formatBytes(maxSize as number)}
               {multiple && `each (max ${maxFiles as number} files)`}
             </p>
@@ -143,7 +147,7 @@ export default function GalleryUpload({
             <h4 className="text-sm font-medium">
               Images {multiple && `(${files.length}/${maxFiles})`}
             </h4>
-            <div className="text-xs text-muted-foreground">
+            <div className="text-muted-foreground text-xs">
               Total:{" "}
               {formatBytes(
                 files.reduce((acc, file) => acc + file.file.size, 0),
@@ -195,7 +199,7 @@ export default function GalleryUpload({
               )}
 
               {/* Overlay */}
-              <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:opacity-80">
+              <div className="absolute inset-0 flex-center gap-2 rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:opacity-80">
                 {/* View Button */}
                 {fileItem.preview && (
                   <Button
@@ -236,7 +240,7 @@ export default function GalleryUpload({
       {/* Image Preview Modal */}
       {selectedImage && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm transition-all duration-300"
+          className="fixed inset-0 z-50 flex-center bg-black/80 p-4 backdrop-blur-sm transition-all duration-300"
           onClick={() => setSelectedImage(null)}
         >
           <div className="relative flex size-full justify-center">

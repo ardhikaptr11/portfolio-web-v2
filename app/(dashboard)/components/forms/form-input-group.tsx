@@ -66,7 +66,7 @@ function FormInputGroup<
       {label && (
         <p className="w-fit text-sm font-medium">
           {label}
-          {required && <span className="ml-1 text-red-500">*</span>}
+          {required && <span className="ml-0.5 text-red-500">*</span>}
         </p>
       )}
 
@@ -76,10 +76,10 @@ function FormInputGroup<
             key={key}
             control={control}
             name={`${name}.${key}` as TName}
-            render={({ field, fieldState }) => (
+            render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Field>
+                  <Field className="gap-2">
                     {config.label && (
                       <FieldLabel htmlFor={`${name}.${key}`} className="text-muted-foreground">
                         {config.label}
@@ -91,6 +91,7 @@ function FormInputGroup<
                         {...config}
                         id={`${name}.${key}`}
                         disabled={disabled}
+                        
                       />
                       {config.icon && (
                         <InputGroupAddon align="inline-start">

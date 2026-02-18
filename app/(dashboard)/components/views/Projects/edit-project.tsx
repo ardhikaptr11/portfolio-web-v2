@@ -4,7 +4,8 @@ import {
   addNewTechStack,
   getAllAvailableTechStack,
 } from "@/app/(dashboard)/lib/queries";
-import { getALlImages } from "@/app/(dashboard)/lib/queries/assets/client";
+import { getAllImages } from "@/app/(dashboard)/lib/queries/assets/client";
+import { updateSelectedProject } from "@/app/(dashboard)/lib/queries/projects/actions";
 import { IProject } from "@/app/(dashboard)/types/data";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,8 @@ import { Form } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
 import { formatToSlug } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isEqual } from "lodash";
+import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -23,12 +26,8 @@ import { FormImage } from "../../forms/form-image";
 import { FormInput } from "../../forms/form-input";
 import { FormInputGroup } from "../../forms/form-input-group";
 import { FormTextarea } from "../../forms/form-textarea";
-import { Heading } from "../../heading";
-import ImageDropdown from "../../image-dropdown";
 import PageContainer from "../../layout/page-container";
-import { isEqual } from "lodash";
-import { updateSelectedProject } from "@/app/(dashboard)/lib/queries/projects/actions";
-import { useRouter } from "next/navigation";
+import ImageDropdown from "../../searchable-dropdown";
 
 const UpdateProjectFormSchema = z.object({
   asset_id: z.string().nonempty("Please select an image"),
@@ -103,7 +102,7 @@ const EditProject = ({ project }: { project: IProject }) => {
 
   const fetchImages = async () => {
     try {
-      const res = await getALlImages();
+      const res = await getAllImages();
 
       const images = res.map((image) => ({
         id: image.id,
@@ -168,7 +167,6 @@ const EditProject = ({ project }: { project: IProject }) => {
       return toast.info("No changes detected.");
     }
 
-
     startTransition(async () => {
       toast.promise(updateSelectedProject(project.slug, dataToUpdate), {
         loading: "Updating project...",
@@ -190,14 +188,13 @@ const EditProject = ({ project }: { project: IProject }) => {
   };
 
   return (
-    <PageContainer scrollable>
+    <PageContainer
+      pageHeaderAction="Project Details"
+      pageDescription="Edit specific information about the project"
+      scrollable
+    >
       <div className="flex-1 space-y-4">
         <Suspense fallback={<FormCardSkeleton />}>
-          <Heading
-            title="Project Details"
-            description="Edit specific information about the project"
-          />
-
           <Form
             form={form}
             onSubmit={form.handleSubmit(onSubmitUpdateProject)}
@@ -219,7 +216,7 @@ const EditProject = ({ project }: { project: IProject }) => {
                   required
                 />
                 <ImageDropdown
-                  title="image"
+                  item="image"
                   options={images}
                   defaultValue={project.file_name}
                   onChange={(value) => {
@@ -318,11 +315,7 @@ const EditProject = ({ project }: { project: IProject }) => {
               </CardContent>
             </Card>
 
-            <Button
-              disabled={loading}
-              className="w-full text-white"
-              type="submit"
-            >
+            <Button disabled={loading} className="w-full" type="submit">
               {loading && <Spinner variant="circle" />}
               {loading ? "Updating..." : "Update"}
             </Button>

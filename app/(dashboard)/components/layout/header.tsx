@@ -2,7 +2,8 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Breadcrumbs } from "../breadcrumbs";
 import SearchInput from "../search-input";
-import { ModeToggle } from "./ThemeToggle/theme-toggle";
+import { ModeToggle } from "../themes/theme-toggle";
+import { ThemeSelector } from "../themes/theme-selector";
 
 export default function Header() {
   return (
@@ -17,6 +18,7 @@ export default function Header() {
         <div className="hidden md:flex">
           <SearchInput />
         </div>
+        <ThemeSelector />
         <ModeToggle />
       </div>
     </header>

@@ -20,7 +20,6 @@ interface DataTablePaginationProps<TData> extends React.ComponentProps<"div"> {
 
 export function DataTablePagination<TData>({
   table,
-  // pageSizeOptions = [10, 20, 30, 40, 50],
   pageSizeOptions = [10, 15, 20, 25, 30],
   className,
   ...props
@@ -33,7 +32,7 @@ export function DataTablePagination<TData>({
       )}
       {...props}
     >
-      <div className="flex-1 text-sm whitespace-nowrap text-muted-foreground">
+      <div className="text-muted-foreground flex-1 text-sm whitespace-nowrap">
         {table.getFilteredSelectedRowModel().rows.length > 0 ? (
           <Fragment>
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
@@ -57,10 +56,7 @@ export function DataTablePagination<TData>({
             <SelectTrigger className="h-8 w-18 data-size:h-8">
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
-            <SelectContent
-              position="popper"
-              // className="max-h-none w-(--radix-select-trigger-width)"
-            >
+            <SelectContent position="popper">
               {pageSizeOptions.map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
@@ -69,7 +65,7 @@ export function DataTablePagination<TData>({
             </SelectContent>
           </Select>
         </div>
-        <div className="flex items-center justify-center text-sm font-medium">
+        <div className="flex-center text-sm font-medium">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </div>

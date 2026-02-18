@@ -90,7 +90,9 @@ const batchUploadAssets = async (files: File[]) => {
 }
 
 const downloadAsset = async ({ id, file_name }: { id?: IAsset["id"], file_name?: IAsset["file_name"] }) => {
-  const { data: asset, error } = id ? await supabase.from("assets").select("file_name, file_path").eq("id", id).single() : await supabase.from("assets").select("file_name, file_path").eq("file_name", file_name).single()
+  const { data: asset, error } = id
+    ? await supabase.from("assets").select("file_name, file_path").eq("id", id).single()
+    : await supabase.from("assets").select("file_name, file_path").eq("file_name", file_name).single()
 
   if (!asset) throw error;
 
@@ -134,7 +136,7 @@ const getTotalAssets = async () => {
   };
 };
 
-const getALlImages = async () => {
+const getAllImages = async () => {
   const { data: images, error } = await supabase
     .from("assets")
     .select("id, file_name, url")
@@ -158,4 +160,4 @@ const updateAssetOrder = async (assetIds: string[]) => {
   await Promise.all(updates);
 };
 
-export { batchUploadAssets, downloadAsset, uploadSingleImage, getTotalAssets, getALlImages, updateAssetOrder };
+export { batchUploadAssets, downloadAsset, uploadSingleImage, getTotalAssets, getAllImages, updateAssetOrder };

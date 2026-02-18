@@ -54,6 +54,7 @@ function FormSelect<
             </FormLabel>
           )}
           <Select
+            name={field.name}
             onValueChange={(val) => {
               if (val === "true") field.onChange(true);
               else if (val === "false") field.onChange(false);
@@ -62,8 +63,8 @@ function FormSelect<
             value={String(field.value)}
             disabled={disabled}
           >
-            <FormControl className="w-full">
-              <SelectTrigger id={field.name}>
+            <FormControl>
+              <SelectTrigger id={field.name} className="cursor-pointer w-full mb-0">
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
@@ -88,4 +89,3 @@ function FormSelect<
 }
 
 export { FormSelect };
-

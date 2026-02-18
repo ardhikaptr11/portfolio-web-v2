@@ -72,7 +72,7 @@ const UploadFileFormSchema = z.object({
           "Unsupported file type",
         ),
     )
-    .min(2, "Please select at least 2 files"),
+    .min(1, "Please select at least 2 files"),
 });
 
 type TUploadFile = z.infer<typeof UploadFileFormSchema>;

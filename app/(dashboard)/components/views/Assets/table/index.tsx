@@ -66,7 +66,6 @@ export const AssetsTable = <TData extends { id: string }, TValue>({
     columns,
     pageCount: pageCount,
     shallow: false,
-    debounceMs: 1000,
     initialState: {
       columnVisibility: {
         updated_at: false,
@@ -100,7 +99,6 @@ export const AssetsTable = <TData extends { id: string }, TValue>({
       });
     });
   };
-
 
   return (
     <Fragment>

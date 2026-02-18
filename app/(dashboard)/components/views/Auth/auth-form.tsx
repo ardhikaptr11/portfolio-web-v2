@@ -79,8 +79,8 @@ const AuthForm = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <Card className="w-full max-w-sm border-gray-300 p-6">
-        <CardHeader className="flex flex-col items-center text-center">
+      <Card className="w-full max-w-sm p-6">
+        <CardHeader className="flex flex-col items-center text-center px-0">
           <h2 className="font-semibold text-blue-950 dark:text-white">
             Login to Dashboard
           </h2>
@@ -88,14 +88,13 @@ const AuthForm = () => {
             Provide your secure credentials to gain access
           </p>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-0">
           <Form
             form={form}
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
             <FormInput
-              // className="text-blue-950 dark:text-white"
               control={form.control}
               name="email"
               label="Email"
@@ -104,7 +103,6 @@ const AuthForm = () => {
               required
             />
             <FormInputPassword
-              // className="text-blue-950 dark:text-white"
               control={form.control}
               type={showPassword ? "text" : "password"}
               name="password"
@@ -116,7 +114,7 @@ const AuthForm = () => {
             />
             <Button
               disabled={loading}
-              className={cn("mt-2 ml-auto w-full text-white", {
+              className={cn("mt-2 ml-auto w-full", {
                 "flex gap-1": loading,
               })}
               type="submit"

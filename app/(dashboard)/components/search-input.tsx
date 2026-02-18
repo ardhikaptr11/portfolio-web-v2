@@ -10,7 +10,7 @@ export default function SearchInput() {
     <div className="w-full space-y-2">
       <Button
         variant="outline"
-        className="relative h-9 w-full justify-start rounded-xl bg-background text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-64"
+        className="relative h-9 w-full justify-start rounded-md bg-background text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-64"
         onClick={query.toggle}
       >
         <IconSearch className="mr-2 size-4" />

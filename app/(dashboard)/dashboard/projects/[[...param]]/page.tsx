@@ -4,9 +4,10 @@ import ManageProjects from "@/app/(dashboard)/components/views/Projects/manage-p
 import { getSelectedProject } from "@/app/(dashboard)/lib/queries/projects/actions";
 import { searchParamsCache } from "@/app/(dashboard)/lib/search-params";
 import { notFound } from "next/navigation";
+import { SearchParams } from "nuqs";
 
 type ProjectsPageProps = {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<SearchParams>;
   params: Promise<{ param: string }>;
 };
 
@@ -17,49 +18,37 @@ export const generateMetadata = async ({
   const { slug } = await searchParams;
   const { param } = await params;
 
-  const action = param?.[0];
+  const pathname = param?.[0];
 
-  if (action === "new") return { title: "New Projects | Dashboard" };
+  if (pathname === "new") return { title: "New Projects | Dashboard" };
 
-  if (!slug) return { title: "Manage Projects | Dashboard" };
+  if (!pathname && !slug) return { title: "Manage Projects | Dashboard" };
 
   const project = await getSelectedProject(`${slug}`);
 
-  return {
-    title: `${project?.title} | Dashboard`,
-    description: `Manage specific information about ${project?.title}`,
-  };
+  return { title: `${project?.title} | Dashboard` };
 };
 
 const ProjectsPage = async ({ searchParams, params }: ProjectsPageProps) => {
-  const resolvedSearchParams = await searchParams;
+  const { slug, ...resolvedSearchParams } = await searchParams;
   const { param } = await params;
 
-  // const { action, ...params } = await searchParams;
+  const pathname = param?.[0];
 
   searchParamsCache.parse(resolvedSearchParams);
 
-  const action = param?.[0];
-  const queryParams = Object.keys(resolvedSearchParams)[0];
+  // e.g /dashboard/projects/new -> matched
+  if (pathname && pathname === "new") return <AddProjects />;
 
-  // e.g dashboard/projects/new -> matched
-  if (action && action === "new") return <AddProjects />;
+  // e.g /dashboard/projects/delete -> matched
+  // e.g /dashboard/projects/edit?description=1 -> matched
+  // e.g /dashboard/projects/edit?id=1 -> matched
+  if (pathname && !["edit", "new"].includes(pathname)) notFound();
 
-  // e.g dashboard/projects/delete -> matched
-  // e.g dashboard/projects/edit?description=1 -> matched
-  // e.g dashboard/projects/edit?id=1 -> matched
-  if (
-    action &&
-    !["edit", "new"].includes(action)
-  )
-    notFound();
+  // e.g /dashboard/projects -> matched
+  if (!pathname) return <ManageProjects />;
 
-  // e.g dashboard/projects -> matched
-  if (!action) return <ManageProjects />;
-
-  const { slug } = resolvedSearchParams;
-
-  // e.g dashboard/projects/edit?id=1&slug=test -> matched
+  // e.g /dashboard/projects/edit?slug=test -> matched
   const project = await getSelectedProject(`${slug}`);
 
   return <EditProject project={project} />;

@@ -6,6 +6,7 @@ import { BUCKET_NAME } from "@/app/(dashboard)/constants/items.constants";
 import { IProject } from "@/app/(dashboard)/types/data";
 import { capitalize } from "@/lib/helpers";
 import { createClient } from "@/lib/supabase/server";
+import { ISortOrder } from "../../search-params";
 
 const TABLE_NAME = "projects";
 
@@ -34,7 +35,7 @@ const getFilteredProjects = async ({
   pageLimit?: number;
   category?: string;
   search?: string;
-  sort?: { id: string; desc: boolean; }[];
+  sort?: ISortOrder[];
 }) => {
   const supabase = await createClient();
 
@@ -135,7 +136,10 @@ const bulkAddProjects = async (payload: TAddProjectsFormValues["projects"]) => {
 const updateSelectedProject = async (slug: IProject["slug"], payload: Partial<TUpdateProjectFormValues>) => {
   const supabase = await createClient();
 
-  const { error } = await supabase.from(TABLE_NAME).update(payload).eq("slug", slug);
+  const updated_at = Date.now().toLocaleString();
+  const modifiedPayload = { ...payload, updated_at };
+
+  const { error } = await supabase.from(TABLE_NAME).update(modifiedPayload).eq("slug", slug);
 
   if (error) throw error;
 };
@@ -156,4 +160,5 @@ const deleteSelectedProjects = async (ids: IProject["id"][]) => {
   if (error) throw error;
 };
 
-export { getFilteredProjects, getSelectedProject, bulkAddProjects, updateSelectedProject, deleteSelectedProject, deleteSelectedProjects };
+export { bulkAddProjects, deleteSelectedProject, deleteSelectedProjects, getFilteredProjects, getSelectedProject, updateSelectedProject };
+

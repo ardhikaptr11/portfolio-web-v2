@@ -1,6 +1,5 @@
 "use client";
 
-import { FieldPath, FieldValues } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -10,8 +9,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useTranslations } from "next-intl";
+import { Fragment } from "react";
+import { FieldPath, FieldValues } from "react-hook-form";
 import { BaseFormFieldProps } from "../../types/base-form";
-import { cn } from "@/lib/utils";
+
+const LocalizedError = ({ message }: { message: string; }) => {
+  const t = useTranslations("Contact.validation");
+
+  return <Fragment>{t(message)}</Fragment>;
+};
 
 interface FormInputProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -24,6 +31,8 @@ interface FormInputProps<
   max?: string | number;
   autoComplete?: "off" | "email" | "current-password";
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  inputClassName?: string;
+  enableLocalization?: boolean;
 }
 
 function FormInput<
@@ -44,12 +53,14 @@ function FormInput<
   disabled,
   className,
   onChange,
+  inputClassName,
+  enableLocalization = false,
 }: FormInputProps<TFieldValues, TName>) {
   return (
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem className={className}>
           {label && (
             <FormLabel htmlFor={field.name} className="w-fit! cursor-pointer">
@@ -77,10 +88,19 @@ function FormInput<
                   field.onChange(e.target.value);
                 }
               }}
+              value={field.value === " " ? "" : field.value}
+              className={inputClassName}
             />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage />
+          <FormMessage>
+            {fieldState.error?.message &&
+              (enableLocalization ? (
+                <LocalizedError message={fieldState.error.message} />
+              ) : (
+                fieldState.error.message
+              ))}
+          </FormMessage>
         </FormItem>
       )}
     />
@@ -88,3 +108,4 @@ function FormInput<
 }
 
 export { FormInput };
+

@@ -119,7 +119,7 @@ export const columns: ColumnDef<IProject>[] = [
       const urls = cell.getValue<IProject["urls"]>();
 
       return (
-        <div className="flex flex-col gap-2 w-full max-w-82.5 mx-auto">
+        <div className="mx-auto flex w-full max-w-82.5 flex-col gap-2">
           {Object.entries(urls).map(([key, value]) => (
             <Link
               href={value}

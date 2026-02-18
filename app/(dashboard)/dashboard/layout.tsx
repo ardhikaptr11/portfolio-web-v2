@@ -1,12 +1,11 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import KBar from "../components/kbar";
-import AppSidebar from "../components/layout/app-sidebar";
-import Header from "../components/layout/header";
 import readUserSession from "@/lib/read-session";
-import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
+import KBar from "../components/kbar";
+import AppSidebar from "../components/layout/app-sidebar";
+import Header from "../components/layout/header";
 import { SIDEBAR_ITEMS } from "../constants/items.constants";
 import { getAccountInfo } from "../lib/queries/user/actions";
 

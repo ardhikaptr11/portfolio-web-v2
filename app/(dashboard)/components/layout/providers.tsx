@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Fragment } from "react";
-import { ActiveThemeProvider } from "../active-theme";
+import { ActiveThemeProvider } from "../themes/active-theme";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 export default function Providers({

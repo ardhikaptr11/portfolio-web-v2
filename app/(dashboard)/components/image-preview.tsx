@@ -17,8 +17,8 @@ const ImagePreview = ({ previewUrl }: { previewUrl: string }) => {
         "flex w-full flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed p-4 text-center sm:aspect-video md:p-0"
       }
     >
-      <div className="rounded-full bg-chart-2/10 p-2 md:p-4">
-        <Icons.photo className="size-8 text-chart-2 max-sm:size-6" />
+      <div className="rounded-full bg-primary/10 p-2 md:p-4">
+        <Icons.photo className="size-8 max-sm:size-6" />
       </div>
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Thumbnail Image</h3>

@@ -17,9 +17,9 @@ import { CloudUpload, ImageIcon, RefreshCwIcon, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { getMessage } from "./gallery-upload";
-import { Icons } from "./icons";
-import { Input } from "./ui/input";
-import { Spinner } from "./ui/spinner";
+import { Icons } from "../../../components/icons";
+import { Input } from "../../../components/ui/input";
+import { Spinner } from "../../../components/ui/spinner";
 
 interface CardUploadProps {
   id: string;
@@ -194,10 +194,10 @@ const CardUpload = ({
             <h3 className="text-lg font-semibold">
               Upload files to assets library
             </h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Drag and drop files here or click to browse
             </p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-xs">
               {getMessage(accept)} up to {formatBytes(maxSize as number)}
               {multiple && `each (max ${maxFiles as number} files)`}
             </p>
@@ -218,7 +218,7 @@ const CardUpload = ({
               <h4 className="text-sm font-medium">
                 Images {multiple && `(${uploadFiles.length}/${maxFiles})`}
               </h4>
-              <div className="text-xs text-muted-foreground">
+              <div className="text-muted-foreground text-xs">
                 Total:{" "}
                 {formatBytes(
                   uploadFiles.reduce((acc, file) => acc + file.file.size, 0),
@@ -257,10 +257,10 @@ const CardUpload = ({
                 </Button>
 
                 {/* Wrapper */}
-                <div className="relative overflow-hidden rounded-lg border bg-card transition-colors">
+                <div className="bg-card relative overflow-hidden rounded-lg border transition-colors">
                   {/* File icon area */}
-                  <div className="relative aspect-square border-b border-border bg-muted">
-                    <div className="flex h-full items-center justify-center text-muted-foreground/80">
+                  <div className="border-border bg-muted relative aspect-square border-b">
+                    <div className="text-muted-foreground/80 flex h-full items-center justify-center">
                       {fileItem.status === "uploading" ? (
                         <div className="relative">
                           <svg
@@ -285,11 +285,11 @@ const CardUpload = ({
                               strokeWidth="3"
                               strokeDasharray={`${2 * Math.PI * 20}`}
                               strokeDashoffset={`${2 * Math.PI * 20 * (1 - fileItem.progress / 100)}`}
-                              className="text-chart-2 transition-all duration-300"
+                              className="transition-all duration-300"
                               strokeLinecap="round"
                             />
                           </svg>
-                          <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="absolute inset-0 flex-center">
                             <Icons.file className="size-8" />
                           </div>
                         </div>
@@ -308,7 +308,7 @@ const CardUpload = ({
                         {fileItem.file.name}
                       </p>
                       <div className="relative flex items-center justify-between gap-2">
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-muted-foreground text-xs">
                           {formatBytes(fileItem.file.size)}
                         </span>
 
@@ -319,7 +319,7 @@ const CardUpload = ({
                                 onClick={() => retryUpload(fileItem.id)}
                                 variant="ghost"
                                 size="icon"
-                                className="absolute end-0 -top-1.25 size-6 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                className="text-destructive hover:bg-destructive/10 hover:text-destructive absolute end-0 -top-1.25 size-6"
                               >
                                 <RefreshCwIcon className="size-3 opacity-100" />
                               </Button>

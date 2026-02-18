@@ -7,10 +7,10 @@ type TProjectsListing = {};
 
 export const ProjectsListing = async ({}: TProjectsListing) => {
   // Showcasing the use of search params cache in nested RSCs
-  const page = searchParamsCache.get("page") as number;
-  const search = searchParamsCache.get("search") as string;
-  const pageLimit = searchParamsCache.get("perPage") as number;
-  const sort = JSON.parse(searchParamsCache.get("sort") as string);
+  const page = searchParamsCache.get("page");
+  const search = searchParamsCache.get("search");
+  const pageLimit = searchParamsCache.get("perPage");
+  const sort = searchParamsCache.get("sort");
 
   const { projects, total } = await getFilteredProjects({
     pageLimit,

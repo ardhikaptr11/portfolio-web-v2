@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { BUCKET_NAME } from "../../../constants/items.constants";
 import { IAsset, IAssetPreview } from "../../../types/data";
+import { ISortOrder } from "../../search-params";
 
 const getFilteredAssets = async ({
   page = 1,
@@ -15,7 +16,7 @@ const getFilteredAssets = async ({
   pageLimit?: number;
   category?: string;
   search?: string;
-  sort?: { id: string; desc: boolean; }[];
+  sort?: ISortOrder[];
 }) => {
   const supabase = await createClient();
 

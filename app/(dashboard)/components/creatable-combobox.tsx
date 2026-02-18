@@ -170,6 +170,8 @@ const ComboboxCreatable = ({
                   e.preventDefault();
                   e.stopPropagation();
 
+                  if (searchTerm) setSearchTerm("");
+
                   if (selectedValues?.includes(item)) {
                     const updated = selectedValues.filter(
                       (value) => value !== item,
