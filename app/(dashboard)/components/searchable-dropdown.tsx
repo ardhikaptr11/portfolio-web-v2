@@ -16,23 +16,24 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 
-const ImageDropdown = ({
-  title,
+const SearchableDropdown = ({
+  item,
   options,
   defaultValue,
   onChange,
+  className,
 }: {
-  title: string;
+  item: string;
   options: { id: string; label: string; value: string }[];
   defaultValue?: string;
   onChange: (value: string) => void;
   className?: string;
 }) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(defaultValue ?? "");
+  const [value, setValue] = useState(defaultValue);
 
   return (
-    <div className="flex w-full justify-center">
+    <div className={cn("flex justify-center", className)}>
       <Popover onOpenChange={setOpen} open={open}>
         <PopoverTrigger asChild>
           <Button
@@ -41,15 +42,15 @@ const ImageDropdown = ({
             role="combobox"
             variant="outline"
           >
-            {value || `Select ${title}...`}
+            {value || `Select ${item}...`}
             <ChevronsUpDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
           <Command>
-            <CommandInput className="h-9" placeholder={`Search ${title}...`} />
+            <CommandInput className="h-9" placeholder={`Search ${item}...`} />
             <CommandList>
-              <CommandEmpty>{`No ${title} found.`}</CommandEmpty>
+              <CommandEmpty>{`No ${item}s found.`}</CommandEmpty>
               <CommandGroup>
                 {options.map((option) => (
                   <CommandItem
@@ -67,7 +68,7 @@ const ImageDropdown = ({
                     <Check
                       className={cn(
                         "ml-auto",
-                        value === option.value ? "opacity-100" : "opacity-0",
+                        value === option.label ? "opacity-100" : "opacity-0",
                       )}
                     />
                   </CommandItem>
@@ -81,4 +82,4 @@ const ImageDropdown = ({
   );
 };
 
-export default ImageDropdown;
+export default SearchableDropdown;
