@@ -1,0 +1,155 @@
+{
+  "Common": {
+    "NavLink": {
+      "about": "Tentang Saya",
+      "projects": "Proyek",
+      "services": "Layanan",
+      "experiences": "Pengalaman",
+      "certifications": "Sertifikasi",
+      "contact": "Kontak",
+      "btn-contact": "Hubungi Saya",
+      "btn-contact-scrolled": "Ayo Bicara"
+    },
+    "Footer": {
+      "copyright": "Seluruh hak cipta dilindungi",
+      "decorators": {
+        "text1": "Dirancang sepenuh hati dengan",
+        "text2": "sebagai karya digital"
+      }
+    }
+  },
+  "Hero": {
+    "dive-deeper": "Telusuri Lebih Dalam",
+    "read-resume": "Baca Resume"
+  },
+  "Journey": {
+    "title": "Cerita Pertumbuhanku",
+    "subtitle": "Caraku Bertumbuh dan Berkarya",
+    "steps": {
+      "step1": {
+        "time": "Awal 2022",
+        "period": "Kontak Pertama",
+        "title": "Penemuan Logika",
+        "description": "Memulai perjalanan coding saya dengan mengeksplorasi Python, di mana saya jatuh cinta dengan seni pemrograman melalui penerjemahan ide sederhana menjadi kode fungsional berbasis logika.",
+        "status": "Selesai"
+      },
+      "step2": {
+        "time": "Pertengahan 2023",
+        "period": "Masa Transisi",
+        "title": "Pola Pikir Teknik",
+        "description": "Secara formal bertransisi dari latar belakang teknik, membawa ketelitian analitis dan pendekatan sistematis ke dalam pengembangan perangkat lunak modern.",
+        "status": "Selesai"
+      },
+      "step3": {
+        "time": "Akhir 2024",
+        "period": "Fase 1: Fondasi",
+        "title": "Dasar-Dasar Fullstack",
+        "description": "Saya telah meletakkan dasar-dasar penting dengan mempelajari cara merancang antarmuka yang responsif dan mengelola logika inti yang menghidupkan aplikasi web dari dalam ke luar.",
+        "status": "Selesai"
+      },
+      "step4": {
+        "time": "Sekarang",
+        "period": "Fase 2: Ekosistem",
+        "title": "Database & Keamanan",
+        "description": "Saat ini saya fokus membangun fondasi data yang kuat—memastikan semua tersimpan dengan aman sehingga inti sistem tetap terorganisir dan terlindungi.",
+        "status": "Aktif"
+      },
+      "step5": {
+        "period": "Fase 3: Deployment",
+        "title": "Produksi & DevOps",
+        "description": "Rencana ekspansi ke bidang DevOps, berfokus pada otomatisasi alur CI/CD, manajemen lingkungan kerja, dan pemantauan performa yang proaktif.",
+        "status": "Direncanakan"
+      },
+      "step6": {
+        "period": "Fase 4: Skalabilitas",
+        "title": "Arsitektur Sistem",
+        "description": "Tujuan masa depan melibatkan penguasaan desain sistem tingkat tinggi, menggunakan pola arsitektur teruji untuk membangun aplikasi kelas perusahaan yang skalabel dan mudah dipelihara.",
+        "status": "Direncanakan"
+      }
+    }
+  },
+  "Projects": {
+    "title": "Karya Tanganku",
+    "subtitle": "Etalase Proyek"
+  },
+  "Services": {
+    "title": "Layanan Utama",
+    "subtitle": "Apa Yang Bisa Saya Tawarkan",
+    "services": {
+      "fe": {
+        "title": "Pengembangan Frontend",
+        "description": "Perajutan antarmuka web yang performan dan aksesibel. Mengutamakan pembangunan tata letak responsif dengan arsitektur bersih serta interaksi pengguna tanpa hambatan."
+      },
+      "be": {
+        "title": "Pengembangan Backend",
+        "description": "Pembangunan aplikasi sisi server yang skalabel dan rancangan basis data yang efisien. Berfokus pada API RESTful yang aman untuk memastikan orkestrasi data yang selaras."
+      },
+      "ml": {
+        "title": "Pengembangan Machine Learning",
+        "description": "Pengembangan solusi berbasis data melalui implementasi model dan eksperimen. Menitikberatkan transformasi data mentah menjadi wawasan bermakna melalui jaringan saraf tiruan."
+      }
+    }
+  },
+  "Experiences": {
+    "title": "Terminal Pengalaman",
+    "subtitle": "Perjalanan Teknis",
+    "terminal": {
+      "promptsHeader": {
+        "line1": "Selamat datang di",
+        "line2": "Jelajahi seluruh pengalaman saya melalui terminal interaktif ini.",
+        "line3": "Ketik 'ls' untuk melihat daftar entri atau 'help' untuk bantuan perintah."
+      },
+      "helpLines": {
+        "help1": "Menampilkan semua pencapaian pengalaman yang tersedia.",
+        "help2": "Menampilkan urutan lengkap perjalanan saya.",
+        "help3": "Buka dan baca detail pengalaman spesifik (Peka Besar/Kecil Karakter).",
+        "help4": "Bersihkan tampilan terminal."
+      },
+      "errorLines": {
+        "error1": "Pilih sebuah entri untuk melihat detailnya",
+        "error2": "Entri ''{arg}'' tidak ditemukan. Pastikan nama menyertakan ekstensi .tsx",
+        "error3": "Tidak ada informasi tersedia untuk ''{arg}'' (Periksa Besar/Kecil Karakter)",
+        "error4": "''{mainCommand}'' tidak dikenali sebagai perintah. Ketik 'help' untuk daftar perintah."
+      }
+    }
+  },
+  "Certifications": {
+    "title": "Deretan Sertifikasi",
+    "subtitle": "Dinding Pembuktian"
+  },
+  "Contact": {
+    "title": "Kontak",
+    "subtitle": "Tetap Terhubung",
+    "message": "Punya proyek yang ingin diwujudkan? Mari kita manfaatkan momentum ini dan ubah ide Anda menjadi kenyataan digital.",
+    "cardLabels": {
+      "label1": "Email Langsung",
+      "label2": "Mari Berdiskusi",
+      "label3": "Lokasi"
+    },
+    "notifications": {
+      "loading": "Mengirim transmisi...",
+      "success": {
+        "title": "Transmisi Terkirim",
+        "message": "Pesan Anda telah berhasil dikirim."
+      },
+      "warning": {
+        "title": "Pemeriksaan Keamanan",
+        "message": "Harap verifikasi bahwa Anda bukan robot."
+      },
+      "error": {
+        "title": "Transmisi Gagal",
+        "message": "Gagal mengirimkan pesan Anda."
+      }
+    },
+    "validation": {
+      "name_min": "Nama minimal harus 2 karakter.",
+      "name_required": "Harap masukkan nama Anda.",
+      "email_invalid": "Harap masukkan alamat email yang valid.",
+      "email_required": "Harap masukkan email Anda.",
+      "subject_min": "Subjek minimal harus 5 karakter.",
+      "subject_required": "Harap tentukan subjek pesan.",
+      "message_min": "Pesan minimal harus 10 karakter.",
+      "message_required": "Pesan tidak boleh kosong."
+    }
+  }
+}

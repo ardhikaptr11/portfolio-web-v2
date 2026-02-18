@@ -1,0 +1,155 @@
+{
+  "Common": {
+    "NavLink": {
+      "about": "About",
+      "projects": "Projects",
+      "services": "Services",
+      "experiences": "Experiences",
+      "certifications": "Certifications",
+      "contact": "Contact",
+      "btn-contact": "Get in Touch",
+      "btn-contact-scrolled": "Let's Talk"
+    },
+    "Footer": {
+      "copyright": "All rights reserved",
+      "decorators": {
+        "text1": "Finely Crafted with",
+        "text2": "for digital asset"
+      }
+    }
+  },
+  "Hero": {
+    "dive-deeper": "Dive Deeper",
+    "read-resume": "Read Resume"
+  },
+  "Journey": {
+    "title": "My Growth Story",
+    "subtitle": "How I Grow and Build",
+    "steps": {
+      "step1" : {
+        "time": "Early 2022",
+        "period": "First Contact",
+        "title": "Logic Discovery",
+        "description": "Started my coding journey by exploring Python, where I fell in love with the art of programming by translating simple ideas into functional code, logic-driven code.",
+        "status": "Completed"
+      },
+      "step2" : {
+        "time": "Mid 2023",
+        "period": "The Transition",
+        "title": "Engineering Mindset",
+        "description": "Formally transitioning from a technical engineering background, bringing analytical rigor and a systematic approach to modern software development.",
+        "status": "Completed"
+      },
+      "step3" : {
+        "time": "Late 2024",
+        "period": "Phase 1: Foundation",
+        "title": "Fullstack Fundamentals",
+        "description": "I've laid down the essential groundwork by learning how to craft smooth, responsive interfaces and managing the core logic that brings a web application to life from the inside out.",
+        "status": "Completed"
+      },
+      "step4" : {
+        "time": "Present",
+        "period": "Phase 2: Ecosystem",
+        "title": "Database & Security",
+        "description": "I'm currently focusing on building a solid foundation for data—making sure everything is tucked away safely so the core of the system stays organized and secure..",
+        "status": "Active"
+      },
+      "step5" : {
+        "period": "Phase 3: Deployment",
+        "title": "Production & DevOps",
+        "description": "Planned expansion into DevOps, focusing on the automation of CI/CD pipelines, environment management, and proactive performance monitoring.",
+        "status": "Planned"
+      },
+      "step6" : {
+        "period": "Phase 4: Scalability",
+        "title": "System Architecture",
+        "description": "Future objective involves mastering high-level system design, utilizing proven architectural patterns to build scalable and maintainable enterprise-grade applications.",
+        "status": "Planned"
+      }
+    }
+  },
+  "Projects": {
+    "title": "My Crafted Works",
+    "subtitle": "Project Showcase"
+  },
+  "Services": {
+    "title": "Core Services",
+    "subtitle": "What Can I Offer",
+    "services": {
+      "fe": {
+        "title": "Frontend Development",
+        "description": "Crafting performant and accessible web interfaces. Prioritizing responsive layouts built with clean architecture and seamless user interactions."
+      },
+      "be": {
+        "title": "Backend Development",
+        "description": "Building scalable server-side applications and efficient database designs. Focusing on secure RESTful APIs to ensure smooth data orchestration."
+      },
+      "ml": {
+        "title": "Machine Learning Development",
+        "description": "Developing data-driven solutions through model implementation and experimentation. Aiming to transform raw data into actionable insights through neural networks."
+      }
+    }
+  },
+  "Experiences": {
+    "title":"Experience Terminal",
+    "subtitle":"Technical Journey",
+    "terminal": {
+      "promptsHeader": {
+        "line1": "Welcome to",
+        "line2": "Explore all of my experiences through this interactive terminal.",
+        "line3": "Type 'ls' to list entries or 'help' to see all available commands."
+      },
+      "helpLines": {
+        "help1": "List all available experience milestones.",
+        "help2": "Display the complete journey sequence.",
+        "help3": "Open and read a specific experience detail (Case-Sensitive).",
+        "help4": "Reset the terminal view."
+      },
+      "errorLines": {
+        "error1": "Select an entry to view its details",
+        "error2": "Entry ''{arg}'' not found. Please ensure the name has extension .tsx",
+        "error3": "No information available for ''{arg}'' (Check Case-Sensitivity)",
+        "error4": "''{mainCommand}'' does not match any known operation. Type 'help' for available commands."
+      }
+    }
+  },
+  "Certifications": {
+    "title": "Certification List",
+    "subtitle": "Wall of Evidence"
+  },
+  "Contact": {
+    "title": "Contact",
+    "subtitle": "Stay Connected",
+    "message": "Have a project in mind? Let's catch the wave and turn your idea into a digital reality.",
+    "cardLabels": {
+      "label1": "Direct Email",
+      "label2": "Discuss with Me",
+      "label3": "Location"
+    },
+    "notifications": {
+      "loading": "Sending transmission",
+      "success": {
+        "title": "Transmission Delivered",
+        "message": "Your message has been sent successfully."
+      },
+      "warning": {
+        "title": "Security Check",
+        "message": "Please verify that you are not a robot."
+      },
+      "error": {
+        "title": "Transmission Failed",
+        "message": "Failed to deliver your message."
+      }
+    },
+    "validation": {
+      "name_min": "Name must be at least 2 characters long.",
+      "name_required": "Please tell me your name.",
+      "email_invalid": "Please enter a valid email address.",
+      "email_required": "Please enter your email.",
+      "subject_min": "Subject must be at least 5 characters long.",
+      "subject_required": "Please specify a subject.",
+      "message_min": "Message must be at least 10 characters long.",
+      "message_required": "Message cannot be empty."
+    }
+  }
+}

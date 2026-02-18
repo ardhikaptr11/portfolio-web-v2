@@ -1,6 +1,6 @@
 "use client";
 
-import GlitchText from "@/components/GlitchText";
+import GlitchText from "@/app/(root)/components/glitch-text";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import "./(root)/globals.css";
@@ -91,6 +91,6 @@ const NotFound = () => {
       </div>
     </main>
   );
-}
+};
 
 export default NotFound;

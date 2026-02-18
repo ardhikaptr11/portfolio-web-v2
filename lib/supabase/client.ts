@@ -1,8 +1,9 @@
+import { environments } from '@/app/environments';
 import { createBrowserClient } from '@supabase/ssr'
 
 export function createClient() {
   return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+    environments.SUPABASE_URL!,
+    environments.SUPABASE_PUBLISHABLE_KEY!
   )
 }
