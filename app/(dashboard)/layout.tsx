@@ -8,7 +8,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ReactNode } from "react";
 import IdleTimer from "./components/idle-timer";
 import Providers from "./components/layout/providers";
-import ThemeProvider from "./components/themes/theme-provider";
+import ThemeProvider from "../theme-provider";
 import { DEFAULT_THEME } from "./components/themes/theme.config";
 import "./globals.css";
 import "./theme.css";
