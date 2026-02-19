@@ -1,19 +1,22 @@
 "use client";
 
-import GlitchText from "@/app/(root)/components/glitch-text";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import "./(root)/globals.css";
-import { Button } from "@/components/ui/button";
+import { Fragment, useEffect } from "react";
+import GlitchText from "../components/glitch-text";
+import "../globals.css";
 
 const NotFound = () => {
-  const MotionButton = motion(Button);
+  const MotionButton = motion.create(Button);
   const router = useRouter();
 
-  return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 font-mono text-teal-400">
-      <title>404 | Ardhika Putra</title>
+  useEffect(() => {
+    document.title = "404 | Ardhika Putra";
+  }, []);
 
+  return (
+    <Fragment>
       <div className="pointer-events-none absolute inset-0 z-50 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.01),rgba(0,0,255,0.03))] bg-size-[100%_4px,3px_100%]" />
 
       <div
@@ -32,12 +35,12 @@ const NotFound = () => {
       />
 
       <div className="relative z-10 flex h-screen w-full flex-col items-center justify-center px-4">
-        <div className="relative flex-col-center text-center">
+        <div className="relative flex flex-col items-center justify-center text-center">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="flex-col-center"
+            className="flex flex-col items-center justify-center"
           >
             <GlitchText speed={1} enableShadows enableOnHover={false}>
               404
@@ -53,7 +56,7 @@ const NotFound = () => {
                 some are just finding a path the sea has yet to reveal."
               </p>
 
-              <div className="flex-col-center gap-2">
+              <div className="flex flex-col items-center justify-center gap-2">
                 <div className="bg-ocean-teal h-4 w-px opacity-20" />
                 <p className="text-ocean-teal text-[8px] tracking-[0.5em] uppercase italic opacity-60">
                   J.R.R Tolkien
@@ -63,11 +66,11 @@ const NotFound = () => {
           </motion.div>
         </div>
 
-        <div className="mt-8 flex-col-center">
+        <div className="mt-8 flex flex-col items-center justify-center">
           <MotionButton
             onClick={() => router.replace("/")}
             whileTap={{ scale: 0.95 }}
-            className="hover:border-ocean-teal/80 hover:bg-ocean-teal border-ocean-teal/10 bg-ocean-deep/10 shadow-ocean-teal relative h-auto cursor-pointer rounded-none border px-16 py-4 font-mono text-sm tracking-widest uppercase transition-all duration-300 hover:text-white md:text-xs"
+            className="hover:border-ocean-teal/80 hover:bg-ocean-teal border-ocean-teal/10 bg-ocean-deep/10 text-ocean-teal/80 h-auto cursor-pointer rounded-none border px-16 py-4 font-mono text-sm tracking-widest uppercase transition-all duration-300 hover:text-white md:text-xs"
           >
             Back to Home
           </MotionButton>
@@ -89,7 +92,7 @@ const NotFound = () => {
           </div>
         </div>
       </div>
-    </main>
+    </Fragment>
   );
 };
 
