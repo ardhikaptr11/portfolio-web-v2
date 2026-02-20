@@ -17,6 +17,14 @@ const ScreenLoader = ({
   const [shouldRenderLoader, setShouldRenderLoader] = useState(true);
 
   useEffect(() => {
+    document.body.style.overflow = isLoaded ? "unset" : "hidden";
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isLoaded]);
+
+  useEffect(() => {
     const finished = sessionStorage.getItem("isLoaderFinished") === "true";
     if (finished) {
       setIsLoaded(true);
@@ -42,7 +50,7 @@ const ScreenLoader = ({
       {shouldRenderLoader && (
         <div
           className={cn(
-            "fixed inset-0 z-9999 transition-transform duration-1000",
+            "fixed inset-0 z-9999 transition-transform duration-1000 ease-in-out",
             animateOut ? "-translate-y-full" : "translate-y-0",
           )}
         >
@@ -57,10 +65,8 @@ const ScreenLoader = ({
 
       <div
         className={cn(
-          "transition-opacity duration-500",
-          !isLoaded && !sessionStorage.getItem("isLoaderFinished")
-            ? "opacity-0"
-            : "opacity-100",
+          "transition-opacity duration-1000 ease-in-out",
+          !isLoaded ? "opacity-0" : "opacity-100",
         )}
       >
         {children}
