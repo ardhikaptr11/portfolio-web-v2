@@ -88,8 +88,8 @@ const Contact = ({
     templateParams: ContactFormValues & { "g-recaptcha-response": string },
   ) => {
     await emailjs.send(
-      environments.EMAILJS_SERVICE_ID!,
-      environments.EMAILJS_TEMPLATE_ID!,
+      environments.EMAILJS_SERVICE_ID,
+      environments.EMAILJS_TEMPLATE_ID,
       templateParams,
       environments.EMAILJS_KEY,
     );
@@ -138,10 +138,10 @@ const Contact = ({
       id="contact"
       className="bg-ocean-surface relative flex min-h-screen w-full items-center overflow-hidden px-6 py-24 font-sans"
     >
-      {/* AMBIENT LIGHT EFFECT */}
+      {/* Ambient Light Effect */}
       <div className="bg-ocean-teal/10 pointer-events-none absolute top-[-20%] left-1/2 h-125 w-200 -translate-x-1/2 rounded-full blur-[150px]" />
 
-      {/* GIANT TEXT */}
+      {/* Giant Text */}
       <div className="pointer-events-none absolute top-10 left-1/2 z-0 w-full -translate-x-1/2 text-center select-none">
         <motion.h3
           variants={GIANT_TEXT_VARIANTS}
@@ -161,7 +161,7 @@ const Contact = ({
       </div>
 
       <div className="relative z-10 mx-auto mt-12 grid max-w-6xl grid-cols-1 items-end gap-16 lg:grid-cols-2 lg:gap-24">
-        {/* LEFT COLUMN */}
+        {/* Left Column */}
         <div className="space-y-12">
           <div className="space-y-6">
             {/* HEADER BADGE */}
@@ -194,7 +194,7 @@ const Contact = ({
                 {...(card.label !== "Direct Email"
                   ? { rel: "noreferrer noopener" }
                   : {})}
-                className="group hover:border-ocean-teal/40 flex items-center justify-between rounded-2xl border border-white/5 bg-white/2 p-4 transition-all duration-300 hover:bg-white/5"
+                className="group hover:border-ocean-teal/40 border-ocean-teal/20 flex items-center justify-between rounded-2xl border bg-white/2 p-4 transition-all duration-300 hover:bg-white/5 dark:border-white/5"
               >
                 <div className="flex items-center gap-5">
                   <div className="group-hover:border-ocean-teal/50 flex size-12 items-center justify-center rounded-xl border border-white/5 transition-colors">
@@ -217,7 +217,7 @@ const Contact = ({
           </div>
         </div>
 
-        {/* RIGHT COLUMN */}
+        {/* Right Column */}
         <div className="size-full">
           <div className="border-foreground/10 bg-foreground/3 rounded-lg border p-2 shadow-2xl backdrop-blur-lg">
             <Form form={form} onSubmit={form.handleSubmit(onSubmit)}>

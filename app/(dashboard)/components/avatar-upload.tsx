@@ -66,7 +66,7 @@ const AvatarUpload = ({
   };
 
   return (
-    <div className={cn("flex-center gap-4", className)}>
+    <div className={cn("flex items-center justify-center gap-4", className)}>
       {/* Avatar Preview */}
       <div className="relative">
         <div

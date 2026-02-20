@@ -157,12 +157,14 @@ const SortableGallery = ({
                       <Image
                         fill
                         src={item.url}
-                        alt={`Thumbnail of ${item.file_name}`}
+                        alt={`Thumbnail of ${item.file_name.toLowerCase()}`}
                         className="size-full rounded-lg border object-cover transition-transform group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        loading="eager"
                       />
 
                       {/* Overlay */}
-                      <div className="absolute inset-0 flex-center gap-2 rounded-lg opacity-0 transition-opacity group-hover:opacity-100">
+                      <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-lg opacity-0 transition-opacity group-hover:opacity-100">
                         {allImages.length !== 1 && (
                           <SortableItemHandle className="group absolute start-2 top-2 opacity-0 group-hover:opacity-100">
                             <Button
@@ -197,8 +199,8 @@ const SortableGallery = ({
                 ))}
               </Sortable>
             ) : (
-              <div className="text-muted-foreground flex-col-center h-full space-y-1">
-                <div className="border-muted-foreground flex-center size-10 rounded-full border-2">
+              <div className="text-muted-foreground flex h-full flex-col items-center justify-center space-y-1">
+                <div className="border-muted-foreground flex size-10 items-center justify-center rounded-full border-2">
                   <Icons.imageOff className="text-muted-foreground size-6" />
                 </div>
                 <h3 className="text-lg">No image uploaded</h3>
@@ -208,7 +210,7 @@ const SortableGallery = ({
 
           {selectedImage && (
             <div
-              className="fixed inset-0 z-50 flex-center bg-black/60 p-4 backdrop-blur-sm transition-all duration-300"
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-all duration-300"
               onClick={() => setSelectedImage(null)}
             >
               <div className="relative flex size-full justify-center">
@@ -264,7 +266,7 @@ const SortableGallery = ({
                         </div>
 
                         {/* Overlay */}
-                        <div className="absolute inset-0 flex-center gap-2 rounded-lg opacity-0 transition-opacity group-hover:opacity-100">
+                        <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-lg opacity-0 transition-opacity group-hover:opacity-100">
                           {allFiles.length !== 1 && (
                             <SortableItemHandle className="group absolute start-2 top-2 opacity-0 group-hover:opacity-100">
                               <Button
@@ -297,8 +299,8 @@ const SortableGallery = ({
                 ))}
               </Sortable>
             ) : (
-              <div className="text-muted-foreground flex-col-center h-full space-y-1">
-                <div className="border-muted-foreground flex-center size-10 rounded-full border-2">
+              <div className="text-muted-foreground flex h-full flex-col items-center justify-center space-y-1">
+                <div className="border-muted-foreground flex size-10 items-center justify-center rounded-full border-2">
                   <Icons.fileOff className="text-muted-foreground size-6" />
                 </div>
                 <h3 className="text-lg">No file uploaded</h3>

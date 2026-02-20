@@ -5,6 +5,14 @@ import { ReactNode } from "react";
 import "./globals.css";
 import "../node_modules/flag-icons/css/flag-icons.min.css";
 import CustomCursor from "./(root)/components/custom-cursor";
+import { Metadata } from "next";
+
+// export const metadata: Metadata = {
+//   icons: {
+//     icon: "/logo.svg",
+//     apple: "/logo.svg",
+//   },
+// };
 
 const META_THEME_COLORS = {
   light: "#ffffff",
@@ -27,6 +35,20 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <link
+          rel="icon"
+          href="/logo-dark.svg"
+          media="(prefers-color-scheme: light)"
+          type="image/svg+xml"
+        />
+
+        <link
+          rel="icon"
+          href="/logo.svg"
+          media="(prefers-color-scheme: dark)"
+          type="image/svg+xml"
+        />
+
         <script
           dangerouslySetInnerHTML={{
             __html: `

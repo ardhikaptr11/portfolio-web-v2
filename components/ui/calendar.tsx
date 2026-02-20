@@ -56,7 +56,7 @@ function Calendar({
     props.monthCaptionClassName,
   );
   const _dropdownsClassName = cn(
-    "flex-center gap-2 w-full",
+    "flex items-center justify-center gap-2 w-full",
     hideNavigation ? "w-full" : "",
     props.dropdownsClassName,
   );
@@ -146,7 +146,7 @@ function Calendar({
             <SelectValue>{selected?.label}</SelectValue>
           </SelectTrigger>
           <SelectContent position="popper" align="center">
-            <ScrollArea className="max-h-40 custom-scrollbar overflow-y-auto">
+            <ScrollArea className="custom-scrollbar max-h-40 overflow-y-auto">
               {options?.map(({ value, label, disabled }, id) => (
                 <SelectItem
                   key={`${value}-${id}`}

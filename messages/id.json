@@ -1,4 +1,13 @@
 {
+  "Loader": {
+    "welcome-message": "Selamat datang di studio bawah laut",
+    "loading-texts": {
+      "text1": "Menghidupkan pendar cahaya",
+      "text2": "Turun menuju laut dalam",
+      "text3": "Mencari cahaya di kedalaman sunyi",
+      "text4": "Selamat datang di kedalaman!"
+    }
+  },
   "Common": {
     "NavLink": {
       "about": "Tentang Saya",
@@ -151,5 +160,17 @@
       "message_min": "Pesan minimal harus 10 karakter.",
       "message_required": "Pesan tidak boleh kosong."
     }
+  },
+  "404": {
+    "title": "Halaman Tidak Ditemukan",
+    "texts": {
+      "text1": "Tidak semua yang tersesat adalah yang hilang",
+      "text2": "beberapa di antaranya sedang mencari jalan yang belum terungkap oleh laut."
+    }
+  },
+  "UnderDevelopment": {
+    "title": "Segera Hadir",
+    "subtitle": "Memperhalus Pengalaman",
+    "description": "Hal-hal baik membutuhkan waktu. Saat ini saya sedang menyempurnakan detail inti dari bagian ini untuk memastikan semuanya sudah sempurna sebelum saya membagikannya ke publik. Bagian ini akan segera tersedia begitu sentuhan akhir selesai."
   }
 }

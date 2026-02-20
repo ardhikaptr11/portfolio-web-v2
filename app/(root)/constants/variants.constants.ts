@@ -89,15 +89,6 @@ export const CARD_VARIANTS = {
         ease: [0.16, 1, 0.3, 1],
       },
     }),
-    ready: {
-      opacity: 1,
-      y: -6,
-      transition: {
-        duration: 0.4,
-        ease: "easeOut"
-        // ease: [0.22, 1, 0.36, 1],
-      }
-    }
   } as Variants,
 };
 

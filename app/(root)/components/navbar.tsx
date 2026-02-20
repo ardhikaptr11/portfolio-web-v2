@@ -11,6 +11,7 @@ import { Fragment, useEffect, useState } from "react";
 import AnimatedHamburger from "./animated-hamburger";
 import MobileNavMenu from "./mobile-nav-menu";
 import { useTranslations } from "next-intl";
+import { Icons } from "@/components/icons";
 
 export interface INavItem {
   href: string;
@@ -95,12 +96,7 @@ const Navbar = ({
           )}
         >
           <Link href="/" className="group shrink-0" aria-label="Home">
-            <span className="font-display text-foreground logo-tracking text-2xl font-bold">
-              AP
-              <span className="text-ocean-teal ml-0.5" aria-hidden="true">
-                .
-              </span>
-            </span>
+            <Icons.brandLogo className="text-ocean-blue dark:text-foreground" />
           </Link>
 
           <div className="flex items-center gap-0 md:gap-2">

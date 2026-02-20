@@ -262,7 +262,7 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
               onSubmit={form.handleSubmit(onSubmit)}
               className="flex flex-col gap-4"
             >
-              <div className="flex-col-center">
+              <div className="flex flex-col items-center justify-center">
                 <FormAvatarUpload
                   control={form.control}
                   name="avatar"
@@ -272,7 +272,7 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
                   }}
                   defaultAvatar={defaultValues.avatar}
                 />
-                <div className="mt-2 flex-center w-full max-w-25 space-x-2">
+                <div className="mt-2 flex w-full max-w-25 items-center justify-center space-x-2">
                   {Object.entries(defaultValues.social_links).map(
                     ([key, value]) => {
                       const Icon = Icons[key as keyof typeof Icons];

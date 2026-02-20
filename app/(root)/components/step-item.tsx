@@ -74,7 +74,7 @@ const StepItem = ({
           isEven ? "md:pr-16 md:text-right" : "md:pl-16 md:text-left",
           {
             "mb-8": index === total - 1,
-            "max-md:border-ocean-teal/30 max-md:shadow-ocean-glow":
+            "max-md:border-ocean-teal/30 max-md:shadow-glow":
               hasFlowReached,
           },
         )}
@@ -114,7 +114,7 @@ const StepItem = ({
           className={cn(
             "bg-ocean-surface relative z-20 flex size-10 items-center justify-center rounded-full border-2 transition-all duration-300",
             shouldShowLight
-              ? "border-ocean-teal shadow-ocean-glow scale-110"
+              ? "border-ocean-teal shadow-glow scale-110"
               : "border-border scale-100",
           )}
         >
@@ -137,7 +137,7 @@ const StepItem = ({
             className={cn(
               "size-3.5 rounded-full transition-all duration-300",
               shouldShowLight
-                ? "bg-ocean-teal shadow-ocean-glow"
+                ? "bg-ocean-teal shadow-glow"
                 : "bg-ocean-teal/10",
             )}
           />

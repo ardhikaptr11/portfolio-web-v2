@@ -2,12 +2,17 @@
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
-  motion,
-  useSpring,
-  useMotionValue,
   AnimatePresence,
+  motion,
+  useMotionValue,
+  useSpring,
 } from "framer-motion";
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+
+const shadowStyle = {
+  boxShadow:
+    "0 0 10px color-mix(in oklch, oklch(0.63 0.17 192.3), transparent 20%)",
+};
 
 const CustomCursor = () => {
   const isMobile = useIsMobile();
@@ -131,7 +136,8 @@ const CustomCursor = () => {
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.5 }}
-            className="bg-ocean-teal size-3 rounded-full shadow-[0_0_10px_rgba(20,184,166,0.8)]"
+            className="size-3 rounded-full bg-teal-400"
+            style={shadowStyle}
           />
         )}
 
@@ -141,8 +147,8 @@ const CustomCursor = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: textSize }}
             exit={{ opacity: 0, height: 0 }}
-            className="bg-ocean-teal shadow-ocean-glow w-0.5"
-            style={{ borderRadius: "2px" }}
+            className="w-0.5 bg-teal-400"
+            style={{ borderRadius: "2px", ...shadowStyle }}
           />
         )}
       </AnimatePresence>

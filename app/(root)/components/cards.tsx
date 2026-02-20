@@ -1,20 +1,20 @@
 "use client";
 
-import { Icons } from "@/components/icons";
 import { Spotlight } from "@/app/(root)/components/spotlight";
 import { Tilt } from "@/app/(root)/components/tilt";
+import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { id } from "date-fns/locale";
 import { motion } from "framer-motion";
+import { useLocale } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useState } from "react";
 import { ICON_MAP } from "../constants/items.constants";
 import { CARD_VARIANTS } from "../constants/variants.constants";
 import { ICertificate, IExperience, IProject } from "../types/data";
-import { useLocale, useTranslations } from "next-intl";
-import { id } from "date-fns/locale";
 
 const ProjectCard = ({
   project,
@@ -36,7 +36,7 @@ const ProjectCard = ({
       onClick={() => router.push(`/projects/${project.slug}`)}
     >
       <Tilt rotationFactor={8} isReverse className="group relative size-full">
-        <div className="border-border dark:bg-secondary/40 hover:border-ocean-teal/50 hover:shadow-ocean-glow flex h-full flex-col overflow-hidden rounded-xl border bg-white/60 backdrop-blur-sm transition-all duration-300">
+        <div className="border-border dark:bg-secondary/40 hover:border-ocean-teal/50 hover:shadow-glow flex h-full flex-col overflow-hidden rounded-xl border bg-white/60 backdrop-blur-sm transition-all duration-300">
           <Spotlight
             className={cn(
               "z-0 blur-3xl transition-opacity duration-500",
@@ -59,7 +59,9 @@ const ProjectCard = ({
 
               <div className="relative flex size-2 items-center justify-center">
                 <div className="bg-ocean-teal/30 absolute inset-0 size-full animate-ping rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="group-hover:bg-ocean-teal bg-border relative size-1.5 rounded-full transition-all duration-300 group-hover:shadow-[0_0_10px_oklch(var(--ocean-teal))]" />
+                <div
+                  className="group-hover:bg-ocean-teal bg-border relative size-1.5 rounded-full transition-all duration-300 group-hover:shadow-glow"
+                />
               </div>
             </div>
 
@@ -173,7 +175,13 @@ const ExperienceCard = ({ experience }: { experience: IExperience }) => {
       : experience.responsibilities;
 
   return (
-    <div className="group border-ocean-teal/50 from-ocean-teal/10 hover:from-ocean-teal/15 relative my-8 flex flex-col gap-5 overflow-hidden rounded-r-xl border-l-4 bg-linear-to-r to-transparent p-5 shadow-[20px_0_30px_-15px_oklch(var(--ocean-teal)/0.05)] transition-all md:p-7">
+    <div
+      className="group border-ocean-teal/50 from-ocean-teal/10 hover:from-ocean-teal/15 relative my-8 flex flex-col gap-5 overflow-hidden rounded-r-xl border-l-4 bg-linear-to-r to-transparent p-5 transition-all md:p-7"
+      style={{
+        boxShadow:
+          "20px 0 30px -15px color-mix(in oklch, var(--ocean-teal), transparent 95%)",
+      }}
+    >
       {/* Log Header Decoration */}
       <p className="text-ocean-teal/30 absolute top-2 right-2 font-mono text-[8px] tracking-widest uppercase">
         &gt; TX_LOG_{new Date(experience.start_date).getFullYear()} // VERIFIED
@@ -308,13 +316,12 @@ const CertificationCard = ({
       custom={index}
       variants={CARD_VARIANTS.certifications}
       initial="hidden"
-      animate={status === "ready" ? "ready" : undefined}
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       className={cn(
-        "group border-border bg-card/40 relative flex flex-col justify-between overflow-hidden border-2 p-8 transition-colors duration-500 md:p-12",
+        "group border-border bg-card/40 relative flex flex-col justify-between overflow-hidden border-2 p-8 transition-[border-color,background-color,margin-top] duration-500 md:p-12",
         status === "ready"
-          ? "border-ocean-teal/40 bg-ocean-teal/3"
+          ? "border-ocean-teal/40 bg-ocean-teal/3 -mt-3"
           : "hover:border-ocean-teal/20",
       )}
     >
@@ -406,12 +413,15 @@ const CertificationCard = ({
 
               {status === "scanning" && (
                 <motion.div
-                  className="bg-ocean-teal absolute top-0 h-full w-0.5 shadow-[0_0_15px_oklch(var(--ocean-teal))]"
+                  className="bg-ocean-teal absolute top-0 h-full w-0.5"
                   animate={{ left: ["0%", "100%"] }}
                   transition={{
                     duration: 0.8,
                     repeat: Infinity,
                     ease: "linear",
+                  }}
+                  style={{
+                    boxShadow: "0 0 15 var(--ocean-teal)",
                   }}
                 />
               )}
@@ -426,3 +436,4 @@ const CertificationCard = ({
 };
 
 export { CertificationCard, ExperienceCard, ProjectCard };
+

@@ -2,7 +2,6 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -23,14 +22,19 @@
   --color-ocean-blue: var(--ocean-blue);
   --color-ocean-surface: var(--secondary);
   --color-ocean-deep: var(--ocean-deep);
-  --shadow-ocean-glow: var(--ocean-glow);
-  --drop-shadow-ocean-glow: var(--drop-shadow-silhouette);
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
   --font-mono: var(--font-mono);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
+  --shadow-glow: var(--ocean-glow);
+  --drop-shadow-silhouette: var(--silhouette);
+  --drop-shadow-glow: var(--glow);
+  --animate-glitch-after: glitch var(--after-duration) infinite linear
+    alternate-reverse;
+  --animate-glitch-before: glitch var(--before-duration) infinite linear
+    alternate-reverse;
 }
 
 :root {
@@ -49,12 +53,13 @@
   --input: var(--border);
   --ring: var(--primary);
   --destructive: oklch(0.6 0.18 25);
-  --ocean-blue: oklch(0.35 0.08 240);
+  --ocean-blue: oklch(0.2 0.05 240);
   --ocean-deep: oklch(0.15 0.03 240);
   --ocean-glow: 0 0 40px oklch(0.55 0.15 190 / 0.1);
-  --drop-shadow-silhouette: drop-shadow(
+  --silhouette: drop-shadow(
     0 -10px 40px oklch(0.55 0.15 190 / 0.1)
   );
+  --glow: drop-shadow(0 0 15px oklch(0.55 0.15 190 / 0.3));
 }
 
 .dark {
@@ -75,7 +80,8 @@
   --ocean-blue: oklch(0.45 0.12 210);
   --ocean-deep: oklch(0.05 0.01 240);
   --ocean-glow: 0 0 40px oklch(0.7 0.15 185 / 0.15);
-  --drop-shadow-silhouette: drop-shadow(0 -10px 40px oklch(0.7 0.15 185 / 0.2));
+  --silhouette: drop-shadow(0 -10px 40px oklch(0.7 0.15 185 / 0.2));
+  --glow: drop-shadow(0 0 15px oklch(0.7 0.15 185 / 0.4));
 }
 
 body {

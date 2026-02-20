@@ -1,4 +1,13 @@
 {
+  "Loader": {
+    "welcome-message": "Welcome to the workshop below the waves",
+    "loading-texts": {
+      "text1": "Waking the bioluminescence",
+      "text2": "Descending into the deep blue",
+      "text3": "Finding light in the silent depths",
+      "text4": "Welcome to the deep!"
+    }
+  },
   "Common": {
     "NavLink": {
       "about": "About",
@@ -151,5 +160,17 @@
       "message_min": "Message must be at least 10 characters long.",
       "message_required": "Message cannot be empty."
     }
+  },
+  "404": {
+    "title": "Page Not Found",
+    "texts": {
+      "text1": "Not all those who wander are lost",
+      "text2": "some are just finding a path the sea has yet to reveal."
+    }
+  },
+  "UnderDevelopment": {
+    "title": "Coming Soon",
+    "subtitle": "Polishing The Experience",
+    "description": "Good things take time. I'm currently refining the core details of this section to make sure everything is polished before I share it with the world. It will be live as soon as the final touches are complete."
   }
 }

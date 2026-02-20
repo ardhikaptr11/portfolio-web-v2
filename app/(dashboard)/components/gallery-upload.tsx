@@ -199,7 +199,7 @@ export default function GalleryUpload({
               )}
 
               {/* Overlay */}
-              <div className="absolute inset-0 flex-center gap-2 rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:opacity-80">
+              <div className="absolute inset-0 flex items-center justify-center gap-2 rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:opacity-80">
                 {/* View Button */}
                 {fileItem.preview && (
                   <Button
@@ -240,7 +240,7 @@ export default function GalleryUpload({
       {/* Image Preview Modal */}
       {selectedImage && (
         <div
-          className="fixed inset-0 z-50 flex-center bg-black/80 p-4 backdrop-blur-sm transition-all duration-300"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm transition-all duration-300"
           onClick={() => setSelectedImage(null)}
         >
           <div className="relative flex size-full justify-center">

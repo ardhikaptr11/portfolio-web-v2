@@ -170,7 +170,7 @@ const FileUploadCompact = ({
             <div className="group w-full shrink-0">
               {/* File Preview */}
               {isUploading ? (
-                <div className="inset-0 flex-center">
+                <div className="inset-0 flex items-center justify-center">
                   <div className="flex items-center space-x-2">
                     <svg className="size-5 -rotate-90" viewBox="0 0 64 64">
                       <circle

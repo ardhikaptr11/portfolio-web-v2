@@ -1,4 +1,9 @@
 import {
+  IconBrandExpress,
+  IconBrandLogo,
+  IconSubmarine,
+} from "@/app/(root)/components/custom-icons";
+import {
   IconAdjustmentsHorizontal,
   IconAlertCircle,
   IconAlertTriangle,
@@ -38,6 +43,7 @@ import {
   IconCode,
   IconCodePlus,
   IconCommand,
+  IconCopyright,
   IconDotsVertical,
   IconDownload,
   IconEdit,
@@ -53,6 +59,7 @@ import {
   IconFolderOpen,
   IconFolderPlus,
   IconGripVertical,
+  IconHeartFilled,
   IconLayoutDashboard,
   IconLibraryPhoto,
   IconLogout,
@@ -82,7 +89,7 @@ import {
   IconUserCircle,
   IconWorldWww,
   IconX,
-  IconXboxX
+  IconXboxX,
 } from "@tabler/icons-react";
 
 export type Icon = React.ComponentType<IconProps>;
@@ -99,9 +106,10 @@ export const Icons = {
   bookmarks: IconBookmarks,
   bookmarkPlus: IconBookmarkPlus,
   brandCss: IconBrandCss3,
-  brandExpress: IconApi,
+  brandExpress: IconBrandExpress,
   brandHtml: IconBrandHtml5,
   brandJavascript: IconBrandJavascript,
+  brandLogo: IconBrandLogo,
   brandMongoDb: IconBrandMongodb,
   brandNextJs: IconBrandNextjs,
   brandNodejs: IconBrandNodejs,
@@ -124,6 +132,7 @@ export const Icons = {
   closeCircle: IconCircleX,
   code: IconCode,
   codePlus: IconCodePlus,
+  copyright: IconCopyright,
   dashboard: IconLayoutDashboard,
   desc2: IconSortDescending2,
   download: IconDownload,
@@ -149,6 +158,7 @@ export const Icons = {
   location: IconMapPin,
   logo: IconCommand,
   logout: IconLogout,
+  love: IconHeartFilled,
   mail: IconMail,
   minus: IconMinus,
   moon: IconMoon,
@@ -164,6 +174,7 @@ export const Icons = {
   sortZA: IconSortZA,
   sort09: IconSort09,
   sort90: IconSort90,
+  submarine: IconSubmarine,
   sun: IconSun,
   threads: IconBrandThreads,
   trash: IconTrash,

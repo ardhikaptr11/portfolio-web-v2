@@ -39,7 +39,6 @@ import { NavItem } from "../../types/items";
 import { IAccountInfo } from "../../types/user";
 import { UserAvatarProfile } from "../user-avatar-profile";
 
-
 const AppSidebar = ({
   items,
   user,
@@ -60,20 +59,20 @@ const AppSidebar = ({
     // Side effects based on sidebar state changes
   }, [isOpen]);
 
-    const handleLogout = () => {
-      startTransition(async () => {
-        try {
-          await logout();
-          toast.success("You have successfully logged out");
-  
-          router.push("/auth");
-        } catch (err) {
-          toast.error("Logout failed", {
-            description: (err as Error).message,
-          });
-        }
-      });
-    };
+  const handleLogout = () => {
+    startTransition(async () => {
+      try {
+        await logout();
+        toast.success("You have successfully logged out");
+
+        router.push("/auth");
+      } catch (err) {
+        toast.error("Logout failed", {
+          description: (err as Error).message,
+        });
+      }
+    });
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -196,13 +195,16 @@ const AppSidebar = ({
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem className="cursor-pointer">
-                    <Icons.home className="size-5" />
-                    <Link href="/" target="_blank" rel="noopener noreferrer">
+                  <DropdownMenuItem className="cursor-pointer" asChild>
+                    <Link href="/" target="_blank" rel="noopener noreferrer" prefetch={false}>
+                      <Icons.home className="size-5" />
                       Homepage
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={handleLogout}
+                  >
                     <Icons.logout className="size-5" />
                     Logout
                   </DropdownMenuItem>

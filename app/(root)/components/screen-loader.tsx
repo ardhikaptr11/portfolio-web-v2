@@ -2,14 +2,14 @@
 
 import { Fragment, ReactNode, useEffect, useState } from "react";
 import Loader from "./loader";
-import { IProfile } from "../types/data";
+import { IHero } from "../types/data";
 
 const ScreenLoader = ({
   children,
-  tagline,
+  taglines,
 }: {
   children: ReactNode;
-  tagline: IProfile["tagline"];
+  taglines: { tagline: string, tagline_id: string };
 }) => {
   const [isCounterDone, setCounterDone] = useState(false);
   const [animateOut, setAnimateOut] = useState(false);
@@ -37,7 +37,7 @@ const ScreenLoader = ({
   if (!isLoaded) {
     return (
       <Loader
-        tagline={tagline}
+        taglines={taglines}
         animateOut={animateOut}
         onCounterDone={() => setCounterDone(true)}
         onFinish={handleFinish}

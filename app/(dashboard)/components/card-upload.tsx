@@ -289,7 +289,7 @@ const CardUpload = ({
                               strokeLinecap="round"
                             />
                           </svg>
-                          <div className="absolute inset-0 flex-center">
+                          <div className="item-center absolute inset-0 flex justify-center">
                             <Icons.file className="size-8" />
                           </div>
                         </div>

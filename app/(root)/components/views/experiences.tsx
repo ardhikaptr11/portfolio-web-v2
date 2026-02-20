@@ -1,17 +1,15 @@
 "use client";
 
 import { Tilt } from "@/app/(root)/components/tilt";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn, formatToSlug } from "@/lib/utils";
 import {
-  AnimatePresence,
   motion,
   useScroll,
   UseScrollOptions,
-  useTransform,
+  useTransform
 } from "framer-motion";
-import { XIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import {
   FormEvent,
   ReactNode,
@@ -24,7 +22,6 @@ import Typewriter from "typewriter-effect/dist/core";
 import { IExperience } from "../../types/data";
 import { ExperienceCard } from "../cards";
 import SectionHeader from "../section-header";
-import { useTranslations } from "next-intl";
 
 interface IOutputEntries {
   type: string;
@@ -343,7 +340,7 @@ const Experiences = ({ experiences }: { experiences: IExperience[] }) => {
         >
           <div
             onClick={() => inputRef.current?.focus()}
-            className="border-ocean-teal/20 shadow-ocean-glow mx-auto max-w-5xl overflow-hidden rounded-xl border bg-[#020c1b]/90 backdrop-blur-md"
+            className="border-ocean-teal/20 shadow-glow mx-auto max-w-5xl overflow-hidden rounded-xl border bg-[#020c1b]/90 backdrop-blur-md"
           >
             {/* Terminal Header */}
             <div className="border-ocean-teal/20 flex items-center justify-between border-b bg-teal-950/30 px-4 py-3">

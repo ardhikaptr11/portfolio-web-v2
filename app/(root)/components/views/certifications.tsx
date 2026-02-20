@@ -24,8 +24,8 @@ const Certifications = ({
   certificates,
 }: {
   certificates?: ICertificate[];
-  }) => {
-  const t = useTranslations("Certifications")
+}) => {
+  const t = useTranslations("Certifications");
   const locale = useLocale();
 
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
@@ -84,7 +84,7 @@ const Certifications = ({
           shouldAnimate
         />
 
-        {/* STAGGERED COLUMN */}
+        {/* Staggered Column */}
         <motion.div
           variants={STAGGERED_COLUMN_VARIANTS}
           initial="hidden"
@@ -92,7 +92,7 @@ const Certifications = ({
           viewport={{ once: true, amount: 0.1 }}
           className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12"
         >
-          {/* LEFT */}
+          {/* Left */}
           <div className="flex flex-col gap-8 md:gap-12">
             {certificates
               ?.filter((_, i) => i % 2 === 0)
@@ -106,7 +106,7 @@ const Certifications = ({
               ))}
           </div>
 
-          {/* RIGHT */}
+          {/* Right */}
           <div className="flex flex-col gap-8 md:mt-32 md:gap-12">
             {certificates
               ?.filter((_, i) => i % 2 !== 0)
@@ -143,11 +143,19 @@ const Certifications = ({
 
         <AnimatePresence>
           {selectedPdf && (
-            <div className="bg-ocean-deep/10 fixed inset-0 z-70 flex items-center justify-center p-4 backdrop-blur-sm">
+            <div className="fixed inset-0 z-70 flex items-center justify-center p-6 md:p-10">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSelectedPdf(null)}
+                className="bg-ocean-deep/40 absolute inset-0 backdrop-blur-md"
+              />
+
               <Button
                 variant="ghost"
                 onClick={() => setSelectedPdf(null)}
-                className="hover:text-ocean-teal absolute top-5 right-5 flex items-center gap-2 bg-transparent! text-white hover:border-transparent!"
+                className="hover:text-primary absolute top-0 right-0 flex items-center gap-2 bg-transparent! text-white/50 transition-colors hover:border-transparent! max-md:hidden"
               >
                 <p className="text-[10px] font-black tracking-widest uppercase">
                   {locale === "id" ? "Tutup" : "Close"} (ESC)

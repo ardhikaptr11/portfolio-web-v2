@@ -107,7 +107,7 @@ const UploadAssets = () => {
       const { totalImageAssets, totalFileAssets } = await getTotalAssets();
       setTotalImageAssets(totalImageAssets);
       setTotalFileAssets(totalFileAssets);
-    } catch (error) {
+    } catch (error) { 
       toast.error("Error fetching total assets", {
         description: (error as Error).message,
       });
@@ -137,7 +137,10 @@ const UploadAssets = () => {
   });
 
   const onSubmitUploadImages = (data: TUploadImage) => {
-    if (totalImageAssets === MAX_TOTAL_FILE.image + 1) {
+    // The number 2 is added because there are 2 images with order 0 in the database
+    // Order 0 applies to images that don't want to appear in the assets gallery.
+    // So, we can still upload images up to the maximum limit.
+    if (totalImageAssets === MAX_TOTAL_FILE.image + 2) {
       toast.info("Maximum limit of image assets reached", {
         description: "Free up some space by deleting unused images.",
         action: (

@@ -3,24 +3,31 @@
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
-import { IProfile } from "../types/data";
+import { IHero } from "../types/data";
 import { OpacityTransition, Transition } from "./transitions";
+import { useLocale, useTranslations } from "next-intl";
+import { Icons } from "@/components/icons";
 
 interface LoaderProps {
-  tagline: IProfile["tagline"];
+  taglines: { tagline: string; tagline_id: string };
   animateOut: boolean;
   onFinish?: () => void;
   onCounterDone?: () => void;
 }
 
 const Loader = ({
-  tagline,
+  taglines,
   animateOut,
   onFinish,
   onCounterDone,
 }: LoaderProps) => {
+  const t = useTranslations("Loader");
+  const locale = useLocale();
+
   const [counter, setCounter] = useState(0);
   const [dots, setDots] = useState(1);
+
+  const tagline = locale === "id" ? taglines.tagline_id : taglines.tagline;
 
   useEffect(() => {
     const count = setInterval(() => {
@@ -48,11 +55,10 @@ const Loader = ({
   }, []);
 
   const loadingText = useMemo(() => {
-    if (counter <= 10) return `Waking the bioluminescence${".".repeat(dots)}`;
-    if (counter < 50) return `Descending into the deep blue${".".repeat(dots)}`;
-    if (counter <= 95)
-      return `Finding light in the silent depths${".".repeat(dots)}`;
-    if (counter > 95) return "Welcome to the deep!";
+    if (counter <= 10) return `${t("loading-texts.text1")}${".".repeat(dots)}`;
+    if (counter < 50) return `${t("loading-texts.text2")}${".".repeat(dots)}`;
+    if (counter <= 95) return `${t("loading-texts.text3")}${".".repeat(dots)}`;
+    if (counter > 95) return t("loading-texts.text4");
   }, [counter, dots]);
 
   return (
@@ -85,30 +91,32 @@ const Loader = ({
               ease: "linear",
             }}
             style={{
-              background: `radial-gradient(circle, rgba(20, 184, 166, 0.2) 0%, transparent 60%)`,
+              background:
+                "radial-gradient(circle, color-mix(in oklch, var(--ocean-teal), transparent 80%) 0%, transparent 60%)",
               willChange: "transform, opacity",
             }}
           />
         ))}
 
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(20,184,166,0.05)_0%,transparent_100%)]" />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 50%, color-mix(in oklch, var(--ocean-teal), transparent 95%) 0%, transparent 100%)",
+          }}
+        />
       </div>
 
       <div className="relative z-10 flex size-full flex-col p-4 max-md:gap-8 md:justify-between md:p-10">
         <Transition transition={{ delay: 0.2 }}>
-          <h3 className="font-display text-foreground logo-tracking text-2xl font-bold md:text-3xl">
-            AP
-            <span className="text-ocean-teal animate-pulse" aria-hidden="true">
-              .
-            </span>
-          </h3>
+          <Icons.brandLogo className="text-ocean-blue dark:text-foreground" />
         </Transition>
 
         <div className="flex flex-col max-md:h-full max-md:justify-between">
           <Transition transition={{ delay: 0.4 }}>
             <div className="w-full text-2xl leading-tight font-light tracking-tight md:w-3/5 md:text-4xl">
               <OpacityTransition>
-                {`Welcome to the workshop below the waves —\n${tagline}`}
+                {`${t("welcome-message")} —\n${tagline}`}
               </OpacityTransition>
             </div>
           </Transition>
@@ -121,7 +129,7 @@ const Loader = ({
               >
                 {loadingText}
               </span>
-              <motion.span className="to-ocean-teal bg-linear-to-r from-white bg-clip-text text-6xl font-black text-transparent drop-shadow-[0_0_20px_rgba(20,184,166,0.3)] md:text-8xl">
+              <motion.span className="to-ocean-teal bg-linear-to-r from-white bg-clip-text text-6xl font-black text-transparent drop-shadow-glow md:text-8xl">
                 {counter}%
               </motion.span>
             </div>

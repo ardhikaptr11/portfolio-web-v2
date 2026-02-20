@@ -10,7 +10,7 @@ const ICON_MAP: Record<string, TablerIcon> = {
   "Next.js": Icons.brandNextJs,
   "Tailwind CSS": Icons.brandTailwind,
   "Typescript": Icons.brandTypescript,
-  "Express.js": Icons.brandExpress,
+  "Express.js": Icons.brandExpress as unknown as TablerIcon, // This is a custom icon
   "Node.js": Icons.brandNodejs,
   "Mongo DB": Icons.brandMongoDb
 };

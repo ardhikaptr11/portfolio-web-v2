@@ -1,13 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@utility flex-center {
-  @apply flex items-center justify-center;
-}
-@utility flex-col-center {
-  @apply flex flex-col items-center justify-center;
-}
-
 @theme inline {
   --animate-glitch-after: glitch var(--after-duration) infinite linear
     alternate-reverse;

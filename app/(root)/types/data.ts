@@ -1,15 +1,17 @@
 import { WORK_CATEGORY } from "@/app/(dashboard)/types/data";
 import { ISocialLinks } from "@/app/(dashboard)/types/user";
 
-interface IProfile {
+interface IHero {
   email: string;
   phone: string;
   name: string;
   motto: string;
   tagline: string;
+  tagline_id: string;
   roles: { id: string, text: string; }[];
   skills: string[];
   social_links: ISocialLinks;
+  hero_img: string;
   cv_asset: string;
 }
 
@@ -44,4 +46,4 @@ interface ICertificate {
   url: string;
 }
 
-export type { IProfile, IProject, IExperience, ICertificate };
+export type { IHero, IProject, IExperience, ICertificate };

@@ -62,10 +62,14 @@ function Toast({ title, message, id, type = "info" }: ToastProps) {
     >
       <div
         className={cn(
-          "absolute top-0 left-0 h-full w-0.75 shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-colors duration-500",
+          "absolute top-0 left-0 h-full w-0.75 transition-colors duration-500",
           config.glow,
           config.shadow,
         )}
+        style={{
+          filter:
+            "drop-shadow(0 0 15px color-mix(in oklch, var(--ocean-deep), transparent 50%))",
+        }}
       />
 
       <div

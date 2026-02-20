@@ -13,6 +13,7 @@ interface ISectionHeader {
   shouldAnimate?: boolean;
 }
 
+const shadowStyle = { boxShadow: "0 0 8px oklch(0.88 0.18 175)" }
 const SectionHeader = ({ title, subtitle, align = "left", style, className, shouldAnimate = true }: ISectionHeader) => {
   const splittedTitle = title.split(" ");
 
@@ -33,14 +34,14 @@ const SectionHeader = ({ title, subtitle, align = "left", style, className, shou
       })}
     >
       <div className="mb-2 flex w-fit items-center gap-2">
-        <div className="bg-ocean-teal size-1.5 animate-pulse rounded-full shadow-[0_0_8px_#14ffec]" />
+        <div className="bg-ocean-teal size-1.5 animate-pulse rounded-full" style={shadowStyle}/>
         <h2 className="text-ocean-teal font-mono text-xs tracking-[0.3em] uppercase">
           {subtitle}
         </h2>
       </div>
       <h3 className="text-4xl font-bold tracking-tighter text-white uppercase md:text-6xl">
         {word}{" "}
-        <span className="text-ocean-teal font-black drop-shadow-[0_0_15px_rgba(20,184,166,0.3)]">
+        <span className="text-ocean-teal font-black drop-shadow-glow">
           {styledWord}
         </span>
       </h3>
@@ -54,14 +55,14 @@ const SectionHeader = ({ title, subtitle, align = "left", style, className, shou
       })}
     >
       <div className="mb-2 flex w-fit items-center gap-2">
-        <div className="bg-ocean-teal size-1.5 animate-pulse rounded-full shadow-[0_0_8px_#14ffec]" />
+        <div className="bg-ocean-teal size-1.5 animate-pulse rounded-full" style={shadowStyle}/>
         <h2 className="text-ocean-teal font-mono text-xs tracking-[0.3em] uppercase">
           {subtitle}
         </h2>
       </div>
       <h3 className="text-4xl font-bold tracking-tighter text-white uppercase md:text-6xl">
         {word}{" "}
-        <span className="text-ocean-teal font-black drop-shadow-[0_0_15px_rgba(20,184,166,0.3)]">
+        <span className="text-ocean-teal font-black drop-shadow-glow">
           {styledWord}
         </span>
       </h3>

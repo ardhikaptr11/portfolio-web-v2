@@ -185,7 +185,7 @@ const Services = () => {
                           duration: isActive ? 0.6 : 1,
                           ease: [0.16, 1, 0.3, 1],
                         }}
-                        className="bg-ocean-teal/20 shadow-ocean-glow h-px"
+                        className="bg-ocean-teal/20 shadow-glow h-px"
                       />
                     </div>
                   </div>
@@ -259,7 +259,7 @@ const Services = () => {
                 {/* Decorative Scan Line */}
                 {isActive && (
                   <motion.div
-                    className="bg-ocean-teal/20 shadow-ocean-glow absolute top-0 right-0 h-full w-px"
+                    className="bg-ocean-teal/20 shadow-glow absolute top-0 right-0 h-full w-px"
                     animate={{ opacity: [0, 1, 0] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   />

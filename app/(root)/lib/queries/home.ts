@@ -1,5 +1,5 @@
 import { createAdminClient, createClient } from "@/lib/supabase/server";
-import { ICertificate, IExperience, IProfile, IProject } from "../../types/data";
+import { ICertificate, IExperience, IHero, IProject } from "../../types/data";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { cache } from "react";
 
@@ -9,19 +9,21 @@ const getProfile = async (client: SupabaseClient) => {
   const supabase = client ?? await createClient();
   const supabaseAdmin = await createAdminClient();
 
-  const [authResponse, profileResponse] = await Promise.all([
+  const [authResponse, profileResponse, assetResponse] = await Promise.all([
     supabaseAdmin.auth.admin.listUsers(),
     supabase.from("profile")
       .select(`
         name,
         motto,
         tagline,
+        tagline_id,
         roles,
         skills,
         social_links,
         asset:cv_id (url)
       `)
-      .single()
+      .single(),
+    supabase.from("assets").select("url").eq("file_name", "The Silhouette").single()
   ]);
 
   if (profileResponse.error) throw profileResponse.error;
@@ -31,10 +33,11 @@ const getProfile = async (client: SupabaseClient) => {
 
   return {
     ...rest,
+    hero_img: assetResponse?.data?.url,
     email: user?.email,
     phone: user?.phone,
     cv_asset: (asset as Record<string, any>)?.url
-  } as IProfile;
+  } as IHero;
 };
 
 const getExperiences = async (client: SupabaseClient) => {
@@ -96,7 +99,7 @@ export const getProjects = async (client?: SupabaseClient) => {
   return projects;
 };
 
-const getAssets = async (client: SupabaseClient, total: number) => {
+const getCertificates = async (client: SupabaseClient, total: number) => {
 
   const { data, error } = await client
     .from("assets")
@@ -123,7 +126,7 @@ const getAllData = cache(async () => {
       getProfile(supabase),
       getExperiences(supabase),
       getProjects(supabase),
-      getAssets(supabase, 4)
+      getCertificates(supabase, 4)
     ]);
 
     return { profile, projects, experiences, certificates };

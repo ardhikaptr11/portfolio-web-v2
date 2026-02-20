@@ -10,7 +10,7 @@ import { XIcon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { ICON_MAP } from "../../constants/items.constants";
-import { IProfile } from "../../types/data";
+import { IHero } from "../../types/data";
 import DecryptedText from "../decrypted-text";
 import TypingText from "../typing-text";
 import { useTranslations } from "next-intl";
@@ -43,13 +43,13 @@ const generateRadarPositions = (skills: string[]) => {
 };
 
 interface HeroProps {
-  data: IProfile;
+  data: IHero;
 }
 
 const Hero = ({ data }: HeroProps) => {
   const t = useTranslations("Hero");
 
-  const { name, motto, roles, skills, cv_asset } = data;
+  const { name, motto, roles, skills, cv_asset, hero_img } = data;
 
   const [lastName, firstName] = name.split(" ");
 
@@ -118,7 +118,7 @@ const Hero = ({ data }: HeroProps) => {
   return (
     <section className="bg-ocean-surface relative flex min-h-screen flex-col items-center justify-center overflow-hidden pt-20 md:pt-0">
       {/* Background Layer (Radar) */}
-      <div className="absolute inset-0 z-0 flex-center opacity-50">
+      <div className="absolute inset-0 z-0 flex items-center justify-center opacity-50">
         {[...Array(3)].map((_, i) => (
           <div
             key={`grid-${i}`}
@@ -136,7 +136,13 @@ const Hero = ({ data }: HeroProps) => {
             animate={{ rotate: 360 }}
             transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
           >
-            <div className="from-ocean-teal/40 via-ocean-teal/20 absolute top-0 left-1/2 h-1/2 w-0.5 origin-bottom -translate-x-1/2 bg-linear-to-t to-transparent shadow-[0_0_8px_oklch(var(--ocean-teal)/0.3)]" />
+            <div
+              className="from-ocean-teal/40 via-ocean-teal/20 absolute top-0 left-1/2 h-1/2 w-0.5 origin-bottom -translate-x-1/2 bg-linear-to-t to-transparent"
+              style={{
+                boxShadow:
+                  "0 0 8px color-mix(in oklch, var(--ocean-teal), transparent 70%)",
+              }}
+            />
             <div
               className="absolute inset-0 rounded-full"
               style={{
@@ -160,15 +166,20 @@ const Hero = ({ data }: HeroProps) => {
               }}
               className="pointer-events-none absolute flex flex-col items-center"
             >
-              <div className="bg-ocean-surface/60 border-ocean-teal/30 shadow-ocean-glow flex-center backdrop-blur-md">
-                <Icon stroke={1.5} className="text-ocean-teal size-6" />
+              <div className="bg-ocean-surface/60 border-ocean-teal/30 shadow-glow flex items-center justify-center backdrop-blur-md">
+                <Icon className="text-ocean-teal size-6" />
               </div>
               <p className="text-ocean-teal/80 mt-1 font-mono text-[8px] font-bold tracking-widest uppercase">
                 {name}
               </p>
             </motion.div>
           ))}
-          <div className="bg-ocean-teal/30 relative z-30 h-4 w-4 rounded-full shadow-[0_0_20px_oklch(var(--ocean-teal))]" />
+          <div
+            className="bg-ocean-teal/30 relative z-30 h-4 w-4 rounded-full"
+            style={{
+              boxShadow: "0 0 20px var(--ocean-teal)",
+            }}
+          />
         </div>
 
         {[...Array(3)].map((_, i) => (
@@ -241,7 +252,7 @@ const Hero = ({ data }: HeroProps) => {
             <motion.button
               onClick={() => setShowResume(true)}
               whileTap={{ scale: 0.95 }}
-              className="hover:border-ocean-teal/80 hover:bg-ocean-teal border-ocean-teal/10 bg-ocean-deep/10 shadow-ocean-teal relative h-auto cursor-pointer rounded-none border px-6 py-2 font-mono text-sm font-bold tracking-widest uppercase transition-all duration-300 md:text-xs"
+              className="hover:border-ocean-teal/80 hover:bg-ocean-teal! border-ocean-teal/30 dark:bg-ocean-deep/10 shadow-ocean-teal relative h-auto cursor-pointer rounded-none border bg-transparent px-6 py-2 font-mono text-sm font-bold tracking-widest uppercase transition-all duration-300 hover:text-white md:text-xs"
             >
               {t("read-resume")}
             </motion.button>
@@ -258,9 +269,9 @@ const Hero = ({ data }: HeroProps) => {
             <Image
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
-              src="/images/silhouette.png"
+              src={hero_img}
               alt="The Silhouette"
-              className="drop-shadow-ocean-glow object-cover object-bottom"
+              className="drop-shadow-silhouette object-cover object-bottom"
               priority
             />
           </motion.div>
@@ -276,7 +287,7 @@ const Hero = ({ data }: HeroProps) => {
 
       <AnimatePresence>
         {showResume && (
-          <div className="fixed inset-0 z-70 flex items-center justify-center p-4 md:p-10">
+          <div className="fixed inset-0 z-70 flex items-center justify-center p-6 md:p-10">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -288,7 +299,7 @@ const Hero = ({ data }: HeroProps) => {
             <Button
               variant="ghost"
               onClick={() => setShowResume(false)}
-              className="hover:text-primary absolute top-0 right-0 z-70 flex items-center gap-2 bg-transparent! text-white/50 transition-colors hover:border-transparent! max-md:hidden"
+              className="hover:text-primary absolute top-0 right-0 flex items-center gap-2 bg-transparent! text-white/50 transition-colors hover:border-transparent! max-md:hidden"
             >
               <p className="text-[10px] font-black tracking-[0.2em] uppercase">
                 Close (ESC)
