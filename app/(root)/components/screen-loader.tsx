@@ -34,14 +34,17 @@ const ScreenLoader = ({
 
   useEffect(() => {
     if (isCounterDone) {
-      const timeout = setTimeout(() => setAnimateOut(true), 800);
+      const timeout = setTimeout(() => {
+        setAnimateOut(true);
+        setIsLoaded(true);
+      }, 800);
+
       return () => clearTimeout(timeout);
     }
   }, [isCounterDone]);
 
   const handleFinish = () => {
     sessionStorage.setItem("isLoaderFinished", "true");
-    setIsLoaded(true);
     setTimeout(() => setShouldRenderLoader(false), 1000);
   };
 
