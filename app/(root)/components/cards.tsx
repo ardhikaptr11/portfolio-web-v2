@@ -10,7 +10,7 @@ import { id } from "date-fns/locale";
 import { motion } from "framer-motion";
 import { useLocale } from "next-intl";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter } from "../i18n/navigation";
 import { Dispatch, SetStateAction, useState } from "react";
 import { ICON_MAP } from "../constants/items.constants";
 import { CARD_VARIANTS } from "../constants/variants.constants";
@@ -33,7 +33,12 @@ const ProjectCard = ({
     <motion.div
       variants={CARD_VARIANTS.projects}
       className="size-full"
-      onClick={() => router.push(`/projects/${project.slug}`)}
+      onClick={() =>
+        router.push({
+          pathname: "/projects/[slug]",
+          params: { slug: project.slug },
+        })
+      }
     >
       <Tilt rotationFactor={8} isReverse className="group relative size-full">
         <div className="border-border dark:bg-secondary/40 hover:border-ocean-teal/50 hover:shadow-glow flex h-full flex-col overflow-hidden rounded-xl border bg-white/60 backdrop-blur-sm transition-all duration-300">
@@ -59,9 +64,7 @@ const ProjectCard = ({
 
               <div className="relative flex size-2 items-center justify-center">
                 <div className="bg-ocean-teal/30 absolute inset-0 size-full animate-ping rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <div
-                  className="group-hover:bg-ocean-teal bg-border relative size-1.5 rounded-full transition-all duration-300 group-hover:shadow-glow"
-                />
+                <div className="group-hover:bg-ocean-teal bg-border group-hover:shadow-glow relative size-1.5 rounded-full transition-all duration-300" />
               </div>
             </div>
 
@@ -436,4 +439,3 @@ const CertificationCard = ({
 };
 
 export { CertificationCard, ExperienceCard, ProjectCard };
-
