@@ -4,6 +4,8 @@ export const locales = ['en', 'id'] as const;
 
 const pathnames = {
   '/': '/',
+  '/projects': '/projects',
+  '/projects/[slug]': '/projects/[slug]',
 } satisfies Pathnames<typeof locales>;
 
 export const routing = defineRouting({

@@ -3,7 +3,7 @@
 import { Icons } from "@/components/icons";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
-import Link from "next/link";
+import { Link } from "../../i18n/navigation";
 import { useEffect, useState } from "react";
 
 const UnderDevelopment = () => {
