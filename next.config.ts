@@ -3,6 +3,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 import { environments } from "./app/environments";
 
 const nextConfig: NextConfig = {
+  productionBrowserSourceMaps: true,
   experimental: {
     turbopackFileSystemCacheForDev: true,
     serverActions: {

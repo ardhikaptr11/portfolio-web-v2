@@ -25,6 +25,7 @@ interface IProject {
   overview: string;
   tech_stack: string[];
   urls: { demo: string, github: string; };
+  updated_at: Date;
 }
 
 interface IExperience {

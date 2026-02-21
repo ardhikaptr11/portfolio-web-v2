@@ -232,7 +232,7 @@ const Hero = ({ data }: HeroProps) => {
           <div className="mt-10 flex flex-wrap gap-4">
             <motion.button
               whileTap={{ scale: 0.95 }}
-              className="bg-ocean-teal relative overflow-hidden px-6 py-2 font-mono font-bold tracking-widest text-white uppercase md:text-xs"
+              className="bg-ocean-teal relative overflow-hidden px-6 py-2 font-mono font-bold tracking-widest text-white! uppercase md:text-xs"
               onClick={handleDeepDive}
             >
               <motion.div
@@ -246,13 +246,12 @@ const Hero = ({ data }: HeroProps) => {
                 }}
                 className="absolute inset-0 z-10 skew-x-12 bg-linear-to-r from-transparent via-white/40 to-transparent"
               />
-
-              <span className="relative z-20">{t("dive-deeper")}</span>
+              {t("dive-deeper")}
             </motion.button>
             <motion.button
               onClick={() => setShowResume(true)}
               whileTap={{ scale: 0.95 }}
-              className="hover:border-ocean-teal/80 hover:bg-ocean-teal! border-ocean-teal/30 dark:bg-ocean-deep/10 shadow-ocean-teal relative h-auto cursor-pointer rounded-none border bg-transparent px-6 py-2 font-mono text-sm font-bold tracking-widest uppercase transition-all duration-300 hover:text-white md:text-xs"
+              className="hover:border-ocean-teal/80 hover:bg-ocean-teal! border-ocean-teal/30 dark:bg-ocean-deep/10 shadow-ocean-teal text-ocean-blue relative h-auto cursor-pointer rounded-none border bg-transparent px-6 py-2 font-mono text-sm font-bold tracking-widest uppercase transition-all duration-300 hover:text-white md:text-xs dark:text-white"
             >
               {t("read-resume")}
             </motion.button>

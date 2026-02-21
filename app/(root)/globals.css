@@ -144,14 +144,6 @@ body {
   }
 }
 
-/* Typography Utility */
-.logo-tracking {
-  letter-spacing: -0.05em;
-}
-.sub-logo-tracking {
-  letter-spacing: 0.2em;
-}
-
 /* Transitions */
 ::view-transition-new(root) {
   animation: reveal 0.4s ease-in-out forwards;

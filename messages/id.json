@@ -1,4 +1,10 @@
 {
+  "Schema": {
+    "person": {
+      "jobTitle": "Pengembang Fullstack",
+      "description": "Pengembang Fullstack yang berfokus pada Next.js, TypeScript, dan React. Membangun aplikasi web yang skalabel dan berperforma tinggi serta solusi digital modern."
+    }
+  },
   "Loader": {
     "welcome-message": "Selamat datang di studio bawah laut",
     "loading-texts": {
@@ -83,7 +89,7 @@
   },
   "Services": {
     "title": "Layanan Utama",
-    "subtitle": "Apa Yang Bisa Saya Tawarkan",
+    "subtitle": "Apa Yang Bisa Saya Bangun",
     "services": {
       "fe": {
         "title": "Pengembangan Frontend",

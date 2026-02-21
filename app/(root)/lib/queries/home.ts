@@ -86,7 +86,8 @@ export const getProjects = async (client?: SupabaseClient) => {
       urls,
       thumbnail:asset_id (
         url
-      )
+      ),
+      updated_at
   `);
 
   if (error) throw error;
