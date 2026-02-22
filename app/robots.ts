@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { environments } from './environments';
 
 const robots = (): MetadataRoute.Robots => {
-  const BASE_URL = environments.IS_DOMAIN_APPROVED
+  const BASE_URL = environments.VERCEL_ENV === "production"
     ? "https://ardhikaputra.is-a.dev"
     : "https://ardhikaputra.vercel.app";
 

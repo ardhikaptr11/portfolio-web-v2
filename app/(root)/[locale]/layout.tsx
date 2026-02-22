@@ -15,9 +15,10 @@ import { constructMetadata } from "@/lib/metadata";
 
 export const metadata = constructMetadata();
 
-const BASE_URL = environments.IS_DOMAIN_APPROVED
-  ? "https://ardhikaputra.is-a.dev"
-  : "https://ardhikaputra.vercel.app";
+const BASE_URL =
+  environments.VERCEL_ENV === "production"
+    ? "https://ardhikaputra.is-a.dev"
+    : "https://ardhikaputra.vercel.app";
 
 const BaseLayout = async ({
   children,

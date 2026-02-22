@@ -89,7 +89,7 @@ const ProjectCard = ({
               />
             </div>
 
-            <p className="text-muted-foreground line-clamp-2 grow text-sm leading-relaxed">
+            <p className="text-muted-foreground grow text-sm leading-relaxed">
               {description}
             </p>
 

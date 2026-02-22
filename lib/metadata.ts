@@ -1,4 +1,3 @@
-// lib/metadata.ts
 import { environments } from "@/app/environments";
 import { Metadata, Viewport } from "next";
 
@@ -12,9 +11,13 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
+const BASE_URL = environments.VERCEL_ENV === "production"
+  ? "https://ardhikaputra.is-a.dev"
+  : "https://ardhikaputra.vercel.app";
+
 export const constructMetadata = ({
-  title = "Ardhika Putra - Fullstack Developer",
-  description = "Fullstack Developer focused on Next.js, TypeScript, and React. Building scalable, high-performance web applications and modern digital solutions.",
+  title,
+  description,
   image = "/og-image.webp",
   locale = "en",
   pathname = "",
@@ -27,22 +30,25 @@ export const constructMetadata = ({
   pathname?: string;
   indexable?: boolean;
 } = {}): Metadata => {
-  const BASE_URL = environments.IS_DOMAIN_APPROVED
-    ? "https://ardhikaputra.is-a.dev"
-    : "https://ardhikaputra.vercel.app";
-
   const url = locale === "en"
     ? pathname
       ? `${BASE_URL}/${pathname}`
       : BASE_URL
     : `${BASE_URL}/${locale}${pathname ? `/${pathname}` : ""}`;
 
+  const displayTitle = title?.startsWith("Ardhika Putra")
+    ? { absolute: title }
+    : { default: title || "Ardhika Putra - Fullstack Developer", template: `%s | Ardhika Putra` };
+
+  const seoTitle = title?.startsWith("Ardhika Putra")
+    ? title
+    : title
+      ? `${title} | Ardhika Putra`
+      : "Ardhika Putra - Fullstack Developer";
+
   return {
     // Core Metadata
-    title: {
-      default: title,
-      template: `%s | Ardhika Putra`,
-    },
+    title: displayTitle,
     description,
     applicationName: "Ardhika Putra's Web Portfolio",
     authors: [{ name: "Ardhika Putra", url: BASE_URL }],
@@ -75,7 +81,7 @@ export const constructMetadata = ({
 
     // Open Graph
     openGraph: {
-      title,
+      title: seoTitle,
       description,
       url,
       siteName: "Ardhika Putra",
@@ -94,7 +100,7 @@ export const constructMetadata = ({
     // Twitter (X) Card
     twitter: {
       card: "summary_large_image",
-      title,
+      title: seoTitle,
       description,
       images: [image],
       creator: "@ardhikaptr11",

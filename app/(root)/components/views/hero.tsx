@@ -14,6 +14,10 @@ import { IHero } from "../../types/data";
 import DecryptedText from "../decrypted-text";
 import TypingText from "../typing-text";
 import { useTranslations } from "next-intl";
+import IconWheel from "../icon-wheel";
+import CountingNumber from "../counting-number";
+import Stats from "../stats";
+import { cn } from "@/lib/utils";
 
 const generateRadarPositions = (skills: string[]) => {
   return skills.map((skill, index) => {
@@ -175,7 +179,7 @@ const Hero = ({ data }: HeroProps) => {
             </motion.div>
           ))}
           <div
-            className="bg-ocean-teal/30 relative z-30 h-4 w-4 rounded-full"
+            className="bg-ocean-teal/30 relative z-30 size-4 rounded-full"
             style={{
               boxShadow: "0 0 20px var(--ocean-teal)",
             }}
@@ -209,6 +213,7 @@ const Hero = ({ data }: HeroProps) => {
             <span>{lastName}</span>
             <span className="text-ocean-teal">{firstName}</span>
           </h1>
+
           <div className="border-ocean-teal/30 mt-6 flex flex-col gap-1 border-l pl-6">
             <TypingText
               text={roleTexts}
@@ -257,6 +262,18 @@ const Hero = ({ data }: HeroProps) => {
             </motion.button>
           </div>
         </motion.div>
+
+        {/* Stats */}
+        <div
+          className={cn(
+            "max-md:relative max-md:flex max-md:justify-center",
+            "md:absolute md:top-auto md:right-auto md:bottom-6 md:left-6 md:translate-y-0 md:flex-row",
+            "xl:top-1/2 xl:right-10 xl:bottom-auto xl:left-auto xl:-translate-y-1/2 xl:flex-col xl:gap-8",
+            "z-50 flex items-end transition-all duration-500",
+          )}
+        >
+          <Stats />
+        </div>
 
         <div className="relative z-10 flex h-full items-end justify-center md:justify-end">
           <motion.div
