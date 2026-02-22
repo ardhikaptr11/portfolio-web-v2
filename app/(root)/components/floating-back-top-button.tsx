@@ -6,7 +6,7 @@ import { Icons } from "@/components/icons"; // Pastikan path benar
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
-const FloatingBackToTopButton =() => {
+const FloatingBackToTopButton = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { scrollYProgress } = useScroll();
 
@@ -46,9 +46,11 @@ const FloatingBackToTopButton =() => {
       )}
     >
       <Button
+        type="button"
         size="sm"
         onClick={scrollToTop}
         className="group bg-ocean-surface/80 relative flex size-12 items-center justify-center rounded-full border border-white/5 shadow-2xl backdrop-blur-md transition-transform hover:scale-110 active:scale-95"
+        aria-label="Scroll to top"
       >
         <svg className="absolute size-full -rotate-90" viewBox="0 0 100 100">
           <circle
@@ -77,6 +79,6 @@ const FloatingBackToTopButton =() => {
       </Button>
     </div>
   );
-}
+};
 
-export default FloatingBackToTopButton
+export default FloatingBackToTopButton;

@@ -1,4 +1,10 @@
 {
+  "Schema": {
+    "person": {
+      "jobTitle": "Fullstack Developer",
+      "description": "Fullstack Developer focused on Next.js, TypeScript, and React. Building scalable, high-performance web applications and modern digital solutions."
+    }
+  },
   "Loader": {
     "welcome-message": "Welcome to the workshop below the waves",
     "loading-texts": {
@@ -83,7 +89,7 @@
   },
   "Services": {
     "title": "Core Services",
-    "subtitle": "What Can I Offer",
+    "subtitle": "What Can I Build",
     "services": {
       "fe": {
         "title": "Frontend Development",

@@ -89,7 +89,7 @@ const ProjectCard = ({
               />
             </div>
 
-            <p className="text-muted-foreground line-clamp-2 grow text-sm leading-relaxed">
+            <p className="text-muted-foreground grow text-sm leading-relaxed">
               {description}
             </p>
 
@@ -244,16 +244,17 @@ const ExperienceCard = ({ experience }: { experience: IExperience }) => {
 
       {/* Footer Section: Timeline & Action */}
       <div className="border-ocean-teal/20 bg-ocean-teal/5 flex flex-col justify-between gap-5 rounded-lg border p-3 md:flex-row md:items-center">
-        <div className="flex items-center gap-6 font-mono">
+        <div className="flex flex-col gap-2 font-mono md:flex-row md:items-center md:gap-6">
           <div className="space-y-0.5">
             <p className="text-muted-foreground text-[9px] tracking-widest uppercase">
               {locale === "id" ? "Lini masa" : "Timeline"}
             </p>
             <div className="flex items-center gap-2 text-xs text-white/90">
               <Icons.calendar className="text-ocean-teal/60 size-3.5" />
-              <p>
-                {formattedStartDate}{" "}
-                <span className="text-ocean-teal/30">—</span> {formattedEndDate}
+              <p className="inline-flex flex-wrap items-center gap-x-1.5">
+                <span>{formattedStartDate}</span>
+                <span className="text-ocean-teal/30">—</span>
+                <span>{formattedEndDate}</span>
               </p>
             </div>
           </div>

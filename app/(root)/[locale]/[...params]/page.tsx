@@ -1,9 +1,10 @@
-import { Metadata } from "next";
+import { constructMetadata } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 
-export const metadata: Metadata = {
+export const metadata = constructMetadata({
   title: "404",
-};
+  indexable: false,
+});
 
 const ErrorPage = () => {
   notFound();

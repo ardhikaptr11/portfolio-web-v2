@@ -1,13 +1,12 @@
 import {
   IconBrandExpress,
   IconBrandLogo,
-  IconSubmarine,
+  IconSubmarine
 } from "@/app/(root)/components/custom-icons";
 import {
   IconAdjustmentsHorizontal,
   IconAlertCircle,
   IconAlertTriangle,
-  IconApi,
   IconArrowBigUpLines,
   IconArrowRight,
   IconBookmark,
@@ -68,7 +67,6 @@ import {
   IconMinus,
   IconMoon,
   IconPalette,
-  IconPhone,
   IconPhoto,
   IconPhotoOff,
   IconPlus,
@@ -89,7 +87,7 @@ import {
   IconUserCircle,
   IconWorldWww,
   IconX,
-  IconXboxX,
+  IconXboxX
 } from "@tabler/icons-react";
 
 export type Icon = React.ComponentType<IconProps>;

@@ -67,6 +67,7 @@ const Footer = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group hover:border-ocean-teal/20 hover:bg-ocean-teal/10 hover:text-ocean-teal text-muted-foreground border-ocean-teal/20 flex size-10 items-center justify-center rounded-full border bg-white/2 transition-all hover:scale-110 dark:border-white/5"
+                aria-label={`Go to developer's ${key} profile`}
               >
                 <Icon className="size-5" />
               </Link>

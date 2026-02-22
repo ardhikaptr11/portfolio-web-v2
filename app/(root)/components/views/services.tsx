@@ -107,9 +107,9 @@ const Services = () => {
                 key={service.key}
                 onClick={() => handleClick(service.key)}
                 className={cn(
-                  "border-ocean-teal/10 relative flex flex-col overflow-hidden border transition-all duration-700 ease-in-out",
+                  "border-ocean-teal/10 relative flex flex-col overflow-hidden border bg-white/60 transition-all duration-700 ease-in-out",
                   isActive
-                    ? "bg-ocean-teal/3 flex-3 md:flex-4"
+                    ? "bg-white/50 dark:bg-ocean-teal/3 flex-3 md:flex-4"
                     : "bg-secondary/20 hover:bg-ocean-teal/5 flex-1",
                 )}
               >
@@ -200,7 +200,7 @@ const Services = () => {
                         className="mt-8 flex h-full flex-col justify-between"
                       >
                         <div>
-                          <h4 className="text-3xl font-black tracking-tighter text-white uppercase md:text-5xl">
+                          <h4 className="text-3xl font-black tracking-tighter text-ocean-blue dark:text-foreground uppercase md:text-5xl">
                             {t(`services.${service.key}.title`).split(" ")[0]}{" "}
                             <br />
                             <span className="text-ocean-teal">

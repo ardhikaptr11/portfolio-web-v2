@@ -46,7 +46,7 @@ const UnderDevelopment = () => {
           <h3 className="mb-3 text-4xl font-bold tracking-[0.2em] uppercase md:text-5xl">
             {t("title")}
           </h3>
-          <p className="text-xs tracking-[0.4em] text-cyan-300/60 uppercase italic">
+          <p className="text-xs tracking-[0.4em] text-ocean-teal/60 uppercase italic">
             {t("subtitle")}
           </p>
         </motion.div>

@@ -387,6 +387,7 @@ const Experiences = ({ experiences }: { experiences: IExperience[] }) => {
               <form onSubmit={handleCommand} className="mt-4 flex items-center">
                 <Prompt />
                 <Input
+                  id="terminal-input"
                   ref={inputRef}
                   type="text"
                   value={inputValue}

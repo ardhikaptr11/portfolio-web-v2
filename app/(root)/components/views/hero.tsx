@@ -14,6 +14,10 @@ import { IHero } from "../../types/data";
 import DecryptedText from "../decrypted-text";
 import TypingText from "../typing-text";
 import { useTranslations } from "next-intl";
+import IconWheel from "../icon-wheel";
+import CountingNumber from "../counting-number";
+import Stats from "../stats";
+import { cn } from "@/lib/utils";
 
 const generateRadarPositions = (skills: string[]) => {
   return skills.map((skill, index) => {
@@ -175,7 +179,7 @@ const Hero = ({ data }: HeroProps) => {
             </motion.div>
           ))}
           <div
-            className="bg-ocean-teal/30 relative z-30 h-4 w-4 rounded-full"
+            className="bg-ocean-teal/30 relative z-30 size-4 rounded-full"
             style={{
               boxShadow: "0 0 20px var(--ocean-teal)",
             }}
@@ -209,6 +213,7 @@ const Hero = ({ data }: HeroProps) => {
             <span>{lastName}</span>
             <span className="text-ocean-teal">{firstName}</span>
           </h1>
+
           <div className="border-ocean-teal/30 mt-6 flex flex-col gap-1 border-l pl-6">
             <TypingText
               text={roleTexts}
@@ -232,7 +237,7 @@ const Hero = ({ data }: HeroProps) => {
           <div className="mt-10 flex flex-wrap gap-4">
             <motion.button
               whileTap={{ scale: 0.95 }}
-              className="bg-ocean-teal relative overflow-hidden px-6 py-2 font-mono font-bold tracking-widest text-white uppercase md:text-xs"
+              className="bg-ocean-teal relative overflow-hidden px-6 py-2 font-mono font-bold tracking-widest text-white! uppercase md:text-xs"
               onClick={handleDeepDive}
             >
               <motion.div
@@ -246,18 +251,29 @@ const Hero = ({ data }: HeroProps) => {
                 }}
                 className="absolute inset-0 z-10 skew-x-12 bg-linear-to-r from-transparent via-white/40 to-transparent"
               />
-
-              <span className="relative z-20">{t("dive-deeper")}</span>
+              {t("dive-deeper")}
             </motion.button>
             <motion.button
               onClick={() => setShowResume(true)}
               whileTap={{ scale: 0.95 }}
-              className="hover:border-ocean-teal/80 hover:bg-ocean-teal! border-ocean-teal/30 dark:bg-ocean-deep/10 shadow-ocean-teal relative h-auto cursor-pointer rounded-none border bg-transparent px-6 py-2 font-mono text-sm font-bold tracking-widest uppercase transition-all duration-300 hover:text-white md:text-xs"
+              className="hover:border-ocean-teal/80 hover:bg-ocean-teal! border-ocean-teal/30 dark:bg-ocean-deep/10 shadow-ocean-teal text-ocean-blue relative h-auto cursor-pointer rounded-none border bg-transparent px-6 py-2 font-mono text-sm font-bold tracking-widest uppercase transition-all duration-300 hover:text-white md:text-xs dark:text-white"
             >
               {t("read-resume")}
             </motion.button>
           </div>
         </motion.div>
+
+        {/* Stats */}
+        <div
+          className={cn(
+            "max-md:relative max-md:flex max-md:justify-center",
+            "md:absolute md:top-auto md:right-auto md:bottom-6 md:left-6 md:translate-y-0 md:flex-row",
+            "xl:top-1/2 xl:right-10 xl:bottom-auto xl:left-auto xl:-translate-y-1/2 xl:flex-col xl:gap-8",
+            "z-50 flex items-end transition-all duration-500",
+          )}
+        >
+          <Stats />
+        </div>
 
         <div className="relative z-10 flex h-full items-end justify-center md:justify-end">
           <motion.div

@@ -9,12 +9,6 @@ import { NAV_ITEMS } from "../../constants/items.constants";
 import { getAllData } from "../../lib/queries/home";
 import "../../globals.css";
 
-export const metadata: Metadata = {
-  title: "Ardhika Putra - Fullstack Developer",
-  description:
-    "Welcome to my personal digital space where you can learn all about me!",
-};
-
 export const revalidate = 86400;
 
 const NAV_ITEMS_SLICED = NAV_ITEMS.slice(1);
@@ -26,7 +20,7 @@ const LandingPageLayout = async ({
   children: ReactNode;
 }>) => {
   const { profile } = await getAllData();
-  const { tagline, tagline_id } = profile
+  const { tagline, tagline_id } = profile;
 
   return (
     <ScreenLoader taglines={{ tagline, tagline_id }}>
