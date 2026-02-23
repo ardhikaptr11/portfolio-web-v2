@@ -1,18 +1,11 @@
 "use client";
 
+import { useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
-import "./globals.css";
 import "../node_modules/flag-icons/css/flag-icons.min.css";
 import CustomCursor from "./(root)/components/custom-cursor";
-import { Metadata } from "next";
-
-// export const metadata: Metadata = {
-//   icons: {
-//     icon: "/logo.svg",
-//     apple: "/logo.svg",
-//   },
-// };
+import "./globals.css";
 
 const META_THEME_COLORS = {
   light: "#ffffff",
@@ -25,11 +18,12 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   const pathname = usePathname();
+  const locale = useLocale();
   const isDashboard = pathname.startsWith("/dashboard") || pathname === "/auth";
 
   return (
     <html
-      lang="en"
+      lang={locale}
       data-scroll-behavior="smooth"
       className={isDashboard ? "no-scrollbar!" : "oceanic-scrollbar!"}
       suppressHydrationWarning
