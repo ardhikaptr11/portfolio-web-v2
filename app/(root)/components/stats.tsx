@@ -1,9 +1,27 @@
+"use client";
+
 import { Fragment } from "react";
 import CountingNumber from "./counting-number";
 import IconWheel from "./icon-wheel";
 import { cn } from "@/lib/utils";
+import { useLocale } from "next-intl";
+
+const TRANSLATIONS: Record<string, Record<string, string[]>> = {
+  en: {
+    yoe: ["Years", "of Experience"],
+    projects: ["Projects", "Done"],
+    tech: ["Favorite", "Technology"],
+  },
+  id: {
+    yoe: ["Tahun", "Pengalaman"],
+    projects: ["Proyek", "Selesai"],
+    tech: ["Teknologi", "Favorit"],
+  },
+};
 
 const Stats = () => {
+  const locale = useLocale();
+
   return (
     <Fragment>
       {/* Years of Experience */}
@@ -12,7 +30,7 @@ const Stats = () => {
           <CountingNumber
             number={2}
             className={cn(
-              "bg-linear-to-b from-white to-neutral-400 bg-clip-text font-black tracking-tighter text-transparent",
+              "from-ocean-teal to-ocean-surface bg-linear-to-b bg-clip-text font-black tracking-tighter text-transparent dark:from-white dark:to-neutral-400",
               "text-4xl lg:text-5xl xl:text-6xl",
             )}
             transition={{ stiffness: 10, damping: 12, mass: 1 }}
@@ -22,11 +40,12 @@ const Stats = () => {
           </span>
         </div>
         <p className="text-ocean-teal text-center text-[8px] font-bold tracking-widest uppercase opacity-70 md:text-[10px] lg:text-xs">
-          Years <br /> of Experience
+          {TRANSLATIONS[locale].yoe[0]} <br />
+          {TRANSLATIONS[locale].yoe[1]}
         </p>
       </div>
 
-      <div className="via-ocean-teal/30 h-16 w-px bg-linear-to-b from-transparent to-transparent xl:hidden mx-1" />
+      <div className="via-ocean-teal/30 mx-1 h-16 w-px bg-linear-to-b from-transparent to-transparent xl:hidden" />
 
       {/* Total Projects */}
       <div className="group flex min-w-18.75 flex-col items-center justify-center gap-y-1.5 md:min-w-22.5 md:gap-y-2 lg:min-w-27.5 xl:min-w-32.5">
@@ -34,7 +53,7 @@ const Stats = () => {
           <CountingNumber
             number={5}
             className={cn(
-              "bg-linear-to-b from-white to-neutral-400 bg-clip-text font-black tracking-tighter text-transparent",
+              "from-ocean-teal to-ocean-surface bg-linear-to-b bg-clip-text font-black tracking-tighter text-transparent dark:from-white dark:to-neutral-400",
               "text-4xl lg:text-5xl xl:text-6xl",
             )}
             transition={{ stiffness: 10, damping: 12, mass: 1 }}
@@ -44,11 +63,12 @@ const Stats = () => {
           </span>
         </div>
         <p className="text-ocean-teal text-center text-[8px] font-bold tracking-widest uppercase opacity-70 md:text-[10px] lg:text-xs">
-          Projects <br /> Done
+          {TRANSLATIONS[locale].projects[0]} <br />
+          {TRANSLATIONS[locale].projects[1]}
         </p>
       </div>
 
-      <div className="via-ocean-teal/30 h-16 w-px bg-linear-to-b from-transparent to-transparent xl:hidden mx-1" />
+      <div className="via-ocean-teal/30 mx-1 h-16 w-px bg-linear-to-b from-transparent to-transparent xl:hidden" />
 
       {/* Icon Wheel */}
       <div className="group flex min-w-18.75 flex-col items-center justify-center gap-y-1.5 md:min-w-22.5 md:gap-y-2 lg:min-w-27.5 xl:min-w-32.5">
@@ -56,7 +76,8 @@ const Stats = () => {
           <IconWheel targetIndex={5} />
         </div>
         <p className="text-ocean-teal text-center text-[8px] font-bold tracking-widest uppercase opacity-70 md:text-[10px] lg:text-xs">
-          Favorite <br /> Technology
+          {TRANSLATIONS[locale].tech[0]} <br />
+          {TRANSLATIONS[locale].tech[1]}
         </p>
       </div>
     </Fragment>

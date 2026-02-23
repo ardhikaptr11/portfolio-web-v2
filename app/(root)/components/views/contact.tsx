@@ -280,12 +280,16 @@ const Contact = ({
                   {isLoading ? (
                     <Fragment>
                       <Spinner variant="circle" />
-                      <span>Transmitting...</span>
+                      <span>
+                        {locale === "id" ? "Mengirim" : "Dispatching"}...
+                      </span>
                     </Fragment>
                   ) : (
                     <Fragment>
                       <Icons.rss className="animate-pulse" />
-                      <span>Transmit</span>
+                      <span>
+                        {locale === "id" ? "Kirimkan" : "Dispatch"}
+                      </span>
                     </Fragment>
                   )}
                 </Button>

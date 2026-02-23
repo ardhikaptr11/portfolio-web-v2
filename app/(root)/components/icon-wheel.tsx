@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { motion, useAnimation } from "framer-motion";
-import { ICON_MAP } from "../constants/items.constants";
 import { cn } from "@/lib/utils";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { ICON_MAP } from "../constants/items.constants";
 
 const COLOR_MAP: Record<string, string> = {
   HTML: "text-orange-500",
@@ -11,7 +11,7 @@ const COLOR_MAP: Record<string, string> = {
   "Vanilla CSS": "text-blue-500",
   Python: "text-blue-400",
   React: "text-[#61DAFB]",
-  "Next.js": "text-white/80",
+  "Next.js": "text-ocean-teal/80 dark:text-white/80",
   "Tailwind CSS": "text-cyan-400",
   Typescript: "text-blue-600",
   "Express.js": "text-neutral-300",
