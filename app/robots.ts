@@ -4,9 +4,8 @@ import { environments } from "./environments";
 const BASE_URL = environments.VERCEL_ENV === "production"
   ? environments.BASE_URL_PROD
   : environments.BASE_URL_DEV;
-  
-const robots = (): MetadataRoute.Robots => {
 
+const robots = (): MetadataRoute.Robots => {
   return {
     rules: {
       userAgent: "*",
