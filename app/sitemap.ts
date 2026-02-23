@@ -4,10 +4,11 @@ import { getProjects } from "./(root)/lib/queries/home";
 
 export const revalidate = 3600;
 
+const BASE_URL = environments.VERCEL_ENV === "production"
+  ? environments.BASE_URL_PROD
+  : environments.BASE_URL_DEV;
+
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
-  const BASE_URL = environments.VERCEL_ENV === "production"
-    ? "https://ardhikaputra.is-a.dev"
-    : "https://ardhikaputra.vercel.app";
 
   const locales = ["en", "id"];
   const defaultLocale = "en";

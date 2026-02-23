@@ -12,8 +12,8 @@ export const viewport: Viewport = {
 };
 
 const BASE_URL = environments.VERCEL_ENV === "production"
-  ? "https://ardhikaputra.is-a.dev"
-  : "https://ardhikaputra.vercel.app";
+  ? environments.BASE_URL_PROD
+  : environments.BASE_URL_DEV;
 
 export const constructMetadata = ({
   title,
@@ -87,10 +87,10 @@ export const constructMetadata = ({
       siteName: "Ardhika Putra",
       images: [
         {
-          url: image,
+          url: `${BASE_URL}${image}`,
           width: 1200,
           height: 630,
-          alt: "Ardhika Putra Portfolio Preview",
+          alt: "Ardhika Putra Logo",
         },
       ],
       locale: locale === "id" ? "id_ID" : "en_US",
@@ -102,7 +102,7 @@ export const constructMetadata = ({
       card: "summary_large_image",
       title: seoTitle,
       description,
-      images: [image],
+      images: [`${BASE_URL}${image}`],
       creator: "@ardhikaptr11",
       site: "@ardhikaptr11",
     },
@@ -121,10 +121,9 @@ export const constructMetadata = ({
       },
     },
 
-    // This is for the Google Search Console, uncomment later if needed
-    // verification: {
-    //   google: "your-verification-code",
-    // },
+    verification: {
+      google: environments.GOOGLE_SITE_VERIFICATION,
+    },
 
     // Icons & Basic PWA
     icons: {

@@ -1,6 +1,6 @@
 import { updateSession } from "@/lib/supabase/proxy";
 import createMiddleware from 'next-intl/middleware';
-import { type NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 import { routing } from "./app/(root)/i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
@@ -8,15 +8,24 @@ const intlMiddleware = createMiddleware(routing);
 const proxy = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith("/dashboard") || pathname.startsWith("/auth")) return await updateSession(request);
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-pathname', pathname);
 
-  const intlResponse = intlMiddleware(request);
+  const requestWithHeaders = new NextRequest(request, {
+    headers: requestHeaders,
+  });
 
-  const supabaseResponse = await updateSession(request);
+  if (pathname.startsWith("/dashboard") || pathname.startsWith("/auth")) return await updateSession(requestWithHeaders);
+
+  const intlResponse = intlMiddleware(requestWithHeaders);
+
+  const supabaseResponse = await updateSession(requestWithHeaders);
 
   supabaseResponse.cookies.getAll().forEach((cookie) => {
     intlResponse.cookies.set(cookie.name, cookie.value);
   });
+
+  intlResponse.headers.set('x-pathname', pathname);
 
   return intlResponse;
 };
@@ -32,7 +41,7 @@ export const config = {
      * - favicon.ico (favicon file)
      * Feel free to modify this pattern to include more paths.
      */
-    "/((?!api|_next/static|_next/image|.*\\.(?:ico|svg|png|jpg|jpeg|gif|webp|webmanifest|xml|txt)$).*)",
+    "/((?!api|_next/static|_next/image|.*\\.(?:ico|svg|png|jpg|jpeg|gif|webp|webmanifest|txt|xml)$).*)",
   ],
 };
 

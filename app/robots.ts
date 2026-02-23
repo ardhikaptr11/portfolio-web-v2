@@ -1,16 +1,17 @@
-import { MetadataRoute } from 'next';
-import { environments } from './environments';
+import { MetadataRoute } from "next";
+import { environments } from "./environments";
 
+const BASE_URL = environments.VERCEL_ENV === "production"
+  ? environments.BASE_URL_PROD
+  : environments.BASE_URL_DEV;
+  
 const robots = (): MetadataRoute.Robots => {
-  const BASE_URL = environments.VERCEL_ENV === "production"
-    ? "https://ardhikaputra.is-a.dev"
-    : "https://ardhikaputra.vercel.app";
 
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/dashboard/'],
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/auth/", "/dashboard/", "/api/"],
     },
     sitemap: `${BASE_URL}/sitemap.xml`,
   };

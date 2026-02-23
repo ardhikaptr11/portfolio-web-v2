@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Locale, useLocale } from "next-intl";
 import { useParams } from "next/navigation";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { usePathname, useRouter } from "../i18n/navigation";
 
 const LANGUAGES = [
@@ -17,8 +17,11 @@ const LanguageSwitcher = () => {
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
   const params = useParams();
-
   const currentLanguage = useLocale();
+
+  useEffect(() => {
+    document.documentElement.setAttribute("lang", currentLanguage);
+  }, [currentLanguage]);
 
   const handleSwitch = (nextLocale: Locale) => {
     if (nextLocale === currentLanguage) return;

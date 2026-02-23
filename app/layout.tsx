@@ -1,35 +1,33 @@
-"use client";
-
-import { usePathname } from "next/navigation";
+import { headers as NextHeaders } from "next/headers";
 import { ReactNode } from "react";
-import "./globals.css";
 import "../node_modules/flag-icons/css/flag-icons.min.css";
 import CustomCursor from "./(root)/components/custom-cursor";
-import { Metadata } from "next";
-
-// export const metadata: Metadata = {
-//   icons: {
-//     icon: "/logo.svg",
-//     apple: "/logo.svg",
-//   },
-// };
+import "./globals.css";
 
 const META_THEME_COLORS = {
   light: "#ffffff",
   dark: "#09090b",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const pathname = usePathname();
+  const headers = await NextHeaders();
+  const pathname = headers.get("x-pathname") || "";
+
   const isDashboard = pathname.startsWith("/dashboard") || pathname === "/auth";
+
+  const currentLocale = isDashboard
+    ? "en"
+    : pathname.startsWith("/id")
+      ? "id"
+      : "en";
 
   return (
     <html
-      lang="en"
+      lang={currentLocale}
       data-scroll-behavior="smooth"
       className={isDashboard ? "no-scrollbar!" : "oceanic-scrollbar!"}
       suppressHydrationWarning
