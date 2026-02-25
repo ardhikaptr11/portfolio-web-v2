@@ -1,9 +1,13 @@
 import { createAdminClient, createClient } from "@/lib/supabase/server";
 import { ICertificate, IExperience, IHero, IProject } from "../../types/data";
-import { SupabaseClient } from "@supabase/supabase-js";
+import { SupabaseClient, UserMetadata } from "@supabase/supabase-js";
 import { cache } from "react";
 
-const getAssetUrl = (asset: any) => (asset as Record<string, any>)?.url || null;
+interface UserMetadataExtended extends UserMetadata {
+  business_email?: string;
+}
+
+const getAssetUrl = (asset: Record<string, any>) => (asset)?.url || null;
 
 const getProfile = async (client: SupabaseClient) => {
   const supabase = client ?? await createClient();
@@ -29,12 +33,15 @@ const getProfile = async (client: SupabaseClient) => {
   if (profileResponse.error) throw profileResponse.error;
 
   const user = authResponse.data?.users?.[0];
+  const { business_email } = user?.app_metadata as UserMetadataExtended;
+
   const { asset, ...rest } = profileResponse.data;
+
 
   return {
     ...rest,
     hero_img: assetResponse?.data?.url,
-    email: user?.email,
+    email: business_email,
     phone: user?.phone,
     cv_asset: (asset as Record<string, any>)?.url
   } as IHero;
@@ -43,23 +50,22 @@ const getProfile = async (client: SupabaseClient) => {
 const getExperiences = async (client: SupabaseClient) => {
   const supabase = client ?? await createClient();
 
-  const { data, error } = await supabase.from("experiences").select(
-    `
-        role,
-        organization,
-        work_category,
-        work_type,
-        responsibilities,
-        responsibilities_id,
-        location,
-        start_date,
-        end_date,
-        duration,
-        related_asset (
-          url
-        )
-      `
-  ).order("ordering", { ascending: true });
+  // responsibilities_id is the responsibilities in Indonesian
+  const { data, error } = await supabase.from("experiences").select(`
+    role,
+    organization,
+    work_category,
+    work_type,
+    responsibilities,
+    responsibilities_id,
+    location,
+    start_date,
+    end_date,
+    duration,
+    related_asset (
+      url
+    )
+  `).order("ordering", { ascending: true });
 
   if (error) throw error;
 
@@ -74,20 +80,20 @@ const getExperiences = async (client: SupabaseClient) => {
 export const getProjects = async (client?: SupabaseClient) => {
   const supabase = client ?? await createClient();
 
-  const { data, error } = await supabase.from("projects").select(
-    `
-      id,
-      title,
-      slug,
-      description,
-      description_id,
-      overview,
-      tech_stack,
-      urls,
-      thumbnail:asset_id (
-        url
-      ),
-      updated_at
+  // description_id is the description in Indonesian
+  const { data, error } = await supabase.from("projects").select(`
+    id,
+    title,
+    slug,
+    description,
+    description_id,
+    overview,
+    tech_stack,
+    urls,
+    thumbnail:asset_id (
+      url
+    ),
+    updated_at
   `);
 
   if (error) throw error;

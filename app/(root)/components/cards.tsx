@@ -122,6 +122,7 @@ const ProjectCard = ({
                 target="_blank"
                 className="text-muted-foreground hover:text-ocean-teal transition-colors"
                 onClick={(e) => e.stopPropagation()}
+                aria-label={`View ${project.title} on GitHub`}
               >
                 <Icons.github className="size-4.5" />
               </motion.a>
@@ -131,6 +132,7 @@ const ProjectCard = ({
                 target="_blank"
                 className="text-muted-foreground hover:text-ocean-teal transition-colors"
                 onClick={(e) => e.stopPropagation()}
+                aria-label={`View ${project.title} live demo`}
               >
                 <Icons.externalLink className="size-4.5" />
               </motion.a>
