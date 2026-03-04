@@ -19,7 +19,7 @@ const TRANSLATIONS: Record<string, Record<string, string[]>> = {
   },
 };
 
-const Stats = () => {
+const Stats = ({ yoe, totalProjects }: { yoe: number; totalProjects: number }) => {
   const locale = useLocale();
 
   return (
@@ -28,7 +28,7 @@ const Stats = () => {
       <div className="group flex min-w-18.75 flex-col items-center justify-center gap-y-1.5 md:min-w-22.5 md:gap-y-2 lg:min-w-27.5 xl:min-w-32.5">
         <div className="flex items-baseline justify-center">
           <CountingNumber
-            number={2}
+            number={yoe}
             className={cn(
               "from-ocean-teal to-ocean-surface bg-linear-to-b bg-clip-text font-black tracking-tighter text-transparent dark:from-white dark:to-neutral-400",
               "text-4xl lg:text-5xl xl:text-6xl",
@@ -51,7 +51,7 @@ const Stats = () => {
       <div className="group flex min-w-18.75 flex-col items-center justify-center gap-y-1.5 md:min-w-22.5 md:gap-y-2 lg:min-w-27.5 xl:min-w-32.5">
         <div className="flex items-baseline justify-center">
           <CountingNumber
-            number={5}
+            number={totalProjects}
             className={cn(
               "from-ocean-teal to-ocean-surface bg-linear-to-b bg-clip-text font-black tracking-tighter text-transparent dark:from-white dark:to-neutral-400",
               "text-4xl lg:text-5xl xl:text-6xl",

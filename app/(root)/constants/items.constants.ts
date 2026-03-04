@@ -12,7 +12,8 @@ const ICON_MAP: Record<string, TablerIcon> = {
   "Typescript": Icons.brandTypescript,
   "Express.js": Icons.brandExpress as unknown as TablerIcon, // This is a custom icon
   "Node.js": Icons.brandNodejs,
-  "Mongo DB": Icons.brandMongoDb
+  "Mongo DB": Icons.brandMongoDb,
+  "Supabase": Icons.brandSupabase
 };
 
 const NAV_ITEMS = [

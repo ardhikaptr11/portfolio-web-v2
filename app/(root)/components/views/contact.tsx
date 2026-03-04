@@ -12,7 +12,7 @@ import { FormTextarea } from "@/app/(dashboard)/components/forms/form-textarea";
 import { environments } from "@/app/environments";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form"; // Wrapper shadcn
+import { Form } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -20,6 +20,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { GIANT_TEXT_VARIANTS } from "../../constants/variants.constants";
 import { toast } from "../custom-toast";
 import { useLocale, useTranslations } from "next-intl";
+import { IHero } from "../../types/data";
 
 const ContactSchema = z.object({
   sender_name: z.string().min(2, "name_min").nonempty("name_required"),
@@ -34,8 +35,8 @@ const Contact = ({
   contact,
 }: {
   contact: {
-    email: string;
-    phone: string;
+    email: IHero["email"];
+    phone_number: IHero["phone_number"];
   };
 }) => {
   const t = useTranslations("Contact");
@@ -56,8 +57,8 @@ const Contact = ({
           <Icons.whatsapp className="text-muted-foreground/60 dark:text-foreground group-hover:text-muted-foreground size-5" />
         ),
         label: t("cardLabels.label2"),
-        value: `(+62) ${contact.phone?.slice(1)}`,
-        href: `https://wa.me/62${contact.phone?.slice(1)}`,
+        value: `(+62) ${contact.phone_number}`,
+        href: `https://wa.me/62${contact.phone_number}`,
       },
       {
         icon: (
@@ -68,7 +69,7 @@ const Contact = ({
         href: "https://maps.app.goo.gl/GQ15TvZNWu23FM376",
       },
     ],
-    [contact.email, contact.phone],
+    [contact.email, contact.phone_number],
   );
 
   const recaptchaRef = useRef<ReCAPTCHA>(null);
@@ -287,9 +288,7 @@ const Contact = ({
                   ) : (
                     <Fragment>
                       <Icons.rss className="animate-pulse" />
-                      <span>
-                        {locale === "id" ? "Kirimkan" : "Dispatch"}
-                      </span>
+                      <span>{locale === "id" ? "Kirimkan" : "Dispatch"}</span>
                     </Fragment>
                   )}
                 </Button>

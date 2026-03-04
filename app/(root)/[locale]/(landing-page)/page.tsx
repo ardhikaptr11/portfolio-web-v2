@@ -35,14 +35,16 @@ const HomePage = async () => {
 
   return (
     <Fragment>
-      <Hero data={profile} />
+      <Hero data={{ profile, projects }} />
       <Timeline steps={FOUNDATION_JOURNEY} />
       <Projects projects={projects} />
       <Timeline steps={FUTURE_JOURNEY} isContinuation />
       <Services />
       <Experiences experiences={experiences} />
       <Certifications certificates={certificates} />
-      <Contact contact={{ email: profile.email, phone: profile.phone }} />
+      <Contact
+        contact={{ email: profile.email, phone_number: profile.phone_number }}
+      />
     </Fragment>
   );
 };

@@ -1,4 +1,5 @@
-import { ISocialLinks } from "./user";
+import { Value } from "platejs";
+import { ISocialLinks, TTags } from "./user";
 
 interface IAsset {
   id: string;
@@ -13,6 +14,12 @@ interface IAsset {
 
 interface IAssetPreview extends Pick<IAsset, "id" | "file_name" | "url"> { }
 
+enum PROJECT_STATUS {
+  LIVE = "live",
+  UNDER_DEVELOPMENT = "under_development",
+  ARCHIVED = "archived",
+}
+
 interface IProject {
   id: string;
   asset_id: string;
@@ -21,8 +28,15 @@ interface IProject {
   title: string;
   slug: string;
   description: string;
-  overview: string;
+  description_id: string;
+  overview: Value;
+  overview_id: Value;
   tech_stack: string[];
+  roles: TTags;
+  project_status: PROJECT_STATUS;
+  start_date: Date;
+  is_current?: boolean;
+  end_date: Date | null;
   urls: ISocialLinks;
   created_at: Date;
   updated_at: Date;
@@ -58,8 +72,5 @@ interface IExperience {
 
 export type {
   IAsset,
-  IAssetPreview,
-  IProject,
-  IExperience,
-  WORK_CATEGORY
+  IAssetPreview, IExperience, IProject, WORK_CATEGORY
 };

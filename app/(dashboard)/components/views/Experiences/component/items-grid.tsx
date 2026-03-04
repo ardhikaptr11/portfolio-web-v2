@@ -1,5 +1,7 @@
 "use client";
 
+import { useSessionClient } from "@/app/(dashboard)/hooks/use-session-client";
+import { deleteSelectedExperience } from "@/app/(dashboard)/lib/queries/experiences/action";
 import { IExperience } from "@/app/(dashboard)/types/data";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -15,34 +17,36 @@ import { capitalize } from "@/lib/helpers";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { Fragment, useState, useTransition } from "react";
+import { toast } from "sonner";
 import { AlertModal } from "../../../modal/alert-modal";
 
 const ItemsGrid = ({ data }: { data: IExperience[] }) => {
+  const { isAuthorized } = useSessionClient();
   const [showAlert, setShowAlert] = useState(false);
   const router = useRouter();
 
   const [loading, startTransition] = useTransition();
-  const onConfirmDelete = () => {
+  const onConfirmDelete = (id: IExperience["id"]) => {
     setShowAlert(false);
 
-    // startTransition(async () => {
-    //   toast.promise(deleteSelectedProject(data.slug), {
-    //     loading: "Deleting project...",
-    //     success: () => {
-    //       return {
-    //         duration: 1500,
-    //         onAutoClose: () => router.refresh(),
-    //         message: "Project deleted successfully",
-    //       };
-    //     },
-    //     error: (error: Error) => {
-    //       return {
-    //         message: "Error while deleting project",
-    //         description: error.message,
-    //       };
-    //     },
-    //   });
-    // });
+    startTransition(async () => {
+      toast.promise(deleteSelectedExperience(id), {
+        loading: "Deleting experience...",
+        success: () => {
+          return {
+            duration: 1500,
+            onAutoClose: () => router.refresh(),
+            message: "Experience deleted successfully",
+          };
+        },
+        error: (error: Error) => {
+          return {
+            message: "Error while deleting experience",
+            description: error.message,
+          };
+        },
+      });
+    });
   };
 
   return (
@@ -60,7 +64,7 @@ const ItemsGrid = ({ data }: { data: IExperience[] }) => {
           <Fragment key={item.id}>
             <AlertModal
               title={`Confirm deletion of ${item.role}`}
-              description="Are you sure you want to delete the selected experience?"
+              description="Are you sure you want to delete selected experience?"
               isOpen={showAlert}
               onClose={() => setShowAlert(false)}
               loading={loading}
@@ -73,7 +77,7 @@ const ItemsGrid = ({ data }: { data: IExperience[] }) => {
                 {
                   text: "Submit",
                   variant: "outline",
-                  onClick: onConfirmDelete,
+                  onClick: () => onConfirmDelete(item.id),
                 },
               ]}
             />
@@ -83,12 +87,14 @@ const ItemsGrid = ({ data }: { data: IExperience[] }) => {
                 <div className="flex justify-between">
                   <h3 className="text-lg font-bold">{item.role}</h3>
                   <DropdownMenu modal={false}>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="size-4 p-0!">
-                        <span className="sr-only">Open menu</span>
-                        <Icons.verticalDots className="size-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
+                    {isAuthorized && (
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="size-4 p-0!">
+                          <span className="sr-only">Open menu</span>
+                          <Icons.verticalDots className="size-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                    )}
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel>Actions</DropdownMenuLabel>
                       <DropdownMenuItem

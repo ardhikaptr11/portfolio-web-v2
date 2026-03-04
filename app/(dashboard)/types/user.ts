@@ -12,10 +12,11 @@ interface ISocialLinks {
 interface IProfile {
   avatar: {
     id: string,
-    url: IAccountInfo["avatar_url"];
+    url: IAccountInfo["avatar_url"] | null;
   }
   name: IAccountInfo["name"];
   email: IAccountInfo["email"];
+  phone_number: string;
   motto: string;
   tagline: string;
   roles: TTags;
@@ -27,4 +28,4 @@ interface IProfile {
   }
 }
 
-export type { ISocialLinks, IAccountInfo, IProfile }
+export type { TTags, ISocialLinks, IAccountInfo, IProfile }

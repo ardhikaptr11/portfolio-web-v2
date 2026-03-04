@@ -1,6 +1,7 @@
 "use client";
 
-import { FieldPath, FieldValues } from "react-hook-form";
+import { Icons } from "@/components/icons";
+import { Button } from "@/components/ui/button";
 import {
   FormControl,
   FormDescription,
@@ -10,10 +11,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { FieldPath, FieldValues } from "react-hook-form";
 import { BaseFormFieldProps } from "../../types/base-form";
-import { Button } from "@/components/ui/button";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { Icons } from "@/components/icons";
 
 interface FormInputPasswordProps<
   TFieldValues extends FieldValues = FieldValues,

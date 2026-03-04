@@ -1,5 +1,6 @@
 "use client";
 
+import { useSessionClient } from "@/app/(dashboard)/hooks/use-session-client";
 import { bulkAddExperiences } from "@/app/(dashboard)/lib/queries/experiences/action";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -11,8 +12,9 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addYears } from "date-fns";
 import { useRouter } from "next/navigation";
-import { Suspense, useEffect, useState, useTransition } from "react";
+import { Suspense, useTransition } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 import FormCardSkeleton from "../../form-card-skeleton";
 import { FormCheck } from "../../forms/form-check";
@@ -21,9 +23,6 @@ import { FormInput } from "../../forms/form-input";
 import { FormSelect } from "../../forms/form-select";
 import ResponsibilityInputList from "../../input-list";
 import PageContainer from "../../layout/page-container";
-import { getAllAssets } from "@/app/(dashboard)/lib/queries/assets/actions";
-import { toast } from "sonner";
-import { FormDropdown } from "../../forms/form-dropdown";
 
 const WORK_TYPE = {
   ONLINE: "online",
@@ -40,7 +39,6 @@ const WORK_CATEGORY = {
 const workTypeKeys = Object.values(WORK_TYPE) as [string, ...string[]];
 const workCategoryKeys = Object.values(WORK_CATEGORY) as [string, ...string[]];
 
-// role, organization, category, work_type, responsibilities, location, start_date, end_date, is_current, related_asset
 const SingleExperienceSchema = z
   .object({
     role: z.string().trim().nonempty("Role is required"),
@@ -59,13 +57,9 @@ const SingleExperienceSchema = z
       .refine((val) => val !== null, "Start date is required"),
     is_current: z.union([z.boolean(), z.string()]).nullable(),
     end_date: z.date().nullable(),
-    related_asset: z.string().nullable(),
   })
   .refine(
-    (data) => {
-      if (!data.is_current) return !!data.end_date;
-      return true;
-    },
+    (data) => (data.is_current ? true : !!data.end_date),
     { message: "End date is required", path: ["end_date"] },
   );
 
@@ -78,34 +72,11 @@ export type TAddExperiencesFormValues = z.input<
 >;
 
 const AddExperiences = () => {
+  const { isAuthorized } = useSessionClient();
+
   const router = useRouter();
 
   const [loading, startTransition] = useTransition();
-  const [assets, setAssets] = useState<
-    { id: string; label: string; value: string }[]
-  >([]);
-
-  const fetchAssets = async () => {
-    try {
-      const { files, images } = await getAllAssets();
-
-      const assets = [...files, ...images].map((asset) => ({
-        id: asset.id,
-        label: asset.file_name,
-        value: asset.url,
-      }));
-      setAssets(assets);
-    } catch (error) {
-      toast.error("Failed to fetch assets", {
-        description: (error as Error).message,
-        position: "top-right",
-      });
-    }
-  };
-
-  useEffect(() => {
-    fetchAssets();
-  }, []);
 
   const defaultValues = {
     experiences: [
@@ -119,7 +90,6 @@ const AddExperiences = () => {
         start_date: null,
         is_current: false,
         end_date: null,
-        related_asset: "",
       },
     ],
   };
@@ -156,7 +126,7 @@ const AddExperiences = () => {
         },
         error: (error: Error) => {
           return {
-            message: "Error while inserting experiences",
+            message: "Error while inserting experience(s)",
             description: error.message,
           };
         },
@@ -179,10 +149,9 @@ const AddExperiences = () => {
           >
             {fields.map((field, index) => {
               const currentRole = watchedExperiences?.[index]?.role;
+
               const currentSelectedStartDate = watchedExperiences?.[index]
                 ?.start_date as Date;
-              const currentSelectedEndDate =
-                watchedExperiences?.[index]?.end_date;
 
               const isStillEmployed = watchedExperiences?.[index]
                 ?.is_current as boolean;
@@ -315,10 +284,6 @@ const AddExperiences = () => {
                         name={`experiences.${index}.is_current`}
                         label="I'm currently working here"
                         onChange={(checked) => {
-                          setValue(`experiences.${index}.is_current`, checked, {
-                            shouldValidate: true,
-                          });
-
                           if (checked) {
                             setValue(`experiences.${index}.end_date`, null, {
                               shouldValidate: true,
@@ -328,14 +293,6 @@ const AddExperiences = () => {
                         disabled={loading}
                       />
                     </div>
-                    <FormDropdown
-                      control={form.control}
-                      name={`experiences.${index}.related_asset`}
-                      item="asset"
-                      label="Related Asset"
-                      options={assets}
-                      disabled={loading}
-                    />
                   </CardContent>
                 </Card>
               );
@@ -357,7 +314,11 @@ const AddExperiences = () => {
               <Icons.circlePlus className="size-6" />
               Add New
             </Button>
-            <Button disabled={loading} className="w-full" type="submit">
+            <Button
+              disabled={loading || !isAuthorized}
+              className="w-full"
+              type="submit"
+            >
               {loading && <Spinner variant="circle" />}
               {loading ? "Submitting..." : "Submit"}
             </Button>

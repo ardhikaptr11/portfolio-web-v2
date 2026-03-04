@@ -1,6 +1,6 @@
 "use client";
 
-import { getAllAssets } from "@/app/(dashboard)/lib/queries/assets/actions";
+import { updateSelectedExperience } from "@/app/(dashboard)/lib/queries/experiences/action";
 import { IExperience } from "@/app/(dashboard)/types/data";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,21 +9,20 @@ import { Spinner } from "@/components/ui/spinner";
 import { capitalize } from "@/lib/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addYears } from "date-fns";
+import { isEqual } from "lodash";
 import { useRouter } from "next/navigation";
-import { Suspense, useEffect, useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import FormCardSkeleton from "../../form-card-skeleton";
 import { FormCheck } from "../../forms/form-check";
 import { FormDate } from "../../forms/form-date";
-import { FormDropdown } from "../../forms/form-dropdown";
 import { FormInput } from "../../forms/form-input";
 import { FormSelect } from "../../forms/form-select";
 import ResponsibilityInputList from "../../input-list";
 import PageContainer from "../../layout/page-container";
-import { isEqual } from "lodash";
-import { updateSelectedExperience } from "@/app/(dashboard)/lib/queries/experiences/action";
+import { useSessionClient } from "@/app/(dashboard)/hooks/use-session-client";
 
 const WORK_TYPE = {
   ONLINE: "online",
@@ -40,7 +39,6 @@ const WORK_CATEGORY = {
 const workTypeKeys = Object.values(WORK_TYPE) as [string, ...string[]];
 const workCategoryKeys = Object.values(WORK_CATEGORY) as [string, ...string[]];
 
-// role, organization, category, work_type, responsibilities, location, start_date, end_date, is_current, related_asset
 const UpdateExperienceFormSchema = z
   .object({
     role: z.string().trim().nonempty("Role is required"),
@@ -59,7 +57,6 @@ const UpdateExperienceFormSchema = z
       if (!val) return null;
       return val;
     }, z.coerce.date().nullable()),
-    related_asset: z.string().nullable(),
   })
   .refine((data) => (data.is_current ? true : !!data.end_date), {
     message: "End date is required",
@@ -71,41 +68,15 @@ export type TUpdateExperienceFormValues = z.input<
 >;
 
 const EditExperience = ({ experience }: { experience: IExperience }) => {
+  const { isAuthorized } = useSessionClient();
   const router = useRouter();
 
   const [heading, setHeading] = useState(experience.role);
 
   const [loading, startTransition] = useTransition();
-  const [assets, setAssets] = useState<
-    { id: string; label: string; value: string }[]
-  >([]);
-
-  const fetchAssets = async () => {
-    try {
-      const { files, images } = await getAllAssets();
-
-      const assets = [...files, ...images].map((asset) => ({
-        id: asset.id,
-        label: asset.file_name,
-        value: asset.url,
-      }));
-      setAssets(assets);
-    } catch (error) {
-      toast.error("Failed to fetch assets", {
-        description: (error as Error).message,
-        position: "top-right",
-      });
-    }
-  };
-
-  useEffect(() => {
-    fetchAssets();
-  }, []);
-
-  const { file_name, ...rest } = experience;
 
   const defaultValues = {
-    ...rest,
+    ...experience,
     start_date: new Date(experience.start_date),
     end_date: experience.end_date ? new Date(experience.end_date) : null,
     is_current: !!experience.is_current,
@@ -279,11 +250,9 @@ const EditExperience = ({ experience }: { experience: IExperience }) => {
                       endMonth: defaultValues.start_date
                         ? addYears(defaultValues.start_date, 10)
                         : undefined,
-                      defaultMonth: defaultValues.end_date ?? undefined,
+                      defaultMonth: defaultValues.start_date ?? undefined,
                       disabledDateRules: (date) =>
-                        defaultValues.end_date
-                          ? date <= currentStartDate
-                          : false,
+                        date <= defaultValues.start_date,
                       disabledState: isChecked as boolean,
                     }}
                     required
@@ -292,12 +261,7 @@ const EditExperience = ({ experience }: { experience: IExperience }) => {
                     control={form.control}
                     name="is_current"
                     label="I'm currently working here"
-                    checkedValue={isChecked as boolean}
                     onChange={(checked) => {
-                      setValue("is_current", checked, {
-                        shouldValidate: true,
-                      });
-
                       if (checked) {
                         setValue("end_date", null, {
                           shouldValidate: true,
@@ -315,19 +279,14 @@ const EditExperience = ({ experience }: { experience: IExperience }) => {
                     disabled={loading}
                   />
                 </div>
-                <FormDropdown
-                  control={form.control}
-                  label="Related Asset"
-                  name="related_asset"
-                  item="asset"
-                  options={assets}
-                  defaultValue={file_name}
-                  disabled={loading}
-                />
               </CardContent>
             </Card>
 
-            <Button disabled={loading} className="w-full" type="submit">
+            <Button
+              disabled={loading || !isAuthorized}
+              className="w-full"
+              type="submit"
+            >
               {loading && <Spinner variant="circle" />}
               {loading ? "Submitting..." : "Submit"}
             </Button>

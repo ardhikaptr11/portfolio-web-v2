@@ -8,7 +8,9 @@ import { IAsset } from "../../../types/data";
 const supabase = createClient();
 
 const uploadSingleImage = async (files: File[]) => {
-  const { formattedName: fileName, ext } = generateFilenameWithDatetime(files[0].name);
+  const { formattedName: fileName, ext } = generateFilenameWithDatetime(
+    files[0].name,
+  );
   const filePath = `${FOLDER_PATH.image}/${fileName}.${ext}`;
 
   const { error: uploadError } = await supabase.storage
@@ -17,7 +19,9 @@ const uploadSingleImage = async (files: File[]) => {
 
   if (uploadError) throw uploadError;
 
-  const { data: { publicUrl } } = supabase.storage.from(BUCKET_NAME).getPublicUrl(filePath)
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from(BUCKET_NAME).getPublicUrl(filePath);
 
   // Retrieve last ordering index for images
   const { data } = await supabase
@@ -36,16 +40,28 @@ const uploadSingleImage = async (files: File[]) => {
     ordering: nextIndex,
     category: "image",
     url: publicUrl,
-    file_path: filePath // reference for deleting file
-  })
+    file_path: filePath, // reference for deleting file
+  });
 
   if (insertError) throw insertError;
-}
+};
 
 const batchUploadAssets = async (files: File[]) => {
   const [lastImgRes, lastFileRes] = await Promise.all([
-    supabase.from(BUCKET_NAME).select("ordering").eq("category", "image").order("ordering", { ascending: false }).limit(1).single(),
-    supabase.from(BUCKET_NAME).select("ordering").eq("category", "file").order("ordering", { ascending: false }).limit(1).single()
+    supabase
+      .from(BUCKET_NAME)
+      .select("ordering")
+      .eq("category", "image")
+      .order("ordering", { ascending: false })
+      .limit(1)
+      .single(),
+    supabase
+      .from(BUCKET_NAME)
+      .select("ordering")
+      .eq("category", "file")
+      .order("ordering", { ascending: false })
+      .limit(1)
+      .single(),
   ]);
 
   let currentImgIndex = lastImgRes.data?.ordering ?? 0;
@@ -54,57 +70,77 @@ const batchUploadAssets = async (files: File[]) => {
   let addedImgCount = 0;
   let addedFileCount = 0;
 
-  await Promise.all(files.map(async (file) => {
-    const isImage = file.type.startsWith("image/");
-    const { formattedName: fileName, ext } = generateFilenameWithDatetime(file.name);
-    const path = isImage ? FOLDER_PATH.image : FOLDER_PATH.file
-    const filePath = `${path}/${fileName}.${ext}`;
+  await Promise.all(
+    files.map(async (file) => {
+      const isImage = file.type.startsWith("image/");
+      const { formattedName: fileName, ext } = generateFilenameWithDatetime(
+        file.name,
+      );
+      const path = isImage ? FOLDER_PATH.image : FOLDER_PATH.file;
+      const filePath = `${path}/${fileName}.${ext}`;
 
-    const { error: uploadError } = await supabase.storage
-      .from(BUCKET_NAME)
-      .upload(filePath, file);
+      const { error: uploadError } = await supabase.storage
+        .from(BUCKET_NAME)
+        .upload(filePath, file);
 
-    if (uploadError) throw new Error(`Error while uploading ${file.name}`);
+      if (uploadError) throw new Error(`Error while uploading ${file.name}`);
 
-    const { data: { publicUrl } } = supabase.storage.from(BUCKET_NAME).getPublicUrl(filePath)
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from(BUCKET_NAME).getPublicUrl(filePath);
 
-    let nextIndex;
-    if (isImage) {
-      addedImgCount++;
-      nextIndex = currentImgIndex + addedImgCount;
-    } else {
-      addedFileCount++;
-      nextIndex = currentFileIndex + addedFileCount;
-    }
+      let nextIndex;
+      if (isImage) {
+        addedImgCount++;
+        nextIndex = currentImgIndex + addedImgCount;
+      } else {
+        addedFileCount++;
+        nextIndex = currentFileIndex + addedFileCount;
+      }
 
-    const { error: insertError } = await supabase.from(BUCKET_NAME).insert({
-      file_name: fileName,
-      ordering: nextIndex,
-      category: isImage ? "image" : "file",
-      url: publicUrl,
-      file_path: filePath // reference for deleting file
-    })
+      const { error: insertError } = await supabase.from(BUCKET_NAME).insert({
+        file_name: fileName,
+        ordering: nextIndex,
+        category: isImage ? "image" : "file",
+        url: publicUrl,
+        file_path: filePath, // reference for deleting file
+      });
 
-    if (insertError) throw new Error(`Error while saving ${file.name} info to database`);
-  }))
-}
+      if (insertError)
+        throw new Error(`Error while saving ${file.name} info to database`);
+    }),
+  );
+};
 
-const downloadAsset = async ({ id, file_name }: { id?: IAsset["id"], file_name?: IAsset["file_name"] }) => {
+const downloadAsset = async ({
+  id,
+  file_name,
+}: {
+  id?: IAsset["id"];
+  file_name?: IAsset["file_name"];
+}) => {
   const { data: asset, error } = id
-    ? await supabase.from("assets").select("file_name, file_path").eq("id", id).single()
-    : await supabase.from("assets").select("file_name, file_path").eq("file_name", file_name).single()
+    ? await supabase
+        .from("assets")
+        .select("file_name, file_path")
+        .eq("id", id)
+        .single()
+    : await supabase
+        .from("assets")
+        .select("file_name, file_path")
+        .eq("file_name", file_name)
+        .single();
 
   if (!asset) throw error;
 
-  const { data: fileToDownload, error: errorDownload } = await supabase
-    .storage
+  const { data: fileToDownload, error: errorDownload } = await supabase.storage
     .from(BUCKET_NAME)
-    .download(asset.file_path)
+    .download(asset.file_path);
 
   if (errorDownload) throw errorDownload;
 
   return { fileToDownload, fileName: asset.file_name };
-}
+};
 
 const getTotalAssets = async () => {
   const supabase = createClient();
@@ -154,10 +190,17 @@ const updateAssetOrder = async (assetIds: string[]) => {
     supabase
       .from(BUCKET_NAME)
       .update({ ordering: index + 1 })
-      .eq("id", assetId)
+      .eq("id", assetId),
   );
 
   await Promise.all(updates);
 };
 
-export { batchUploadAssets, downloadAsset, uploadSingleImage, getTotalAssets, getAllImages, updateAssetOrder };
+export {
+  batchUploadAssets,
+  downloadAsset,
+  uploadSingleImage,
+  getTotalAssets,
+  getAllImages,
+  updateAssetOrder,
+};

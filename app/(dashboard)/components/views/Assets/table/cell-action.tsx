@@ -1,5 +1,6 @@
 "use client";
 
+import { useSessionClient } from "@/app/(dashboard)/hooks/use-session-client";
 import {
   deleteAssetById,
   updateAssetById,
@@ -36,6 +37,7 @@ const EditAssetFormSchema = z.object({
 });
 
 export const CellAction = ({ data }: { data: IAsset }) => {
+  const { isAuthorized } = useSessionClient();
   const [showFormModal, setShowFormModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [loading, startTransition] = useTransition();
@@ -119,7 +121,7 @@ export const CellAction = ({ data }: { data: IAsset }) => {
     <Fragment>
       <AlertModal
         title={`Confirm deletion of ${data.file_name}`}
-        description="Are you sure you want to delete the selected file?"
+        description="Are you sure you want to delete selected file?"
         isOpen={showAlert}
         onClose={() => setShowAlert(false)}
         loading={loading}
@@ -205,9 +207,14 @@ export const CellAction = ({ data }: { data: IAsset }) => {
           <DropdownMenuItem onClick={() => setShowFormModal(true)}>
             <Icons.edit className="mr-2 size-4" /> Edit
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setShowAlert(true)}>
-            <Icons.trash className="mr-2 size-4" /> Delete
-          </DropdownMenuItem>
+          {isAuthorized && (
+            <DropdownMenuItem
+              onClick={() => setShowAlert(true)}
+              variant="destructive"
+            >
+              <Icons.trash className="mr-2 size-4" /> Delete
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </Fragment>

@@ -33,78 +33,81 @@ const MAX_TOTAL_FILE = {
 //Info: The following data is used for the sidebar navigation and Cmd K bar.
 const SIDEBAR_ITEMS: NavItem[] = [
   {
-    title: 'Projects',
-    url: '#',
-    icon: 'github',
+    title: "Projects",
+    url: "#",
+    icon: "github",
     isActive: true,
     items: [
       {
-        title: 'Add Projects',
-        url: '/dashboard/projects/new',
-        icon: 'codePlus',
-        shortcut: ['n', 'p']
+        title: "Add Projects",
+        url: "/dashboard/projects/new",
+        icon: "codePlus",
+        shortcut: ["n", "p"],
       },
       {
-        title: 'Manage Projects',
-        shortcut: ['m', 'p'],
-        url: '/dashboard/projects',
-        icon: 'code'
-      }
-    ]
+        title: "Manage Projects",
+        shortcut: ["m", "p"],
+        url: "/dashboard/projects",
+        icon: "code",
+      },
+    ],
   },
   {
-    title: 'Assets',
-    url: '#',
-    icon: 'folders',
+    title: "Assets",
+    url: "#",
+    icon: "folders",
     isActive: true,
     items: [
       {
-        title: 'Upload Assets',
-        shortcut: ['n', 'a'],
-        url: '/dashboard/assets?action=upload',
-        icon: 'folderPlus'
+        title: "Upload Assets",
+        shortcut: ["n", "a"],
+        url: "/dashboard/assets?action=upload",
+        icon: "folderPlus",
       },
       {
-        title: 'Manage Assets',
-        url: '/dashboard/assets',
-        icon: 'folderCog',
-        shortcut: ['m', 'a']
+        title: "Manage Assets",
+        url: "/dashboard/assets",
+        icon: "folderCog",
+        shortcut: ["m", "a"],
       },
       {
-        title: 'Assets Library',
-        url: '/dashboard/assets/library',
-        icon: 'folders',
-        shortcut: ['a', 'a']
-      }
-    ]
+        title: "Assets Library",
+        url: [
+          "/dashboard/assets/library",
+          "/dashboard/assets/library?category=file",
+        ],
+        icon: "folders",
+        shortcut: ["a", "a"],
+      },
+    ],
   },
   {
-    title: 'Experiences',
-    url: '#',
-    icon: 'bookmark',
+    title: "Experiences",
+    url: "#",
+    icon: "bookmark",
     isActive: true,
     items: [
       {
-        title: 'Add Experiences',
-        shortcut: ['n', 'e'],
-        url: '/dashboard/experiences/new',
-        icon: 'bookmarkPlus'
+        title: "Add Experiences",
+        shortcut: ["n", "e"],
+        url: "/dashboard/experiences/new",
+        icon: "bookmarkPlus",
       },
       {
-        title: 'Manage Experiences',
-        shortcut: ['e', 'e'],
-        url: '/dashboard/experiences',
-        icon: 'bookmarks'
+        title: "Manage Experiences",
+        shortcut: ["e", "e"],
+        url: "/dashboard/experiences",
+        icon: "bookmarks",
       },
-    ]
+    ],
   },
   {
-    title: 'Profile',
-    url: '/dashboard/profile',
-    icon: 'user2',
-    shortcut: ['u', 'u'],
+    title: "Profile",
+    url: "/dashboard/profile",
+    icon: "user2",
+    shortcut: ["u", "u"],
     isActive: false,
-    items: [] // No child items
+    items: [], // No child items
   },
 ];
 

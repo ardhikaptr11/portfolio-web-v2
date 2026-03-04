@@ -23,6 +23,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { Heading } from "../../heading";
+import { useSessionClient } from "@/app/(dashboard)/hooks/use-session-client";
 
 const SortableGallery = ({
   data,
@@ -31,6 +32,7 @@ const SortableGallery = ({
   data: { images: IAssetPreview[]; files: IAssetPreview[] };
   activeTab: string;
 }) => {
+  const { isAuthorized } = useSessionClient();
   const pathname = usePathname();
   const { images, files } = data;
   const [currentTab, setCurrentTab] = useState(activeTab);
@@ -54,6 +56,15 @@ const SortableGallery = ({
   const isMobile = useIsMobile();
 
   const handleChangeOrderImage = async (newItemIds: string[]) => {
+    if (!isAuthorized) {
+      toast.error("Failed to reorder image position", {
+        description: "You are not authorized to perform this action.",
+      });
+
+      setAllImages(images);
+      return;
+    }
+
     // 1. Updating UI instantly (Optimistic Update)
     const newOrderedImages = newItemIds
       .map((id) => allImages.find((img) => img.id === id))
@@ -73,6 +84,14 @@ const SortableGallery = ({
   };
 
   const handleChangeOrderFile = async (newItemIds: string[]) => {
+    if (!isAuthorized) {
+      toast.error("Failed to reorder file position", {
+        description: "You are not authorized to perform this action.",
+      });
+
+      setAllImages(images);
+      return;
+    }
     // 1. Updating UI instantly (Optimistic Update)
     const newOrderedFiles = newItemIds
       .map((id) => allFiles.find((file) => file.id === id))
@@ -84,7 +103,7 @@ const SortableGallery = ({
     try {
       await updateAssetOrder(newItemIds);
     } catch (error) {
-      toast.error("Failed to reorder image position", {
+      toast.error("Failed to reorder file position", {
         description: (error as Error).message,
       });
       setAllImages(images);
@@ -124,8 +143,8 @@ const SortableGallery = ({
         className="w-full"
       >
         <TabsList>
-          <TabsTrigger value="image">Images</TabsTrigger>
-          <TabsTrigger value="file">Files</TabsTrigger>
+          <TabsTrigger value="image" className="cursor-pointer">Images</TabsTrigger>
+          <TabsTrigger value="file" className="cursor-pointer">Files</TabsTrigger>
         </TabsList>
         <TabsContent value="image">
           <div className="flex w-full flex-col space-y-8">
@@ -168,7 +187,7 @@ const SortableGallery = ({
                         {allImages.length !== 1 && (
                           <SortableItemHandle className="group absolute start-2 top-2 opacity-0 group-hover:opacity-100">
                             <Button
-                              variant="outline"
+                              variant="ghost"
                               size="icon"
                               className="size-6 cursor-grab rounded-full group-active:cursor-grabbing"
                             >

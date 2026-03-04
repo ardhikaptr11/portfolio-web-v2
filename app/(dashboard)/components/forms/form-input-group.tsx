@@ -1,9 +1,8 @@
 "use client";
 
-import { FieldErrors, FieldPath, FieldValues } from "react-hook-form";
+import { Field, FieldLabel } from "@/components/ui/field";
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormMessage,
@@ -12,16 +11,16 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
+  InputGroupText,
 } from "@/components/ui/input-group";
+import { FieldPath, FieldValues } from "react-hook-form";
 import { BaseFormFieldProps } from "../../types/base-form";
 import { cn } from "@/lib/utils";
-import { Label } from "@/components/ui/label";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 
 interface InputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends BaseFormFieldProps<TFieldValues, TName> {
+  > extends BaseFormFieldProps<TFieldValues, TName> {
   type?: "text" | "email" | "password" | "number" | "tel" | "url";
   placeholder?: string;
   step?: string | number;
@@ -29,6 +28,7 @@ interface InputProps<
   max?: string | number;
   autoComplete?: "off" | "email" | "current-password";
   icon?: React.ReactNode;
+  prefix?: string;
 }
 
 interface FormInputGroupProps<
@@ -41,7 +41,7 @@ interface FormInputGroupProps<
   inputs: {
     [key: string]: Omit<
       InputProps<TFieldValues, TName>,
-      "control" | "name" | "disabled"
+      "control" | "disabled"
     >;
   };
   disabled?: boolean;
@@ -75,27 +75,37 @@ function FormInputGroup<
           <FormField
             key={key}
             control={control}
-            name={`${name}.${key}` as TName}
+            name={config.name}
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Field className="gap-2">
                     {config.label && (
-                      <FieldLabel htmlFor={`${name}.${key}`} className="text-muted-foreground">
+                      <FieldLabel
+                        htmlFor={config.name}
+                        className={cn(config.className)}
+                      >
                         {config.label}
+                        {required && (
+                          <span className="-ml-1 text-red-500">*</span>
+                        )}
                       </FieldLabel>
                     )}
                     <InputGroup>
                       <InputGroupInput
                         {...field}
                         {...config}
-                        id={`${name}.${key}`}
+                        id={config.name}
                         disabled={disabled}
-                        
                       />
                       {config.icon && (
                         <InputGroupAddon align="inline-start">
                           {config.icon}
+                        </InputGroupAddon>
+                      )}
+                      {config.prefix && (
+                        <InputGroupAddon align="inline-start">
+                          <InputGroupText>{config.prefix}</InputGroupText>
                         </InputGroupAddon>
                       )}
                     </InputGroup>

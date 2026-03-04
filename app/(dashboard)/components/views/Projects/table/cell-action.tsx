@@ -15,8 +15,10 @@ import { useRouter } from "next/navigation";
 import { Fragment, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { AlertModal } from "../../../modal/alert-modal";
+import { useSessionClient } from "@/app/(dashboard)/hooks/use-session-client";
 
 export const CellAction = ({ data }: { data: IProject }) => {
+  const { isAuthorized } = useSessionClient();
   const [showAlert, setShowAlert] = useState(false);
   const [loading, startTransition] = useTransition();
 
@@ -49,7 +51,7 @@ export const CellAction = ({ data }: { data: IProject }) => {
     <Fragment>
       <AlertModal
         title={`Confirm deletion of ${data.title}`}
-        description="Are you sure you want to delete the selected project?"
+        description="Are you sure you want to delete selected project?"
         isOpen={showAlert}
         onClose={() => setShowAlert(false)}
         loading={loading}
@@ -83,9 +85,14 @@ export const CellAction = ({ data }: { data: IProject }) => {
           >
             <Icons.edit className="mr-2 size-4" /> Edit
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setShowAlert(true)}>
-            <Icons.trash className="mr-2 size-4" /> Delete
-          </DropdownMenuItem>
+          {isAuthorized && (
+            <DropdownMenuItem
+              onClick={() => setShowAlert(true)}
+              variant="destructive"
+            >
+              <Icons.trash className="mr-2 size-4" /> Delete
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </Fragment>

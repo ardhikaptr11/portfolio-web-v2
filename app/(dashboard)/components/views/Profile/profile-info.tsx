@@ -41,6 +41,7 @@ import {
   addNewTechStack,
   getAllAvailableTechStack,
 } from "@/app/(dashboard)/lib/queries";
+import { useSessionClient } from "@/app/(dashboard)/hooks/use-session-client";
 
 const FormSchema = z.object({
   avatar: z
@@ -61,6 +62,13 @@ const FormSchema = z.object({
     .trim()
     .nonempty("Name cannot be empty")
     .min(2, "Fill in with at least two characters"),
+  email: z
+    .email({ pattern: z.regexes.rfc5322Email, message: "Invalid email" })
+    .nonempty("Email cannot be empty"),
+  phone_number: z
+    .string()
+    .regex(/^8[0-9]{9,12}$/, "Invalid phone number")
+    .nonempty("Phone number cannot be empty"),
   motto: z
     .string()
     .trim()
@@ -136,9 +144,13 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
   const [loading, startTransition] = useTransition();
   const [resetKey, setResetKey] = useState(0);
 
+  const { isAuthorized } = useSessionClient();
+
   const defaultValues = {
     avatar: profile.avatar.url || "",
     name: profile.name || "",
+    email: profile.email || "",
+    phone_number: profile.phone_number || "",
     motto: profile.motto || "",
     tagline: profile.tagline || "",
     roles: profile.roles || [],
@@ -226,27 +238,27 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
     }
 
     startTransition(async () => {
-      try {
-        await updateProfile(dataToUpdate);
-        toast.success("Profile successfully updated", {
-          position: "top-right",
-        });
-
-        form.reset();
-
-        setResetKey((prev) => prev + 1);
-        router.refresh();
-      } catch (error) {
-        toast.error("Failed to update profile", {
-          position: "top-right",
-          description: (error as Error).message,
-        });
-      }
+      toast.promise(updateProfile(dataToUpdate), {
+        loading: "Updating profile...",
+        success: () => {
+          return {
+            duration: 1500,
+            onAutoClose: () => router.refresh(),
+            message: "Profile successfully updated",
+          };
+        },
+        error: (error: Error) => {
+          return {
+            message: "Failed to update profile",
+            description: error.message,
+          };
+        },
+      });
     });
   };
 
   return (
-    <PageContainer scrollable={false}>
+    <PageContainer scrollable>
       <div className="mx-auto w-full max-w-3xl">
         <Card className="no-scrollbar max-h-145 overflow-y-auto">
           <CardHeader>
@@ -256,11 +268,11 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
               page.
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid gap-6">
+          <CardContent>
             <Form
               form={form}
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-4"
+              className="flex flex-col gap-6"
             >
               <div className="flex flex-col items-center justify-center">
                 <FormAvatarUpload
@@ -297,9 +309,9 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
                   )}
                 </div>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-col md:flex-row md:items-center gap-3">
                 <FormInput
-                  className="w-full gap-3"
+                  className="w-full"
                   control={form.control}
                   type="text"
                   name="name"
@@ -307,18 +319,32 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
                   disabled={loading}
                   required
                 />
-                <div className="grid w-full gap-3">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    autoComplete="email"
-                    defaultValue={profile.email}
-                    disabled
-                  />
-                </div>
+                <FormInput
+                  className="w-full"
+                  control={form.control}
+                  type="text"
+                  name="email"
+                  label="Email"
+                  disabled={loading}
+                  required
+                />
               </div>
+              <FormInputGroup
+                className="w-full"
+                control={form.control}
+                name="phone_number"
+                inputs={{
+                  phone_number: {
+                    name: "phone_number",
+                    label: "Phone Number",
+                    prefix: "+62",
+                  },
+                }}
+                disabled={loading}
+                required
+              />
               <FormInput
-                className="w-full gap-3"
+                className="w-full"
                 control={form.control}
                 type="text"
                 name="tagline"
@@ -327,14 +353,14 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
                 required
               />
               <FormInput
-                className="w-full gap-3"
+                className="w-full"
                 control={form.control}
                 name="motto"
                 label="Motto"
                 required
               />
               <FormInputTag
-                className="w-full gap-3"
+                className="w-full"
                 control={form.control}
                 name="roles"
                 label="Roles"
@@ -375,20 +401,23 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
                 required
               />
               <FormInputGroup
-                className="grid w-full gap-3"
+                className="w-full space-y-3"
                 control={form.control}
                 name="social_links"
                 label="Social Links"
                 inputs={{
                   github: {
+                    name: "social_links.github",
                     label: "GitHub",
                     icon: <Icons.github className="size-5" />,
                   },
                   linkedin: {
+                    name: "social_links.linkedin",
                     label: "LinkedIn",
                     icon: <Icons.linkedin className="size-5" />,
                   },
                   threads: {
+                    name: "social_links.threads",
                     label: "Threads",
                     icon: <Icons.threads className="size-5" />,
                   },
@@ -397,7 +426,7 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
               />
               <FormFileUpload
                 key={`cv-upload-${resetKey}`}
-                className="w-full gap-3"
+                className="w-full"
                 control={form.control}
                 name="cv"
                 label="CV (Curriculum Vitae)"
@@ -415,7 +444,7 @@ const ProfileInfo = ({ profile }: { profile: IProfile }) => {
                 required
               />
               <Button
-                disabled={loading}
+                disabled={loading || !isAuthorized}
                 className={cn("mt-2 ml-auto w-full space-x-1", {
                   "flex gap-1": loading,
                 })}

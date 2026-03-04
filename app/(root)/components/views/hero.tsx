@@ -10,7 +10,7 @@ import { XIcon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { ICON_MAP } from "../../constants/items.constants";
-import { IHero } from "../../types/data";
+import { IHero, IProject } from "../../types/data";
 import DecryptedText from "../decrypted-text";
 import TypingText from "../typing-text";
 import { useTranslations } from "next-intl";
@@ -47,19 +47,28 @@ const generateRadarPositions = (skills: string[]) => {
 };
 
 interface HeroProps {
-  data: IHero;
+  data: {
+    profile: IHero;
+    projects: IProject[];
+  };
 }
 
 const Hero = ({ data }: HeroProps) => {
   const t = useTranslations("Hero");
 
-  const { name, motto, roles, skills, cv_asset, hero_img } = data;
+  const { name, motto, roles, skills, cv_asset, hero_img } = data.profile;
 
   const [lastName, firstName] = name.split(" ");
 
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   const [showResume, setShowResume] = useState(false);
+
+  const startYear = 2022;
+  const currentYear = new Date().getFullYear();
+  const yoe = currentYear - startYear - 1;
+
+  const totalProjects = useMemo(() => data.projects.length, [data.projects]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -272,7 +281,7 @@ const Hero = ({ data }: HeroProps) => {
             "z-50 flex items-end transition-all duration-500",
           )}
         >
-          <Stats />
+          <Stats yoe={yoe} totalProjects={totalProjects}/>
         </div>
 
         <div className="relative z-10 flex h-full items-end justify-center md:justify-end">

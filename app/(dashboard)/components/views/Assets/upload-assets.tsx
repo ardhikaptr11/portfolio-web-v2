@@ -1,7 +1,14 @@
 "use client";
 
 import {
+  ACCEPTED_TYPES,
+  MAX_FILE_SIZE,
+  MAX_TOTAL_FILE,
+  MAX_UPLOAD_FILE,
+} from "@/app/(dashboard)/constants/items.constants";
+import {
   batchUploadAssets,
+  getTotalAssets,
   uploadSingleImage,
 } from "@/app/(dashboard)/lib/queries/assets/client";
 import { AssetsUploadConfig } from "@/app/(dashboard)/types/base-form";
@@ -18,7 +25,6 @@ import { Form } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { createClient } from "@/lib/supabase/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
@@ -26,15 +32,9 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import { FormUploadImages } from "../../forms/form-upload-images";
-import PageContainer from "../../layout/page-container";
 import { FormUploadFiles } from "../../forms/form-upload.files";
-import {
-  ACCEPTED_TYPES,
-  MAX_FILE_SIZE,
-  MAX_TOTAL_FILE,
-  MAX_UPLOAD_FILE,
-} from "@/app/(dashboard)/constants/items.constants";
-import { getTotalAssets } from "@/app/(dashboard)/lib/queries/assets/client";
+import PageContainer from "../../layout/page-container";
+import { useSessionClient } from "@/app/(dashboard)/hooks/use-session-client";
 
 const UploadImageFormSchema = z
   .object({
@@ -78,6 +78,7 @@ const UploadFileFormSchema = z.object({
 type TUploadFile = z.infer<typeof UploadFileFormSchema>;
 
 const UploadAssets = () => {
+  const { isAuthorized } = useSessionClient();
   const router = useRouter();
   const [loading, startTransition] = useTransition();
 
@@ -107,7 +108,7 @@ const UploadAssets = () => {
       const { totalImageAssets, totalFileAssets } = await getTotalAssets();
       setTotalImageAssets(totalImageAssets);
       setTotalFileAssets(totalFileAssets);
-    } catch (error) { 
+    } catch (error) {
       toast.error("Error fetching total assets", {
         description: (error as Error).message,
       });
@@ -137,8 +138,14 @@ const UploadAssets = () => {
   });
 
   const onSubmitUploadImages = (data: TUploadImage) => {
+    if (!isAuthorized) {
+      return toast.error("Error while uploading", {
+        description: "You are not authorized to perform this action.",
+      });
+    }
+
     // The number 2 is added because there are 2 images with order 0 in the database
-    // Order 0 applies to images that don't want to appear in the assets gallery.
+    // Order 0 applies to images that don't want to appear in the assets library.
     // So, we can still upload images up to the maximum limit.
     if (totalImageAssets === MAX_TOTAL_FILE.image + 2) {
       toast.info("Maximum limit of image assets reached", {
@@ -161,18 +168,40 @@ const UploadAssets = () => {
     }
 
     startTransition(async () => {
-      try {
+      toast.promise(
         isBatchUploadEnabled
-          ? await batchUploadAssets(data.images)
-          : await uploadSingleImage(data.images);
+          ? batchUploadAssets(data.images)
+          : uploadSingleImage(data.images),
+        {
+          loading: "Uploading image(s)...",
+          success: () => {
+            return {
+              duration: 1500,
+              onAutoClose: () => router.replace("/dashboard/assets"),
+              message: "All image(s) successfully uploaded",
+            };
+          },
+          error: (error: Error) => {
+            return {
+              message: "Error while uploading",
+              description: error.message,
+            };
+          },
+        },
+      );
 
-        toast.success("All image(s) successfully uploaded");
-        router.push("/dashboard/assets");
-      } catch (err) {
-        toast.error("Error while uploading", {
-          description: (err as Error).message,
-        });
-      }
+      // try {
+      //   isBatchUploadEnabled
+      //     ? await batchUploadAssets(data.images)
+      //     : await uploadSingleImage(data.images);
+
+      //   toast.success("All image(s) successfully uploaded");
+      //   router.push("/dashboard/assets");
+      // } catch (err) {
+      //   toast.error("Error while uploading", {
+      //     description: (err as Error).message,
+      //   });
+      // }
     });
   };
 
@@ -201,7 +230,7 @@ const UploadAssets = () => {
       try {
         await batchUploadAssets(data.files);
 
-        toast.success("All files successfully uploaded");
+        toast.success("All file(s) successfully uploaded");
         router.push("/dashboard/assets");
       } catch (err) {
         toast.error("Error while uploading", {

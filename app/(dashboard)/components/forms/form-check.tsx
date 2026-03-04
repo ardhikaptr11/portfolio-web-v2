@@ -16,7 +16,6 @@ interface FormCheckProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends BaseFormFieldProps<TFieldValues, TName> {
-  checkedValue?: boolean;
   onChange?: (value: string | boolean) => void;
 }
 
@@ -29,7 +28,6 @@ function FormCheck<
   label,
   description,
   disabled,
-  checkedValue,
   onChange,
   className,
 }: FormCheckProps<TFieldValues, TName>) {
@@ -45,9 +43,12 @@ function FormCheck<
                 <Checkbox
                   id={field.name}
                   {...field}
-                  checked={checkedValue}
+                  checked={field.value}
                   disabled={disabled}
-                  onCheckedChange={(checked) => onChange?.(checked)}
+                  onCheckedChange={(checked) => {
+                    field.onChange(checked);
+                    onChange?.(checked);
+                  }}
                 />
                 <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
               </Field>

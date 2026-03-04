@@ -12,8 +12,6 @@ import { Fragment, useMemo } from "react";
 import { NavItem } from "../../types/items";
 import RenderResults from "./render-result";
 import useThemeSwitching from "./use-theme-switching";
-;
-
 export default function KBar({
   items,
   children,
@@ -41,21 +39,27 @@ export default function KBar({
               keywords: navItem.title.toLowerCase(),
               section: "Navigation",
               subtitle: `Go to ${navItem.title}`,
-              perform: () => navigateTo(navItem.url),
+              perform: () => navigateTo(navItem.url as string),
             }
           : null;
 
       // Map child items into actions
       const childActions =
-        navItem.items?.map((childItem) => ({
-          id: `${childItem.title.toLowerCase()}Action`,
-          name: childItem.title,
-          shortcut: childItem.shortcut,
-          keywords: childItem.title.toLowerCase(),
-          section: navItem.title,
-          subtitle: `Go to ${childItem.title}`,
-          perform: () => navigateTo(childItem.url),
-        })) ?? [];
+        navItem.items?.map((childItem) => {
+          const url = Array.isArray(childItem.url)
+            ? childItem.url[0]
+            : childItem.url;
+
+          return {
+            id: `${childItem.title.toLowerCase()}Action`,
+            name: childItem.title,
+            shortcut: childItem.shortcut,
+            keywords: childItem.title.toLowerCase(),
+            section: navItem.title,
+            subtitle: `Go to ${childItem.title}`,
+            perform: () => navigateTo(url),
+          };
+        }) ?? [];
 
       // Return only valid actions (ignoring null base actions for containers)
       return baseAction ? [baseAction, ...childActions] : childActions;
@@ -74,10 +78,10 @@ const KBarComponent = ({ children }: { children: React.ReactNode }) => {
   return (
     <Fragment>
       <KBarPortal>
-        <KBarPositioner className="fixed inset-0 z-99999 bg-background/80 p-0! backdrop-blur-sm">
-          <KBarAnimator className="relative mt-32! w-full max-w-150 -translate-y-12! overflow-hidden rounded-lg border bg-card text-card-foreground shadow-lg">
-            <div className="sticky top-0 z-10 border-b border-border bg-card">
-              <KBarSearch className="w-full border-none bg-card px-6 py-4 text-lg outline-hidden focus:ring-0 focus:ring-offset-0 focus:outline-hidden" />
+        <KBarPositioner className="bg-background/80 fixed inset-0 z-99999 p-0! backdrop-blur-sm">
+          <KBarAnimator className="bg-card text-card-foreground relative mt-32! w-full max-w-150 -translate-y-12! overflow-hidden rounded-lg border shadow-lg">
+            <div className="border-border bg-card sticky top-0 z-10 border-b">
+              <KBarSearch className="bg-card w-full border-none px-6 py-4 text-lg outline-hidden focus:ring-0 focus:ring-offset-0 focus:outline-hidden" />
             </div>
             <div className="max-h-100">
               <RenderResults />

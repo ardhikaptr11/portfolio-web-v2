@@ -1,11 +1,17 @@
 @import "tailwindcss";
+
+@plugin "tailwind-scrollbar-hide";
 @import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --animate-glitch-after: glitch var(--after-duration) infinite linear
     alternate-reverse;
   --animate-glitch-before: glitch var(--before-duration) infinite linear
     alternate-reverse;
+  --color-brand: var(--brand);
+  --color-highlight: var(--highlight);
 }
 
 @layer utilities {
@@ -74,4 +80,14 @@
       clip-path: inset(30% 0 40% 0);
     }
   }
+}
+
+:root {
+  --brand: oklch(0.623 0.214 259.815);
+  --highlight: oklch(0.852 0.199 91.936);
+}
+
+.dark {
+  --brand: oklch(0.707 0.165 254.624);
+  --highlight: oklch(0.852 0.199 91.936);
 }

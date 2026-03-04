@@ -18,7 +18,7 @@
 }
 
 @utility custom-scrollbar {
-  @apply [&::-webkit-scrollbar-thumb]:bg-primary [&::-webkit-scrollbar-track]:bg-foreground [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full;
+  @apply [&::-webkit-scrollbar-thumb]:bg-secondary [&::-webkit-scrollbar-track]:bg-card [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full;
 }
 
 /* View Transition Wave Effect */

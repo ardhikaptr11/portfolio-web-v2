@@ -129,7 +129,7 @@ export default function GalleryUpload({
             </p>
             <p className="text-muted-foreground text-xs">
               {getMessage(accept)} up to {formatBytes(maxSize as number)}
-              {multiple && `each (max ${maxFiles as number} files)`}
+              {multiple && ` each (max ${maxFiles as number} files)`}
             </p>
           </div>
 
@@ -185,8 +185,7 @@ export default function GalleryUpload({
             <div
               key={fileItem.id}
               className={cn(
-                "group relative aspect-video",
-                multiple ? "w-full" : "mx-auto w-19/20",
+                "group relative aspect-video w-full",
               )}
             >
               {isImage(fileItem.file) && fileItem.preview && (
@@ -194,7 +193,7 @@ export default function GalleryUpload({
                   fill
                   src={fileItem.preview}
                   alt={fileItem.file.name}
-                  className="size-full rounded-lg border object-fill transition-transform group-hover:scale-105"
+                  className="size-full rounded-lg object-contain"
                 />
               )}
 
@@ -203,6 +202,7 @@ export default function GalleryUpload({
                 {/* View Button */}
                 {fileItem.preview && (
                   <Button
+                    type="button"
                     onClick={() => setSelectedImage(fileItem.preview!)}
                     variant="secondary"
                     size="icon"
@@ -214,6 +214,7 @@ export default function GalleryUpload({
 
                 {/* Remove Button */}
                 <Button
+                  type="button"
                   onClick={() => removeFile(fileItem.id)}
                   variant="secondary"
                   size="icon"
@@ -224,7 +225,7 @@ export default function GalleryUpload({
               </div>
 
               {/* File Info */}
-              <div className="absolute right-0 bottom-0 left-0 rounded-b-lg bg-black/70 p-2 text-white opacity-0 transition-opacity group-hover:opacity-100">
+              <div className="absolute right-0 bottom-0 left-0 rounded-b-lg bg-black/80 backdrop-blur-md p-2 text-white opacity-0 transition-opacity group-hover:opacity-100">
                 <p className="truncate text-xs font-medium">
                   {fileItem.file.name}
                 </p>
@@ -244,7 +245,8 @@ export default function GalleryUpload({
           onClick={() => setSelectedImage(null)}
         >
           <div className="relative flex size-full justify-center">
-            <img
+            <Image
+              fill
               src={selectedImage}
               alt="Preview"
               className="max-h-full max-w-full rounded-lg object-contain"

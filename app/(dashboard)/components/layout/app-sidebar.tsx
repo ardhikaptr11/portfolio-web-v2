@@ -61,16 +61,22 @@ const AppSidebar = ({
 
   const handleLogout = () => {
     startTransition(async () => {
-      try {
-        await logout();
-        toast.success("You have successfully logged out");
-
-        router.push("/auth");
-      } catch (err) {
-        toast.error("Logout failed", {
-          description: (err as Error).message,
-        });
-      }
+      toast.promise(logout, {
+        loading: "Logging you out...",
+        success: () => {
+          return {
+            duration: 1500,
+            onAutoClose: () => router.replace("/auth"),
+            message: "You have successfully logged out",
+          };
+        },
+        error: (error: Error) => {
+          return {
+            message: "Logout failed",
+            description: error.message,
+          };
+        },
+      });
     });
   };
 
@@ -81,9 +87,9 @@ const AppSidebar = ({
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <div className="inline-flex justify-center hover:bg-transparent!">
-                <Icons.dashboard className="size-6!" />
+                <Icons.brandLogo className="size-6!" />
                 <span className="text-base font-semibold group-data-[collapsible=icon]:hidden">
-                  Dashboard
+                  Admin Panel
                 </span>
               </div>
             </SidebarMenuButton>
@@ -107,7 +113,7 @@ const AppSidebar = ({
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton
                         tooltip={item.title}
-                        isActive={pathname === item.url}
+                        // isActive={pathname === item.url}
                         className="cursor-pointer"
                       >
                         {item.icon && <Icon />}
@@ -121,13 +127,21 @@ const AppSidebar = ({
                           const SubIcon = subItem.icon
                             ? Icons[subItem.icon]
                             : Icons.logo;
+
+                          const href = Array.isArray(subItem.url)
+                            ? subItem.url[0]
+                            : subItem.url;
                           return (
                             <SidebarMenuSubItem key={subItem.title}>
                               <SidebarMenuSubButton
                                 asChild
-                                isActive={fullUrl === subItem.url}
+                                isActive={
+                                  pathname === href ||
+                                  (Array.isArray(subItem.url) &&
+                                    subItem.url.includes(fullUrl))
+                                }
                               >
-                                <Link href={subItem.url}>
+                                <Link href={href}>
                                   <SubIcon />
                                   <span>{subItem.title}</span>
                                 </Link>
@@ -146,7 +160,7 @@ const AppSidebar = ({
                     tooltip={item.title}
                     isActive={pathname === item.url}
                   >
-                    <Link href={item.url}>
+                    <Link href={item.url as string}>
                       <Icon />
                       <span>{item.title}</span>
                     </Link>
@@ -196,7 +210,12 @@ const AppSidebar = ({
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem className="cursor-pointer" asChild>
-                    <Link href="/" target="_blank" rel="noopener noreferrer" prefetch={false}>
+                    <Link
+                      href="/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      prefetch={false}
+                    >
                       <Icons.home className="size-5" />
                       Homepage
                     </Link>

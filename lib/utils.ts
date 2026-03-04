@@ -10,7 +10,7 @@ import { getCurrentDate } from './helpers';
  */
 export const cn = (...inputs: ClassValue[]): string => {
   return twMerge(clsx(inputs));
-}
+};
 
 export function formatToSlug(text: string): string {
   const slug = text
@@ -37,5 +37,5 @@ export const generateFilenameWithDatetime = (filename: string) => {
 
   const formattedName = `${name}-${getCurrentDate()}`;
 
-  return { formattedName, ext }
-}
+  return { formattedName, ext };
+};

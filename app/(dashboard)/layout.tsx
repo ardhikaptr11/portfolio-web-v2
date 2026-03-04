@@ -12,6 +12,7 @@ import ThemeProvider from "../theme-provider";
 import { DEFAULT_THEME } from "./components/themes/theme.config";
 import "./globals.css";
 import "./theme.css";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const META_THEME_COLORS = {
   light: "#ffffff",
@@ -41,7 +42,7 @@ const RootDashboardLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <main
       className={cn(
-        "overflow-hidden overscroll-none bg-background font-sans antialiased",
+        "bg-background overflow-hidden overscroll-none font-sans antialiased",
         fontVariablesDashboard,
       )}
     >
@@ -59,7 +60,7 @@ const RootDashboardLayout = async ({ children }: { children: ReactNode }) => {
         >
           <Providers activeThemeValue={themeToApply}>
             <Toaster expand />
-            {children}
+            <TooltipProvider>{children}</TooltipProvider>
           </Providers>
         </ThemeProvider>
       </NuqsAdapter>

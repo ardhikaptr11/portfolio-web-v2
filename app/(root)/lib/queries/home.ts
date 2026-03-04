@@ -1,23 +1,19 @@
-import { createAdminClient, createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { ICertificate, IExperience, IHero, IProject } from "../../types/data";
 import { SupabaseClient, UserMetadata } from "@supabase/supabase-js";
 import { cache } from "react";
-
-interface UserMetadataExtended extends UserMetadata {
-  business_email?: string;
-}
 
 const getAssetUrl = (asset: Record<string, any>) => (asset)?.url || null;
 
 const getProfile = async (client: SupabaseClient) => {
   const supabase = client ?? await createClient();
-  const supabaseAdmin = await createAdminClient();
 
-  const [authResponse, profileResponse, assetResponse] = await Promise.all([
-    supabaseAdmin.auth.admin.listUsers(),
+  const [profileResponse, assetResponse] = await Promise.all([
     supabase.from("profile")
       .select(`
         name,
+        email,
+        phone_number,
         motto,
         tagline,
         tagline_id,
@@ -32,17 +28,11 @@ const getProfile = async (client: SupabaseClient) => {
 
   if (profileResponse.error) throw profileResponse.error;
 
-  const user = authResponse.data?.users?.[0];
-  const { business_email } = user?.app_metadata as UserMetadataExtended;
-
   const { asset, ...rest } = profileResponse.data;
-
 
   return {
     ...rest,
     hero_img: assetResponse?.data?.url,
-    email: business_email,
-    phone: user?.phone,
     cv_asset: (asset as Record<string, any>)?.url
   } as IHero;
 };

@@ -2,7 +2,7 @@ import { Icons } from '@/components/icons';
 
 export interface NavItem {
   title: string;
-  url: string;
+  url: string | string[];
   disabled?: boolean;
   external?: boolean;
   shortcut?: [string, string];

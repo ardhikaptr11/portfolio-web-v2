@@ -2,9 +2,9 @@ import { WORK_CATEGORY } from "@/app/(dashboard)/types/data";
 import { ISocialLinks } from "@/app/(dashboard)/types/user";
 
 interface IHero {
-  email: string;
-  phone: string;
   name: string;
+  email: string;
+  phone_number: string;
   motto: string;
   tagline: string;
   tagline_id: string;

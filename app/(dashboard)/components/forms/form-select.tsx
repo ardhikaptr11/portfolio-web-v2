@@ -25,6 +25,7 @@ interface FormSelectProps<
   options: FormOption[];
   placeholder?: string;
   searchable?: boolean;
+  onChange?: (value: string | boolean) => void;
 }
 
 function FormSelect<
@@ -37,6 +38,7 @@ function FormSelect<
   description,
   required,
   options,
+  onChange,
   placeholder = "Select an option",
   disabled,
   className,
@@ -56,15 +58,20 @@ function FormSelect<
           <Select
             name={field.name}
             onValueChange={(val) => {
-              if (val === "true") field.onChange(true);
-              else if (val === "false") field.onChange(false);
-              else field.onChange(val);
+              const finalValue =
+                val === "true" ? true : val === "false" ? false : val;
+
+              field.onChange(finalValue);
+              onChange?.(finalValue);
             }}
             value={String(field.value)}
             disabled={disabled}
           >
             <FormControl>
-              <SelectTrigger id={field.name} className="cursor-pointer w-full mb-0">
+              <SelectTrigger
+                id={field.name}
+                className="mb-0 w-full cursor-pointer"
+              >
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
