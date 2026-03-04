@@ -1,5 +1,6 @@
 "use server";
 
+import readUserSession from "@/lib/read-session";
 import { createClient } from "@/lib/supabase/server";
 import { BUCKET_NAME } from "../../../constants/items.constants";
 import { IAsset, IAssetPreview } from "../../../types/data";
@@ -10,7 +11,7 @@ const getFilteredAssets = async ({
   pageLimit = 10,
   category,
   search,
-  sort
+  sort,
 }: {
   page?: number;
   pageLimit?: number;
@@ -24,11 +25,19 @@ const getFilteredAssets = async ({
   const from = (page - 1) * pageLimit;
   const to = from + pageLimit - 1;
 
-  let query = supabase.from(BUCKET_NAME).select("id, file_name, ordering, category, usage, url, created_at, updated_at", { count: "exact" }).range(from, to);
+  let query = supabase
+    .from(BUCKET_NAME)
+    .select(
+      "id, file_name, ordering, category, usage, url, created_at, updated_at",
+      { count: "exact" },
+    )
+    .range(from, to);
 
   if (search) {
     const searchPattern = `%${search}%`;
-    query = query.or(`file_name.ilike.${searchPattern},usage.ilike.${searchPattern}`);
+    query = query.or(
+      `file_name.ilike.${searchPattern},usage.ilike.${searchPattern}`,
+    );
   }
 
   if (category) {
@@ -59,36 +68,61 @@ const getFilteredAssets = async ({
     assets,
     page,
     pageLimit,
-    offset: from
+    offset: from,
   };
 };
 
 const getAllAssets = async () => {
   const supabase = await createClient();
 
-  const allImagesQuery = supabase.from(BUCKET_NAME).select("id, file_name, url").not("ordering", "eq", 0).order("ordering", { ascending: true }).eq("category", "image");
+  const allImagesQuery = supabase
+    .from(BUCKET_NAME)
+    .select("id, file_name, url")
+    .not("ordering", "eq", 0)
+    .order("ordering", { ascending: true })
+    .eq("category", "image");
 
-  const allFilesQuery = supabase.from(BUCKET_NAME).select("id, file_name, url").order("ordering", { ascending: true }).eq("category", "file");
+  const allFilesQuery = supabase
+    .from(BUCKET_NAME)
+    .select("id, file_name, url")
+    .order("ordering", { ascending: true })
+    .eq("category", "file");
 
-  const [allImagesResult, allFilesResult] = await Promise.all([allImagesQuery, allFilesQuery]);
+  const [allImagesResult, allFilesResult] = await Promise.all([
+    allImagesQuery,
+    allFilesQuery,
+  ]);
 
-  if (allImagesResult.error || allFilesResult.error) throw new Error("Failed to fetch assets");
+  if (allImagesResult.error || allFilesResult.error)
+    throw new Error("Failed to fetch assets");
 
   const data = {
     images: allImagesResult.data as IAssetPreview[],
-    files: allFilesResult.data as IAssetPreview[]
+    files: allFilesResult.data as IAssetPreview[],
   };
 
   return data;
 };
 
-const updateAssetById = async (id: IAsset["id"], data: Pick<IAsset, "file_name" | "usage">) => {
+const updateAssetById = async (
+  id: IAsset["id"],
+  data: Pick<IAsset, "file_name" | "usage">,
+) => {
   const supabase = await createClient();
 
-  const { error } = await supabase.from(BUCKET_NAME).update({
-    ...data,
-    updated_at: new Date().toISOString()
-  }).eq("id", id);
+  const authUser = await readUserSession();
+  const role = authUser?.app_metadata?.role;
+
+  if (role !== "owner")
+    throw new Error("You're not authorized to perform this action");
+
+  const { error } = await supabase
+    .from(BUCKET_NAME)
+    .update({
+      ...data,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id);
 
   if (error) throw error;
 };
@@ -96,23 +130,42 @@ const updateAssetById = async (id: IAsset["id"], data: Pick<IAsset, "file_name" 
 const deleteAssetById = async (id: IAsset["id"]) => {
   const supabase = await createClient();
 
-  const { data: deletedData, error: errorDeleteRow } = await supabase.from(BUCKET_NAME).delete().eq("id", id).select("file_path").single();
+  const authUser = await readUserSession();
+  const role = authUser?.app_metadata?.role;
+
+  if (role !== "owner")
+    throw new Error("You're not authorized to perform this action");
+
+  const { data: deletedData, error: errorDeleteRow } = await supabase
+    .from(BUCKET_NAME)
+    .delete()
+    .eq("id", id)
+    .select("file_path")
+    .single();
 
   if (errorDeleteRow) throw errorDeleteRow;
 
-  const { error: errorDeleteFile } = await supabase.storage.from(BUCKET_NAME).remove([deletedData.file_path]);
+  const { error: errorDeleteFile } = await supabase.storage
+    .from(BUCKET_NAME)
+    .remove([deletedData.file_path]);
 
   if (errorDeleteFile) throw errorDeleteFile;
 };
 
 const deleteSelectedAssets = async (ids: IAsset["id"][]) => {
+  const authUser = await readUserSession();
+  const role = authUser?.app_metadata?.role;
+
+  if (role !== "owner")
+    throw new Error("You're not authorized to perform this action");
+
   await Promise.all(ids.map(async (id) => deleteAssetById(id)));
 };
 
 export {
-  getFilteredAssets,
-  getAllAssets,
-  updateAssetById,
   deleteAssetById,
-  deleteSelectedAssets
+  deleteSelectedAssets,
+  getAllAssets,
+  getFilteredAssets,
+  updateAssetById,
 };
