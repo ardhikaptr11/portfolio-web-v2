@@ -1,14 +1,14 @@
 {
   "name": "Ardhika Putra Portfolio",
-  "short_name": "Ardhika",
+  "short_name": "Ardhika Putra",
   "icons": [
     {
-      "src": "/logo-dark-192x192.png",
+      "src": "/logo-dark-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/logo-512x512.png",
+      "src": "/logo-dark-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

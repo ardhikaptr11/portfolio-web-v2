@@ -1,4 +1,7 @@
-export const throttle = (func: (...args: unknown[]) => void, limit: number): ((...args: unknown[]) => void) => {
+export const throttle = (
+  func: (...args: unknown[]) => void,
+  limit: number,
+): ((...args: unknown[]) => void) => {
   let lastFunc: ReturnType<typeof setTimeout> | null = null;
   let lastRan: number | null = null;
 
@@ -61,10 +64,11 @@ export const capitalize = (text: string | null | undefined): string => {
     return "";
   }
 
-  const capitalized = text.charAt(0).normalize("NFD").toUpperCase() + text.slice(1)
+  const capitalized =
+    text.charAt(0).normalize("NFD").toUpperCase() + text.slice(1);
 
   return capitalized;
-}
+};
 
 /**
  * Extracts initials from a given name.
@@ -73,7 +77,10 @@ export const capitalize = (text: string | null | undefined): string => {
  * @param count - The number of initials to return. Defaults to all initials.
  * @returns A string of initials from the name.
  */
-export const getInitials = (name: string | null | undefined, count?: number): string => {
+export const getInitials = (
+  name: string | null | undefined,
+  count?: number,
+): string => {
   if (!name || typeof name !== "string") {
     return "";
   }
@@ -83,7 +90,9 @@ export const getInitials = (name: string | null | undefined, count?: number): st
     .filter(Boolean)
     .map((part) => part[0].toUpperCase());
 
-  return count && count > 0 ? initials.slice(0, count).join("") : initials.join("");
+  return count && count > 0
+    ? initials.slice(0, count).join("")
+    : initials.join("");
 };
 
 /**
@@ -122,13 +131,13 @@ export function formatDateTime(input: Date | string | number): string {
 export const getCurrentDate = (): string => {
   const now = new Date();
 
-  const day = String(now.getDate()).padStart(2, '0');
-  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, "0");
   const year = now.getFullYear();
 
   const formattedDate = `${day}${month}${year}-${now.getTime()}`;
   return formattedDate;
-}
+};
 
 /**
  * Formats a number as a currency string.
@@ -138,7 +147,11 @@ export const getCurrentDate = (): string => {
  * @param locale - The locale for formatting (e.g., "en-US"). Defaults to "en-US".
  * @returns A string formatted as currency.
  */
-export function formatCurrency(amount: number, currency: string = "USD", locale: string = "en-US"): string {
+export function formatCurrency(
+  amount: number,
+  currency: string = "USD",
+  locale: string = "en-US",
+): string {
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
@@ -183,13 +196,16 @@ export const getTimeZones = (): { label: string; value: string }[] => {
         timeZoneName: "shortOffset",
       });
       const parts = formatter.formatToParts(new Date());
-      const offset = parts.find((part) => part.type === "timeZoneName")?.value || "";
+      const offset =
+        parts.find((part) => part.type === "timeZoneName")?.value || "";
       const formattedOffset = offset === "GMT" ? "GMT+0" : offset;
 
       return {
         value: timezone,
         label: `(${formattedOffset}) ${timezone.replace(/_/g, " ")}`,
-        numericOffset: parseInt(formattedOffset.replace("GMT", "").replace("+", "") || "0"),
+        numericOffset: parseInt(
+          formattedOffset.replace("GMT", "").replace("+", "") || "0",
+        ),
       };
     })
     .sort((a, b) => a.numericOffset - b.numericOffset);
@@ -217,9 +233,17 @@ export function getSlug(title: string): string {
     .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
 }
 
-export function slugToTitle(slug: string): string {
-  const whitespaceIndex = slug.indexOf(" ");
-  if (whitespaceIndex === -1) return slug.charAt(0).toUpperCase() + slug.slice(1);
+export const slugToTitle = (slug: string): string => {
+  return slug
+    .replace(/[-_]/g, " ")
+    .split(" ")
+    .map((word) => {
+      const formattedWords =
+        word.length <= 3
+          ? word.toUpperCase()
+          : capitalize(word);
 
-  return slug.split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+      return formattedWords;
+    })
+    .join(" ");
 }

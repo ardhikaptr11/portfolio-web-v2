@@ -27,7 +27,7 @@ export const BlockListStatic: RenderStaticNodeWrapper = (props) => {
   return (props) => <List {...props} />;
 };
 
-function List(props: SlateRenderElementProps) {
+export function List(props: SlateRenderElementProps) {
   const { indent, listStart, listStyleType } = props.element as TListElement & {
     indent?: number;
   };

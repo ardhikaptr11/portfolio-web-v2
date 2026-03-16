@@ -130,7 +130,7 @@ const getFilteredProjects = async ({
   };
 };
 
-const bulkAddProjects = async (payload: TAddProjectsFormValues["projects"]) => {
+const bulkAddProject = async (payload: TAddProjectsFormValues["projects"]) => {
   const authUser = await readUserSession();
   const role = authUser?.app_metadata?.role;
 
@@ -229,7 +229,7 @@ const deleteSelectedProjects = async (ids: IProject["id"][]) => {
 };
 
 export {
-  bulkAddProjects,
+  bulkAddProject,
   deleteSelectedProject,
   deleteSelectedProjects,
   getFilteredProjects,

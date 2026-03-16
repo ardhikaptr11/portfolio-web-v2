@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { SearchParams } from "nuqs";
 import ManageAssets from "../../components/views/Assets/manage-assets";
 import { searchParamsCache } from "../../lib/search-params";
+import { constructMetadata } from "@/lib/metadata";
 
 type AssetsPageProps = {
   searchParams: Promise<SearchParams>;
@@ -15,9 +16,11 @@ export const generateMetadata = async ({
   // read route params
   const { action } = await searchParams;
 
-  if (!action) return { title: "Manage Assets | Dashboard" };
+  const pathname = "/dashboard/assets";
 
-  return { title: "Upload Assets | Dashboard" };
+  if (!action) return constructMetadata({ title: "Manage Assets", pathname });
+
+  return constructMetadata({ title: "Upload Assets", pathname });
 };
 
 const AssetsPage = async ({ searchParams }: AssetsPageProps) => {

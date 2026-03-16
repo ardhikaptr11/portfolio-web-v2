@@ -1,5 +1,6 @@
 import { Variants } from "motion/react";
 
+// Home Page
 export const MOBILE_MENU_VARIANTS = {
   container: {
     closed: {
@@ -109,4 +110,16 @@ export const GIANT_TEXT_VARIANTS = {
       ease: [0.22, 1, 0.36, 1],
     }
   }
-} as Variants
+} as Variants;
+
+// Project Details Page
+export const HERO_VARIANTS = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.7,
+      delayChildren: 0.4,
+    },
+  },
+};

@@ -1,10 +1,16 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
@@ -17,7 +23,6 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-destructive: var(--destructive);
   --color-ocean-teal: var(--primary);
   --color-ocean-blue: var(--ocean-blue);
   --color-ocean-surface: var(--secondary);
@@ -31,51 +36,55 @@
   --shadow-glow: var(--ocean-glow);
   --drop-shadow-silhouette: var(--silhouette);
   --drop-shadow-glow: var(--glow);
-  --animate-glitch-after: glitch var(--after-duration) infinite linear
-    alternate-reverse;
-  --animate-glitch-before: glitch var(--before-duration) infinite linear
-    alternate-reverse;
+  --animate-glitch-after: glitch var(--after-duration) infinite linear alternate-reverse;
+  --animate-glitch-before: glitch var(--before-duration) infinite linear alternate-reverse;
 }
 
 :root {
   --radius: 0.75rem;
   --background: oklch(0.98 0.01 220);
   --foreground: oklch(0.15 0.03 240);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.03 240);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.03 240);
   --primary: oklch(0.55 0.15 190);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.92 0.02 220);
   --secondary-foreground: oklch(0.55 0.15 190);
   --muted: oklch(0.94 0.02 220);
   --muted-foreground: oklch(0.45 0.05 240);
-  --accent: var(--secondary);
-  --accent-foreground: var(--secondary-foreground);
+  --accent: oklch(0.92 0.02 220);
+  --accent-foreground: oklch(0.55 0.15 190);
   --border: oklch(0.88 0.02 220);
-  --input: var(--border);
-  --ring: var(--primary);
+  --input: oklch(0.88 0.02 220);
+  --ring: oklch(0.55 0.15 190);
   --destructive: oklch(0.6 0.18 25);
   --ocean-blue: oklch(0.2 0.05 240);
   --ocean-deep: oklch(0.15 0.03 240);
   --ocean-glow: 0 0 40px oklch(0.55 0.15 190 / 0.1);
-  --silhouette: drop-shadow(
-    0 -10px 40px oklch(0.55 0.15 190 / 0.1)
-  );
+  --silhouette: drop-shadow(0 -10px 40px oklch(0.55 0.15 190 / 0.1));
   --glow: drop-shadow(0 0 15px oklch(0.55 0.15 190 / 0.3));
 }
 
 .dark {
   --background: oklch(0.08 0.02 240);
   --foreground: oklch(0.98 0.01 220);
+  --card: oklch(0.12 0.03 240);
+  --card-foreground: oklch(0.98 0.01 220);
+  --popover: oklch(0.12 0.03 240);
+  --popover-foreground: oklch(0.98 0.01 220);
   --primary: oklch(0.7 0.15 185);
   --primary-foreground: oklch(0.08 0.02 240);
   --secondary: oklch(0.14 0.03 240);
   --secondary-foreground: oklch(0.7 0.15 185);
   --muted: oklch(0.18 0.04 240);
   --muted-foreground: oklch(0.65 0.05 230);
-  --accent: var(--secondary);
-  --accent-foreground: var(--primary);
+  --accent: oklch(0.14 0.03 240);
+  --accent-foreground: oklch(0.7 0.15 185);
   --border: oklch(0.2 0.05 240);
-  --input: var(--border);
-  --ring: var(--primary);
+  --input: oklch(0.2 0.05 240);
+  --ring: oklch(0.7 0.15 185);
   --destructive: oklch(0.55 0.22 25);
   --ocean-blue: oklch(0.45 0.12 210);
   --ocean-deep: oklch(0.05 0.01 240);
@@ -105,6 +114,10 @@ body {
     h1,
     h2,
     h3,
+    h4,
+    h5,
+    h6,
+    label,
     div {
       cursor: none !important;
     }
@@ -141,6 +154,85 @@ body {
 
   & .rpv-core__inner {
     @apply border-none!;
+  }
+}
+
+/* Rich Text Content */
+@utility rt-content {
+  /* @apply prose prose-neutral dark:prose-invert; */
+  @apply text-foreground/80 max-w-none p-4 text-sm leading-relaxed md:p-8;
+
+  & *:has(+ .slate-toc) {
+    @apply text-foreground font-black tracking-[0.2em] uppercase;
+  }
+
+  & .slate-toc {
+    @apply border-border border-y py-4;
+  }
+  & .slate-toc > div > button {
+    @apply text-foreground/90 hover:text-ocean-teal no-underline transition-colors duration-200 hover:bg-transparent;
+
+    &:focus,
+    &:active {
+      @apply text-ocean-teal font-black;
+    }
+  }
+
+  /* Headings */
+  & :is(h1, h2, h3, h4, h5, h6) {
+    @apply text-foreground border-border font-bold tracking-tight uppercase;
+  }
+
+  & h1 {
+    @apply mb-8 border-b pb-4 text-3xl font-black tracking-tighter;
+  }
+  & h2 {
+    @apply mt-12 mb-4 border-b pb-2 text-xl font-bold;
+  }
+  & h3 {
+    @apply mb-3 text-lg;
+  }
+  & h4,
+  & h5,
+  & h6 {
+    @apply mt-6 mb-2 text-sm;
+  }
+
+  & span {
+    @apply font-display;
+  }
+
+  /* Links */
+  & a {
+    @apply text-ocean-teal decoration-ocean-teal font-medium no-underline transition-all hover:underline;
+  }
+
+  & b,
+  strong {
+    @apply text-foreground font-bold;
+  }
+
+  /* Lists */
+  & :is(ul, ol) {
+    @apply list-outside;
+  }
+
+  & li {
+    &::marker {
+      @apply text-ocean-teal text-lg;
+    }
+  }
+
+  & hr {
+    @apply border-border m-0 opacity-50;
+  }
+
+  & .slate-table {
+    @apply overflow-hidden;
+
+    & .slate-td {
+      @apply bg-transparent;
+    }
   }
 }
 

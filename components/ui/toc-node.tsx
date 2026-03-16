@@ -1,7 +1,5 @@
 "use client";
 
-import * as React from "react";
-
 import type { PlateElementProps } from "platejs/react";
 
 import { useTocElement, useTocElementState } from "@platejs/toc/react";
@@ -16,11 +14,11 @@ const headingItemVariants = cva(
     variants: {
       depth: {
         1: "pl-0",
-        2: "pl-4",
-        3: "pl-8",
-        4: "pl-12",
-        5: "pl-16",
-        6: "pl-20",
+        2: "pl-1",
+        3: "pl-2",
+        4: "pl-3",
+        5: "pl-5",
+        6: "pl-8",
       },
     },
   },
@@ -53,8 +51,6 @@ export function TocElement(props: PlateElementProps) {
                     behavior: "smooth",
                     block: "start",
                   });
-
-                  window.scrollBy(0, -80);
                 }
               }}
               aria-current

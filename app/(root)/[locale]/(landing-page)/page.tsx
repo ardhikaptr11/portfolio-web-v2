@@ -1,7 +1,7 @@
 import { Fragment } from "react/jsx-runtime";
 import Certifications from "../../components/views/certifications";
 import Contact from "../../components/views/contact";
-import Experiences from "../../components/views/experiences";
+import Experience from "../../components/views/experience";
 import Hero from "../../components/views/hero";
 import Timeline from "../../components/views/journey";
 import Projects from "../../components/views/projects";
@@ -18,12 +18,12 @@ export const generateMetadata = async ({
 }) => {
   const { locale } = await params;
 
-  const t = await getTranslations("Schema");
+  const t = await getTranslations("Schema.person");
 
   return constructMetadata({
     locale,
-    title: `Ardhika Putra - ${t("person.jobTitle")}`,
-    description: t("person.description"),
+    title: "Ardhika Putra - Fullstack Developer",
+    description: t("description"),
   });
 };
 
@@ -40,8 +40,8 @@ const HomePage = async () => {
       <Projects projects={projects} />
       <Timeline steps={FUTURE_JOURNEY} isContinuation />
       <Services />
-      <Experiences experiences={experiences} />
-      <Certifications certificates={certificates} />
+      <Experience data={experiences} />
+      <Certifications data={certificates} />
       <Contact
         contact={{ email: profile.email, phone_number: profile.phone_number }}
       />

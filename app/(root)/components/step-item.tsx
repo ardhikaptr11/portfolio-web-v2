@@ -11,7 +11,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 export interface IStepItem {
-  id: string;
+  key: string;
   status: string;
 }
 
@@ -81,19 +81,19 @@ const StepItem = ({
       >
         {!isPlanned && (
           <span className="text-ocean-teal/70 mb-1 block font-mono text-[9px] tracking-widest uppercase">
-            {t(`${step.id}.time`)}
+            {t(`${step.key}.time`)}
           </span>
         )}
 
         <span className="text-muted-foreground font-mono text-[10px] tracking-widest uppercase transition-colors">
-          {t(`${step.id}.period`)} —{" "}
+          {t(`${step.key}.period`)} —{" "}
           <span
             className={cn("transition-colors", {
               "text-ocean-teal underline decoration-dotted underline-offset-4":
                 isActive && hasFlowReached,
             })}
           >
-            {t(`${step.id}.status`)}
+            {t(`${step.key}.status`)}
           </span>
         </span>
         <h4
@@ -102,10 +102,10 @@ const StepItem = ({
             hasFlowReached ? "text-foreground" : "text-muted-foreground/50",
           )}
         >
-          {t(`${step.id}.title`)}
+          {t(`${step.key}.title`)}
         </h4>
         <p className="text-muted-foreground mx-auto text-sm leading-relaxed md:mx-0">
-          {t(`${step.id}.description`)}
+          {t(`${step.key}.description`)}
         </p>
       </motion.div>
 

@@ -13,22 +13,16 @@ import { DEFAULT_THEME } from "./components/themes/theme.config";
 import "./globals.css";
 import "./theme.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { constructMetadata } from "@/lib/metadata";
 
 const META_THEME_COLORS = {
   light: "#ffffff",
   dark: "#09090b",
 };
 
-export const metadata: Metadata = {
-  title: "Dashboard",
-  description:
-    "Internal administration panel for managing content shows on the website",
-  robots: {
-    index: false,
-    follow: false,
-    nocache: true,
-  },
-};
+export const metadata = constructMetadata({
+  pathname: "/dashboard",
+});
 
 export const viewport: Viewport = {
   themeColor: META_THEME_COLORS.light,

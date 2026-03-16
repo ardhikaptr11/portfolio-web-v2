@@ -72,7 +72,7 @@ const UploadFileFormSchema = z.object({
           "Unsupported file type",
         ),
     )
-    .min(1, "Please select at least 2 files"),
+    .min(2, "Please select at least 2 files"),
 });
 
 type TUploadFile = z.infer<typeof UploadFileFormSchema>;
@@ -173,35 +173,27 @@ const UploadAssets = () => {
           ? batchUploadAssets(data.images)
           : uploadSingleImage(data.images),
         {
-          loading: "Uploading image(s)...",
+          loading: "Uploading image...",
           success: () => {
+            const count = data.images.length;
+            const message =
+              count > 1
+                ? "All images successfully uploaded"
+                : "Image successfully uploaded";
             return {
               duration: 1500,
               onAutoClose: () => router.replace("/dashboard/assets"),
-              message: "All image(s) successfully uploaded",
+              message,
             };
           },
           error: (error: Error) => {
             return {
-              message: "Error while uploading",
+              message: "Error uploading image",
               description: error.message,
             };
           },
         },
       );
-
-      // try {
-      //   isBatchUploadEnabled
-      //     ? await batchUploadAssets(data.images)
-      //     : await uploadSingleImage(data.images);
-
-      //   toast.success("All image(s) successfully uploaded");
-      //   router.push("/dashboard/assets");
-      // } catch (err) {
-      //   toast.error("Error while uploading", {
-      //     description: (err as Error).message,
-      //   });
-      // }
     });
   };
 
@@ -227,16 +219,22 @@ const UploadAssets = () => {
     }
 
     startTransition(async () => {
-      try {
-        await batchUploadAssets(data.files);
-
-        toast.success("All file(s) successfully uploaded");
-        router.push("/dashboard/assets");
-      } catch (err) {
-        toast.error("Error while uploading", {
-          description: (err as Error).message,
-        });
-      }
+      toast.promise(batchUploadAssets(data.files), {
+        loading: "Uploading all files...",
+        success: () => {
+          return {
+            duration: 1500,
+            onAutoClose: () => router.replace("/dashboard/assets"),
+            message: "All files successfully uploaded",
+          };
+        },
+        error: (error: Error) => {
+          return {
+            message: "Error uploading file",
+            description: error.message,
+          };
+        },
+      });
     });
   };
 

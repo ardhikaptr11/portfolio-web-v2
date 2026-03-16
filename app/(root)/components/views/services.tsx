@@ -109,7 +109,7 @@ const Services = () => {
                 className={cn(
                   "border-ocean-teal/10 relative flex flex-col overflow-hidden border bg-white/60 transition-all duration-700 ease-in-out",
                   isActive
-                    ? "bg-white/50 dark:bg-ocean-teal/3 flex-3 md:flex-4"
+                    ? "dark:bg-ocean-teal/3 flex-3 bg-white/50 md:flex-4"
                     : "bg-secondary/20 hover:bg-ocean-teal/5 flex-1",
                 )}
               >
@@ -200,7 +200,7 @@ const Services = () => {
                         className="mt-8 flex h-full flex-col justify-between"
                       >
                         <div>
-                          <h4 className="text-3xl font-black tracking-tighter text-ocean-blue dark:text-foreground uppercase md:text-5xl">
+                          <h4 className="text-ocean-blue dark:text-foreground text-3xl font-black tracking-tighter uppercase md:text-5xl">
                             {t(`services.${service.key}.title`).split(" ")[0]}{" "}
                             <br />
                             <span className="text-ocean-teal">
@@ -217,9 +217,9 @@ const Services = () => {
 
                         {/* Tech Stack Grid */}
                         <div className="border-ocean-teal/10 mt-auto grid grid-cols-2 gap-x-6 gap-y-4 border-t pt-8 md:grid-cols-4">
-                          {service.techStack.map((tech, idx) => (
+                          {service.values.map((value, idx) => (
                             <motion.div
-                              key={tech}
+                              key={value}
                               initial={{ opacity: 0, x: -10 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: idx * 0.05 + 0.3 }}
@@ -229,7 +229,7 @@ const Services = () => {
                                 Stack {idx + 1 < 10 ? `0${idx + 1}` : idx + 1}
                               </p>
                               <p className="text-foreground group-hover/item:text-ocean-teal font-mono text-[11px] font-black tracking-wider uppercase">
-                                {tech}
+                                {value}
                               </p>
                               <div className="flex gap-1 pt-1 opacity-30 group-hover/item:opacity-100">
                                 <div className="bg-ocean-teal size-0.75 rounded-full" />

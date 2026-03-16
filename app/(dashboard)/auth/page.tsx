@@ -1,9 +1,10 @@
-import { Metadata } from "next";
+import { constructMetadata } from "@/lib/metadata";
 import { AuthForm, GuestAuthForm } from "../components/views/Auth/auth-form";
 
-export const metadata: Metadata = {
-  title: "Login | Dashboard",
-};
+export const metadata = constructMetadata({
+  title: "Login",
+  pathname: "/auth",
+});
 
 const LoginPage = async ({
   searchParams,

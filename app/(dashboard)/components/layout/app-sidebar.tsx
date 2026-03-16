@@ -38,6 +38,7 @@ import { useMediaQuery } from "../../hooks/use-media-query";
 import { NavItem } from "../../types/items";
 import { IAccountInfo } from "../../types/user";
 import { UserAvatarProfile } from "../user-avatar-profile";
+import { Separator } from "@/components/ui/separator";
 
 const AppSidebar = ({
   items,
@@ -88,6 +89,7 @@ const AppSidebar = ({
             <SidebarMenuButton asChild>
               <div className="inline-flex justify-center hover:bg-transparent!">
                 <Icons.brandLogo className="size-6!" />
+                <Separator orientation="vertical" className="bg-muted-foreground"/>
                 <span className="text-base font-semibold group-data-[collapsible=icon]:hidden">
                   Admin Panel
                 </span>

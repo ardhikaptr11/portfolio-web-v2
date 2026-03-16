@@ -1,6 +1,8 @@
 import {
   IconBrandExpress,
   IconBrandLogo,
+  IconBrandZod,
+  IconBrandZustand,
   IconSubmarine
 } from "@/app/(root)/components/custom-icons";
 import {
@@ -9,10 +11,12 @@ import {
   IconAlertTriangle,
   IconArrowBigUpLines,
   IconArrowRight,
+  IconBook,
   IconBookmark,
   IconBookmarkPlus,
   IconBookmarks,
   IconBrandCss3,
+  IconBrandFirebase,
   IconBrandGithub,
   IconBrandHtml5,
   IconBrandJavascript,
@@ -94,17 +98,19 @@ import {
 export type Icon = React.ComponentType<IconProps>;
 
 export const Icons = {
-  add: IconPlus,
+  add: IconPlus,  
   adjustment: IconAdjustmentsHorizontal,
   alertCircle: IconAlertCircle,
   alertTriangle: IconAlertTriangle,
   arrowRight: IconArrowRight,
   arrowUp: IconArrowBigUpLines,
   asc2: IconSortAscending2,
+  book: IconBook,
   bookmark: IconBookmark,
   bookmarks: IconBookmarks,
   bookmarkPlus: IconBookmarkPlus,
   brandCss: IconBrandCss3,
+  brandFirebase: IconBrandFirebase,
   brandExpress: IconBrandExpress,
   brandHtml: IconBrandHtml5,
   brandJavascript: IconBrandJavascript,
@@ -117,6 +123,8 @@ export const Icons = {
   brandSupabase: IconBrandSupabase,
   brandTailwind: IconBrandTailwind,
   brandTypescript: IconBrandTypescript,
+  brandZod: IconBrandZod,
+  brandZustand: IconBrandZustand,
   briefcase: IconBriefcase,
   building: IconBuildings,
   calendar: IconCalendarMonth,

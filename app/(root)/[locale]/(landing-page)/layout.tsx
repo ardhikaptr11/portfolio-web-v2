@@ -1,13 +1,10 @@
-import type { Metadata } from "next";
 import { ReactNode } from "react";
-import FloatingBackToTopButton from "../../components/floating-back-top-button";
 import Footer from "../../components/footer";
-import LanguageSwitcher from "../../components/language-switcher";
 import Navbar from "../../components/navbar";
 import ScreenLoader from "../../components/screen-loader";
 import { NAV_ITEMS } from "../../constants/items.constants";
-import { getAllData } from "../../lib/queries/home";
 import "../../globals.css";
+import { getAllData } from "../../lib/queries/home";
 
 export const revalidate = 86400;
 
@@ -27,8 +24,6 @@ const LandingPageLayout = async ({
       <Navbar items={NAV_ITEMS_SLICED} socials={profile.social_links} />
       {children}
       <Footer items={NAV_ITEMS} profile={profile} />
-      <FloatingBackToTopButton />
-      <LanguageSwitcher />
     </ScreenLoader>
   );
 };

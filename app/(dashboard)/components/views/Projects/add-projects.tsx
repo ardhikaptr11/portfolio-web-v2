@@ -6,7 +6,7 @@ import {
   getAllAvailableTechStack,
 } from "@/app/(dashboard)/lib/queries";
 import { getAllImages } from "@/app/(dashboard)/lib/queries/assets/client";
-import { bulkAddProjects } from "@/app/(dashboard)/lib/queries/projects/actions";
+import { bulkAddProject } from "@/app/(dashboard)/lib/queries/projects/actions";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -226,18 +226,23 @@ const AddProjects = () => {
 
   const onSubmit = (data: TAddProjectsFormValues) => {
     startTransition(async () => {
-      toast.promise(bulkAddProjects(data.projects), {
-        loading: "Adding all projects...",
+      toast.promise(bulkAddProject(data.projects), {
+        loading: "Adding project...",
         success: () => {
+          const count = data.projects.length;
+          const message =
+            count > 1
+              ? "All projects added successfully"
+              : "Project added successfully";
           return {
             duration: 1500,
             onAutoClose: () => router.replace("/dashboard/projects"),
-            message: "All projects added successfully",
+            message,
           };
         },
         error: (error: Error) => {
           return {
-            message: "Error while inserting projects",
+            message: "Error saving project",
             description: error.message,
           };
         },
@@ -551,7 +556,11 @@ const AddProjects = () => {
               <Icons.circlePlus className="size-6" />
               Add New
             </Button>
-            <Button disabled={loading} className="w-full" type="submit">
+            <Button
+              disabled={loading || !isAuthorized}
+              className="w-full"
+              type="submit"
+            >
               {loading && <Spinner variant="circle" />}
               {loading ? "Submitting..." : "Submit"}
             </Button>

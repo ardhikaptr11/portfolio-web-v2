@@ -3,6 +3,10 @@
     "person": {
       "jobTitle": "Pengembang Fullstack",
       "description": "Pengembang Fullstack yang berfokus pada Next.js, TypeScript, dan React. Membangun aplikasi web yang skalabel dan berperforma tinggi serta solusi digital modern."
+    },
+    "projects": {
+      "title": "Arsip Proyek",
+      "description": "Indeks kurasi proyek pengembangan perangkat lunak, menampilkan aplikasi web modern, eksperimen teknis, dan solusi fullstack."
     }
   },
   "Loader": {
@@ -19,7 +23,7 @@
       "about": "Tentang Saya",
       "projects": "Proyek",
       "services": "Layanan",
-      "experiences": "Pengalaman",
+      "experience": "Pengalaman",
       "certifications": "Sertifikasi",
       "contact": "Kontak",
       "btn-contact": "Hubungi Saya",
@@ -105,7 +109,7 @@
       }
     }
   },
-  "Experiences": {
+  "Experience": {
     "title": "Terminal Pengalaman",
     "subtitle": "Perjalanan Teknis",
     "terminal": {
@@ -165,6 +169,61 @@
       "subject_required": "Harap tentukan subjek pesan.",
       "message_min": "Pesan minimal harus 10 karakter.",
       "message_required": "Pesan tidak boleh kosong."
+    }
+  },
+  "ProjectList": {
+    "title": "Arsip Proyek",
+    "buttons": {
+      "per-page": "Menampilkan",
+      "sorting-by": {
+        "title": {
+          "text": "Judul",
+          "sub-title": {
+            "asc": "Menanjak",
+            "desc": "Menurun"
+          }
+        },
+        "date": {
+          "text": "Tanggal",
+          "sub-title": {
+            "earliest": "Terlama",
+            "latest": "Terbaru"
+          }
+        }
+      }
+    },
+    "FilterAside": {
+      "title": "Penyaringan",
+      "subtitles": {
+        "subtitle1": "Cari",
+        "subtitle2": "Peran",
+        "subtitle3": "Teknologi"
+      },
+      "search-placeholder": "Cari berdasarkan judul atau teknologi...",
+      "clear-button": "Bersihkan Semua",
+      "status": {
+        "under-development": "Masih Dikembangkan",
+        "archived": "Terarsipkan"
+      }
+    }
+  },
+  "ProjectDetails": {
+    "title": "Ikhtisar Proyek",
+    "aside": {
+      "title": "Info Proyek",
+      "subtitles": {
+        "subtitle1": "Peran",
+        "subtitle2": "Kumpulan Teknologi",
+        "subtitle3": "Linimasa",
+        "subtitle4": "Link Terkait"
+      },
+      "contents": {
+        "timeline": {
+          "content1": "Proyek Dimulai",
+          "content2": "Proyek Selesai",
+          "content3": "Durasi"
+        }
+      }
     }
   },
   "404": {

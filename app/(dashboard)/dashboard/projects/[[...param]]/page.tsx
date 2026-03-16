@@ -3,6 +3,7 @@ import EditProject from "@/app/(dashboard)/components/views/Projects/edit-projec
 import ManageProjects from "@/app/(dashboard)/components/views/Projects/manage-projects";
 import { getSelectedProject } from "@/app/(dashboard)/lib/queries/projects/actions";
 import { searchParamsCache } from "@/app/(dashboard)/lib/search-params";
+import { constructMetadata } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 import { SearchParams } from "nuqs";
 
@@ -18,35 +19,46 @@ export const generateMetadata = async ({
   const { slug } = await searchParams;
   const { param } = await params;
 
-  const pathname = param?.[0];
+  const segment = Array.isArray(param) ? param[0] : param;
 
-  if (pathname === "new") return { title: "New Projects | Dashboard" };
+  if (segment === "new")
+    return constructMetadata({
+      title: "New Project",
+      pathname: `/dashboard/projects/${segment}`,
+    });
 
-  if (!pathname && !slug) return { title: "Manage Projects | Dashboard" };
+  if (!segment && !slug)
+    return constructMetadata({
+      title: "Manage Projects",
+      pathname: "/dashboard/projects",
+    });
 
   const project = await getSelectedProject(`${slug}`);
 
-  return { title: `${project?.title} | Dashboard` };
+  return constructMetadata({
+    title: project.title,
+    pathname: `/dashboard/projects/edit?slug=${slug}`,
+  });
 };
 
 const ProjectsPage = async ({ searchParams, params }: ProjectsPageProps) => {
   const { slug, ...resolvedSearchParams } = await searchParams;
   const { param } = await params;
 
-  const pathname = param?.[0];
+  const segment = Array.isArray(param) ? param[0] : param;
 
   searchParamsCache.parse(resolvedSearchParams);
 
   // e.g /dashboard/projects/new -> matched
-  if (pathname && pathname === "new") return <AddProjects />;
+  if (segment && segment === "new") return <AddProjects />;
 
   // e.g /dashboard/projects/delete -> matched
   // e.g /dashboard/projects/edit?description=1 -> matched
   // e.g /dashboard/projects/edit?id=1 -> matched
-  if (pathname && !["edit", "new"].includes(pathname)) notFound();
+  if (segment && !["edit", "new"].includes(segment)) notFound();
 
   // e.g /dashboard/projects -> matched
-  if (!pathname) return <ManageProjects />;
+  if (!segment) return <ManageProjects />;
 
   // e.g /dashboard/projects/edit?slug=test -> matched
   const project = await getSelectedProject(`${slug}`);

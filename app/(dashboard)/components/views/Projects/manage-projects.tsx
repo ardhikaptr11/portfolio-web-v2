@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Suspense } from "react";
 import PageContainer from "../../layout/page-container";
-import { ProjectsListing } from "../../lists/projects-listing";
+import { ProjectListing } from "../../lists/project-listing";
 import { DataTableSkeleton } from "../../table/data-table-skeleton";
 
 const ManageProjects = () => {
@@ -30,7 +30,7 @@ const ManageProjects = () => {
           <DataTableSkeleton columnCount={5} rowCount={8} filterCount={2} />
         }
       >
-        <ProjectsListing />
+        <ProjectListing />
       </Suspense>
     </PageContainer>
   );

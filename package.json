@@ -89,6 +89,7 @@
     "date-fns": "^4.1.0",
     "dedent": "1.0.0",
     "deepl-node": "^1.24.0",
+    "embla-carousel-react": "^8.6.0",
     "emblor": "^1.4.8",
     "flag-icons": "^7.5.0",
     "gsap": "^3.14.2",
@@ -131,6 +132,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
+    "@tailwindcss/typography": "^0.5.19",
     "@types/lodash": "^4.17.23",
     "@types/node": "^20",
     "@types/react": "^19",

@@ -1,14 +1,42 @@
-import { Metadata } from "next";
-import UnderDevelopment from "@/app/(root)/components/views/under-development";
-import { constructMetadata } from "@/lib/metadata";
+  import { constructMetadata } from "@/lib/metadata";
+  import { getTranslations } from "next-intl/server";
+  import { SearchParams } from "nuqs/server";
+  import ListingLayout from "../../components/views/Projects/listing-layout";
+  import ProjectListing from "../../components/views/Projects/project-listing";
+  import { projectSearchParamsCache } from "../../lib/search-params";
 
-export const metadata = constructMetadata({
-  title: "Coming Soon",
-  indexable: false,
-});
+  export const generateMetadata = async ({
+    params,
+  }: {
+    params: Promise<{ locale: string }>;
+  }) => {
+    const { locale } = await params;
 
-const ProjectListPage = () => {
-  return <UnderDevelopment />;
-};
+    const t = await getTranslations("Schema.projects");
 
-export default ProjectListPage;
+    return constructMetadata({
+      locale,
+      title: t("title"),
+      description: t("description"),
+      pathname: "/projects",
+    });
+  };
+
+  type ProjectListProps = {
+    searchParams: Promise<SearchParams>;
+  };
+
+  const ProjectListPage = async ({ searchParams }: ProjectListProps) => {
+    const resolvedSearchParams = await searchParams;
+    const searchKey = JSON.stringify(resolvedSearchParams);
+
+    projectSearchParamsCache.parse(resolvedSearchParams);
+
+    return (
+      <ListingLayout searchKey={searchKey}>
+        <ProjectListing />
+      </ListingLayout>
+    );
+  };
+
+  export default ProjectListPage;

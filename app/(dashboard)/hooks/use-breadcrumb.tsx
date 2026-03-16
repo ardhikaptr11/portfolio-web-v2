@@ -1,6 +1,6 @@
 "use client";
 
-import { slugToTitle } from "@/lib/helpers";
+import { capitalize, slugToTitle } from "@/lib/helpers";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 
@@ -12,6 +12,14 @@ const routeMapping: Record<string, BreadcrumbItem[]> = {
     { title: "Dashboard", link: "#" },
     { title: "Profile", link: "/dashboard/profile" },
   ],
+  "/projects": [
+    { title: "Home", link: "/" },
+    { title: "Projects", link: "/projects" },
+  ],
+  "/id/projects": [
+    { title: "Beranda", link: "/" },
+    { title: "Proyek", link: "/projects" },
+  ],
 };
 
 export function useBreadcrumbs() {
@@ -19,45 +27,25 @@ export function useBreadcrumbs() {
   const searchParams = useSearchParams();
 
   const breadcrumbs = useMemo(() => {
-    // /dashboard/assets
-    // /dashboard/assets?action=upload
-    const segments = pathname.split("/").filter(Boolean); // ["dashboard", "assets"]
+    const segments = pathname.split("/").filter(Boolean);
 
     if (routeMapping[pathname]) return routeMapping[pathname];
 
-    // if (
-    //   segments[0] === "dashboard" &&
-    //   segments[1] === "articles" &&
-    //   segments.length === 3
-    // ) {
-    //   const slug = segments[2];
-    //   const formattedTitle = slug
-    //     .split("-")
-    //     .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-    //     .join(" ");
-    //   return [
-    //     { title: "Dashboard", link: "/dashboard" },
-    //     { title: "Artikel", link: "/dashboard/articles" },
-    //     { title: formattedTitle, link: pathname },
-    //   ];
-    // }
+    if (pathname.includes("/id/projects") && segments.length === 3) {
+      return [
+        { title: "Beranda", link: "/id" },
+        { title: "Proyek", link: "/id/projects" },
+        { title: `${slugToTitle(segments[segments.length - 1])}`, link: "#" },
+      ];
+    }
 
-    // if (
-    //   segments[0] === "dashboard" &&
-    //   segments[1] === "products" &&
-    //   segments.length === 3
-    // ) {
-    //   const slug = segments[2];
-    //   const formattedTitle = slug
-    //     .split("-")
-    //     .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-    //     .join(" ");
-    //   return [
-    //     { title: "Dashboard", link: "/dashboard" },
-    //     { title: "Produk", link: "/dashboard/products" },
-    //     { title: formattedTitle, link: pathname },
-    //   ];
-    // }
+    if (pathname.startsWith("/projects") && segments.length === 2) {
+      return [
+        { title: "Home", link: "/" },
+        { title: "Projects", link: "/projects" },
+        { title: `${slugToTitle(segments[segments.length - 1])}`, link: "#" },
+      ];
+    }
 
     if (pathname === "/dashboard/assets") {
       return searchParams.get("action") === "upload"
@@ -93,7 +81,7 @@ export function useBreadcrumbs() {
       const url = `/${segments.slice(0, index + 1).join("/")}`;
       const title = segment
         .split("-")
-        .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+        .map((s) => capitalize(s))
         .join(" ");
       return { title, link: url };
     });

@@ -39,7 +39,7 @@ const FloatingBackToTopButton = () => {
   return (
     <div
       className={cn(
-        "fixed right-8 bottom-8 z-50 transition-all duration-500",
+        "fixed right-5 bottom-5 z-50 transition-all duration-500",
         isVisible
           ? "translate-y-0 opacity-100"
           : "pointer-events-none translate-y-10 opacity-0",

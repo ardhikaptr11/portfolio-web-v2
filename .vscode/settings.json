@@ -1,7 +1,4 @@
 {
-  "cSpell.words": [
-    "ilike"
-  ],
   "i18n-ally.localesPaths": [
     "messages",
     "app/(root)/i18n"

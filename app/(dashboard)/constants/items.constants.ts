@@ -82,21 +82,21 @@ const SIDEBAR_ITEMS: NavItem[] = [
     ],
   },
   {
-    title: "Experiences",
+    title: "Experience",
     url: "#",
     icon: "bookmark",
     isActive: true,
     items: [
       {
-        title: "Add Experiences",
+        title: "Add Experience",
         shortcut: ["n", "e"],
-        url: "/dashboard/experiences/new",
+        url: "/dashboard/experience/new",
         icon: "bookmarkPlus",
       },
       {
-        title: "Manage Experiences",
+        title: "Manage Experience",
         shortcut: ["e", "e"],
-        url: "/dashboard/experiences",
+        url: "/dashboard/experience",
         icon: "bookmarks",
       },
     ],

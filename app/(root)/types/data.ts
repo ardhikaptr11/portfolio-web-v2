@@ -1,5 +1,6 @@
 import { WORK_CATEGORY } from "@/app/(dashboard)/types/data";
 import { ISocialLinks } from "@/app/(dashboard)/types/user";
+import { Value } from "platejs";
 
 interface IHero {
   name: string;
@@ -16,16 +17,26 @@ interface IHero {
 }
 
 interface IProject {
-  id: string;
+  id?: string;
   title: string;
   thumbnail_url: string;
   slug: string;
   description: string;
   description_id: string;
-  overview: string;
+  overview?: Value;
+  overview_id?: Value;
   tech_stack: string[];
-  urls: { demo: string, github: string; };
-  updated_at: Date;
+  urls?: { demo: string, github: string; };
+  updated_at?: Date;
+}
+
+interface IProjectExtended extends Omit<IProject, "urls"> {
+  urls: { demo: string; github: string };
+  roles: { id: string; text: string }[];
+  project_status: "live" | "under_development" | "archived";
+  start_date: Date;
+  is_current: boolean;
+  end_date: Date | null;
 }
 
 interface IExperience {
@@ -47,4 +58,4 @@ interface ICertificate {
   url: string;
 }
 
-export type { IHero, IProject, IExperience, ICertificate };
+export type { IHero, IProject, IProjectExtended, IExperience, ICertificate };

@@ -3,6 +3,10 @@
     "person": {
       "jobTitle": "Fullstack Developer",
       "description": "Fullstack Developer focused on Next.js, TypeScript, and React. Building scalable, high-performance web applications and modern digital solutions."
+    },
+    "projects": {
+      "title": "Project Archives",
+      "description": "A curated index of software development projects, featuring modern web applications, technical experiments, and fullstack solutions."
     }
   },
   "Loader": {
@@ -19,7 +23,7 @@
       "about": "About",
       "projects": "Projects",
       "services": "Services",
-      "experiences": "Experiences",
+      "experience": "Experience",
       "certifications": "Certifications",
       "contact": "Contact",
       "btn-contact": "Get in Touch",
@@ -105,13 +109,13 @@
       }
     }
   },
-  "Experiences": {
+  "Experience": {
     "title":"Experience Terminal",
     "subtitle":"Technical Journey",
     "terminal": {
       "promptsHeader": {
         "line1": "Welcome to",
-        "line2": "Explore all of my experiences through this interactive terminal.",
+        "line2": "Explore all of my experience through this interactive terminal.",
         "line3": "Type 'ls' to list entries or 'help' to see all available commands."
       },
       "helpLines": {
@@ -165,6 +169,61 @@
       "subject_required": "Please specify a subject.",
       "message_min": "Message must be at least 10 characters long.",
       "message_required": "Message cannot be empty."
+    }
+  },
+  "ProjectList": {
+    "title": "Project Archives",
+    "buttons": {
+      "per-page": "Showing",
+      "sorting-by": {
+        "title": {
+          "text": "Title",
+          "sub-title": {
+            "asc": "Ascending",
+            "desc": "Descending"
+          }
+        },
+        "date": {
+          "text": "Date",
+          "sub-title": {
+            "earliest": "Earliest",
+            "latest": "Latest"
+          }
+        }
+      }
+    },
+    "FilterAside": {
+      "title": "Filters",
+      "subtitles": {
+        "subtitle1": "Search",
+        "subtitle2": "Role",
+        "subtitle3": "Technology"
+      },
+      "search-placeholder": "Search by title or technology...",
+      "clear-button": "Clear All",
+      "status": {
+        "under-development": "Under Development",
+        "archived": "Archived"
+      }
+    }
+  },
+  "ProjectDetails": {
+    "title": "Project Overview",
+    "aside": {
+      "title": "Project Info",
+      "subtitles": {
+        "subtitle1": "Role",
+        "subtitle2": "Tech Stack",
+        "subtitle3": "Timeline",
+        "subtitle4": "Related Links"
+      },
+      "contents": {
+        "timeline": {
+          "content1": "Project Start",
+          "content2": "Project End",
+          "content3": "Duration"
+        }
+      }
     }
   },
   "404": {

@@ -15,11 +15,11 @@ const headingItemVariants = cva(
     variants: {
       depth: {
         1: "pl-0",
-        2: "pl-4",
-        3: "pl-8",
-        4: "pl-12",
-        5: "pl-16",
-        6: "pl-20",
+        2: "pl-1",
+        3: "pl-2",
+        4: "pl-3",
+        5: "pl-5",
+        6: "pl-8",
       },
     },
   },
@@ -41,6 +41,18 @@ export function TocElementStatic(props: SlateElementProps) {
               className={headingItemVariants({
                 depth: item.depth as 1 | 2 | 3 | 4 | 5 | 6,
               })}
+              onClick={(e) => {
+                const element = document.querySelector(
+                  `[data-block-id="${item.id}"]`,
+                );
+
+                if (element) {
+                  element.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                }
+              }}
             >
               {item.title}
             </Button>

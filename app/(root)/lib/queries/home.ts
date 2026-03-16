@@ -3,14 +3,16 @@ import { ICertificate, IExperience, IHero, IProject } from "../../types/data";
 import { SupabaseClient, UserMetadata } from "@supabase/supabase-js";
 import { cache } from "react";
 
-const getAssetUrl = (asset: Record<string, any>) => (asset)?.url || null;
+export const getAssetUrl = (asset: Record<string, any>) => asset?.url || null;
 
 const getProfile = async (client: SupabaseClient) => {
-  const supabase = client ?? await createClient();
+  const supabase = client ?? (await createClient());
 
   const [profileResponse, assetResponse] = await Promise.all([
-    supabase.from("profile")
-      .select(`
+    supabase
+      .from("profile")
+      .select(
+        `
         name,
         email,
         phone_number,
@@ -21,9 +23,14 @@ const getProfile = async (client: SupabaseClient) => {
         skills,
         social_links,
         asset:cv_id (url)
-      `)
+      `,
+      )
       .single(),
-    supabase.from("assets").select("url").eq("file_name", "The Silhouette").single()
+    supabase
+      .from("assets")
+      .select("url")
+      .eq("file_name", "The Silhouette")
+      .single(),
   ]);
 
   if (profileResponse.error) throw profileResponse.error;
@@ -33,15 +40,18 @@ const getProfile = async (client: SupabaseClient) => {
   return {
     ...rest,
     hero_img: assetResponse?.data?.url,
-    cv_asset: (asset as Record<string, any>)?.url
+    cv_asset: (asset as Record<string, any>)?.url,
   } as IHero;
 };
 
 const getExperiences = async (client: SupabaseClient) => {
-  const supabase = client ?? await createClient();
+  const supabase = client ?? (await createClient());
 
   // responsibilities_id is the responsibilities in Indonesian
-  const { data, error } = await supabase.from("experiences").select(`
+  const { data, error } = await supabase
+    .from("experiences")
+    .select(
+      `
     role,
     organization,
     work_category,
@@ -55,20 +65,22 @@ const getExperiences = async (client: SupabaseClient) => {
     related_asset (
       url
     )
-  `).order("ordering", { ascending: true });
+  `,
+    )
+    .order("ordering", { ascending: true });
 
   if (error) throw error;
 
   const experiences = data.map(({ related_asset, ...rest }) => ({
     ...rest,
-    related_asset_url: getAssetUrl(related_asset)
+    related_asset_url: getAssetUrl(related_asset),
   })) as IExperience[];
 
   return experiences;
 };
 
 export const getProjects = async (client?: SupabaseClient) => {
-  const supabase = client ?? await createClient();
+  const supabase = client ?? (await createClient());
 
   // description_id is the description in Indonesian
   const { data, error } = await supabase.from("projects").select(`
@@ -84,20 +96,19 @@ export const getProjects = async (client?: SupabaseClient) => {
       url
     ),
     updated_at
-  `);
+  `).limit(6);
 
   if (error) throw error;
 
   const projects = data.map(({ thumbnail, ...rest }) => ({
     ...rest,
-    thumbnail_url: getAssetUrl(thumbnail)
+    thumbnail_url: getAssetUrl(thumbnail),
   })) as IProject[];
 
   return projects;
 };
 
 const getCertificates = async (client: SupabaseClient, total: number) => {
-
   const { data, error } = await client
     .from("assets")
     .select("file_name, url")
@@ -109,13 +120,13 @@ const getCertificates = async (client: SupabaseClient, total: number) => {
 
   const certificates = data.map(({ file_name, ...rest }) => ({
     ...rest,
-    name: file_name
+    name: file_name,
   })) as ICertificate[];
 
   return certificates;
 };
 
-const getAllData = cache(async () => {
+export const getAllData = cache(async () => {
   const supabase = await createClient();
 
   try {
@@ -123,7 +134,7 @@ const getAllData = cache(async () => {
       getProfile(supabase),
       getExperiences(supabase),
       getProjects(supabase),
-      getCertificates(supabase, 4)
+      getCertificates(supabase, 4),
     ]);
 
     return { profile, projects, experiences, certificates };
@@ -131,5 +142,3 @@ const getAllData = cache(async () => {
     throw new Error(`Error fetching data: ${error}`);
   }
 });
-
-export { getAllData };

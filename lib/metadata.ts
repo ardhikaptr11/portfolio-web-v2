@@ -11,14 +11,18 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
-const BASE_URL = environments.VERCEL_ENV === "production"
-  ? environments.BASE_URL_PROD
-  : environments.BASE_URL_DEV;
+const BASE_URL =
+  environments.VERCEL_ENV === "production"
+    ? environments.BASE_URL_PROD
+    : environments.BASE_URL_DEV;
+
+const BRAND = "Ardhika Putra";
+const FULL_TITLE = `${BRAND} - Fullstack Developer`;
 
 export const constructMetadata = ({
   title,
   description,
-  image = "/og-image.webp",
+  image = "/og-logo.webp",
   locale = "en",
   pathname = "",
   indexable = true,
@@ -30,27 +34,47 @@ export const constructMetadata = ({
   pathname?: string;
   indexable?: boolean;
 } = {}): Metadata => {
-  const url = locale === "en"
-    ? pathname
-      ? `${BASE_URL}/${pathname}`
-      : BASE_URL
-    : `${BASE_URL}/${locale}${pathname ? `/${pathname}` : ""}`;
+  const isDashboard = pathname.startsWith("/dashboard");
+  const isAuth = pathname.startsWith("/auth");
+  const shouldIndex = isDashboard || isAuth ? false : indexable;
 
-  const displayTitle = title?.startsWith("Ardhika Putra")
-    ? { absolute: title }
-    : { default: title || "Ardhika Putra - Fullstack Developer", template: `%s | Ardhika Putra` };
+  // This is to avoid possibility of double slashes
+  const safePath = pathname
+    ? pathname.startsWith("/")
+      ? pathname
+      : `/${pathname}`
+    : "";
 
-  const seoTitle = title?.startsWith("Ardhika Putra")
-    ? title
+  const url =
+    locale === "en"
+      ? `${BASE_URL}${safePath}`
+      : `${BASE_URL}/${locale}${safePath}`;
+
+  const displayTitle = isDashboard
+    ? title || { template: "%s | Dashboard", default: `Dashboard | ${BRAND}` }
     : title
-      ? `${title} | Ardhika Putra`
-      : "Ardhika Putra - Fullstack Developer";
+      ? title === FULL_TITLE
+        ? { absolute: title }
+        : title
+      : { template: `%s | ${BRAND}`, default: FULL_TITLE };
+
+  const seoTitle = isDashboard
+    ? title
+      ? `${title} | Dashboard`
+      : `Dashboard | ${BRAND}`
+    : title
+      ? title === FULL_TITLE
+        ? title
+        : `${title} | ${BRAND}`
+      : FULL_TITLE;
 
   return {
     // Core Metadata
     title: displayTitle,
     description,
-    applicationName: "Ardhika Putra's Web Portfolio",
+    applicationName: isDashboard
+      ? "Admin Dashboard"
+      : "Ardhika Putra's Web Portfolio",
     authors: [{ name: "Ardhika Putra", url: BASE_URL }],
     generator: "Next.js",
     keywords: [
@@ -65,18 +89,20 @@ export const constructMetadata = ({
       "Software Developer",
       "Web Development",
     ],
-    referrer: "origin-when-cross-origin",
+    referrer: isDashboard ? "no-referrer" : "origin-when-cross-origin",
     creator: "Ardhika Putra",
     publisher: "Ardhika Putra",
 
     // Localization & Canonical
     alternates: {
       canonical: url,
-      languages: {
-        en: pathname ? `${BASE_URL}/${pathname}` : BASE_URL,
-        id: `${BASE_URL}/id${pathname ? `/${pathname}` : ""}`,
-        "x-default": `${BASE_URL}${pathname ? `/${pathname}` : ""}`
-      },
+      languages: isDashboard
+        ? { en: `${BASE_URL}${safePath}` }
+        : {
+            en: `${BASE_URL}${safePath}`,
+            id: `${BASE_URL}/id${safePath}`,
+            "x-default": `${BASE_URL}${safePath}`,
+          },
     },
 
     // Open Graph
@@ -109,12 +135,12 @@ export const constructMetadata = ({
 
     // Robots & Verification
     robots: {
-      index: indexable,
-      follow: indexable,
-      nocache: !indexable,
+      index: shouldIndex,
+      follow: shouldIndex,
+      nocache: !shouldIndex,
       googleBot: {
-        index: indexable,
-        follow: indexable,
+        index: shouldIndex,
+        follow: shouldIndex,
         "max-video-preview": -1,
         "max-image-preview": "large",
         "max-snippet": -1,
@@ -129,13 +155,13 @@ export const constructMetadata = ({
     icons: {
       icon: [
         { url: "/logo.svg", type: "image/svg+xml" },
-        { url: "/logo-16x16.png", sizes: "16x16", type: "image/png" },
-        { url: "/logo-32x32.png", sizes: "32x32", type: "image/png" },
-        { url: "/logo-48x48.png", sizes: "48x48", type: "image/png" },
+        { url: "/logo-dark-16.png", sizes: "16x16", type: "image/png" },
+        { url: "/logo-dark-32.png", sizes: "32x32", type: "image/png" },
+        { url: "/logo-dark-48.png", sizes: "48x48", type: "image/png" },
       ],
       shortcut: "/logo.svg",
       apple: [
-        { url: "/logo-180x180.png", sizes: "180x180", type: "image/png" },
+        { url: "/logo-dark-180.png", sizes: "180x180", type: "image/png" },
       ],
     },
     manifest: `${BASE_URL}/site.webmanifest`,

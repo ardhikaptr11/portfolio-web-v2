@@ -52,6 +52,7 @@ const CustomCursor = () => {
           "H5",
           "H6",
           "LI",
+          "LABEL",
           "INPUT",
           "TEXTAREA",
         ].includes(target.tagName);

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Suspense } from "react";
 import PageContainer from "../../layout/page-container";
-import { AssetsListing } from "../../lists/assets-listing";
+import { AssetListing } from "../../lists/asset-listing";
 import { DataTableSkeleton } from "../../table/data-table-skeleton";
 
 const ManageAssets = () => {
@@ -30,7 +30,7 @@ const ManageAssets = () => {
           <DataTableSkeleton columnCount={5} rowCount={8} filterCount={2} />
         }
       >
-        <AssetsListing />
+        <AssetListing />
       </Suspense>
     </PageContainer>
   );

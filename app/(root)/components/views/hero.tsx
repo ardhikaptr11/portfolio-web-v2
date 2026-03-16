@@ -1,23 +1,21 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { animate, AnimatePresence, motion } from "framer-motion";
 import { XIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { ICON_MAP } from "../../constants/items.constants";
 import { IHero, IProject } from "../../types/data";
 import DecryptedText from "../decrypted-text";
-import TypingText from "../typing-text";
-import { useTranslations } from "next-intl";
-import IconWheel from "../icon-wheel";
-import CountingNumber from "../counting-number";
 import Stats from "../stats";
-import { cn } from "@/lib/utils";
+import TypingText from "../typing-text";
 
 const generateRadarPositions = (skills: string[]) => {
   return skills.map((skill, index) => {

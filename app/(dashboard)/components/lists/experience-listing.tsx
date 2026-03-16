@@ -1,14 +1,11 @@
-import { Fragment, Suspense } from "react";
-import { getFilteredExperiences } from "../../lib/queries/experiences/action";
+import { getFilteredExperiences } from "../../lib/queries/experience/action";
 import { experienceSearchParamsCache } from "../../lib/search-params";
-import FilterAside from "../views/Experiences/component/filter-aside";
-import ItemsGrid from "../views/Experiences/component/items-grid";
-import { Spinner } from "@/components/ui/spinner";
-import ResultIndicator from "../views/Experiences/component/result-indicator";
+import ItemsGrid from "../views/Experience/component/items-grid";
+import ResultIndicator from "../views/Experience/component/result-indicator";
 
-type TExperiencesListing = {};
+type TExperienceListing = {};
 
-const ExperienceListing = async ({}: TExperiencesListing) => {
+const ExperienceListing = async ({}: TExperienceListing) => {
   const page = experienceSearchParamsCache.get("page");
   const pageLimit = experienceSearchParamsCache.get("perPage");
   const search = experienceSearchParamsCache.get("search");
@@ -24,7 +21,7 @@ const ExperienceListing = async ({}: TExperiencesListing) => {
     duration,
     work_type,
     work_category,
-    sort
+    sort,
   });
 
   return (

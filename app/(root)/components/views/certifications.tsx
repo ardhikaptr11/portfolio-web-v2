@@ -20,11 +20,7 @@ import { ICertificate } from "../../types/data";
 import { CertificationCard } from "../cards";
 import SectionHeader from "../section-header";
 
-const Certifications = ({
-  certificates,
-}: {
-  certificates?: ICertificate[];
-}) => {
+const Certifications = ({ data }: { data: ICertificate[] }) => {
   const t = useTranslations("Certifications");
   const locale = useLocale();
 
@@ -94,7 +90,7 @@ const Certifications = ({
         >
           {/* Left */}
           <div className="flex flex-col gap-8 md:gap-12">
-            {certificates
+            {data
               ?.filter((_, i) => i % 2 === 0)
               .map((certification, index) => (
                 <CertificationCard
@@ -108,7 +104,7 @@ const Certifications = ({
 
           {/* Right */}
           <div className="flex flex-col gap-8 md:mt-32 md:gap-12">
-            {certificates
+            {data
               ?.filter((_, i) => i % 2 !== 0)
               .map((certification, index) => (
                 <CertificationCard

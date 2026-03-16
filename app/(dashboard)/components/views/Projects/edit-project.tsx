@@ -146,7 +146,6 @@ const EditProject = ({ project }: { project: IProject }) => {
 
   const selectedId = watch("asset_id");
   const isChecked = watch("is_current");
-  const currentStartDate = watch("start_date");
 
   const fetchImages = async () => {
     try {
@@ -499,7 +498,7 @@ const EditProject = ({ project }: { project: IProject }) => {
               </CardContent>
             </Card>
 
-            <Button disabled={loading} className="w-full" type="submit">
+            <Button disabled={loading || !isAuthorized} className="w-full" type="submit">
               {loading && <Spinner variant="circle" />}
               {loading ? "Updating..." : "Update"}
             </Button>

@@ -19,9 +19,11 @@ import { ICertificate, IExperience, IProject } from "../types/data";
 const ProjectCard = ({
   project,
   index,
+  imageLoading = "lazy",
 }: {
   project: IProject;
   index: number;
+  imageLoading?: "eager" | "lazy";
 }) => {
   const router = useRouter();
   const locale = useLocale();
@@ -41,7 +43,7 @@ const ProjectCard = ({
       }
     >
       <Tilt rotationFactor={8} isReverse className="group relative size-full">
-        <div className="border-border dark:bg-secondary/40 hover:border-ocean-teal/50 hover:shadow-glow flex h-full flex-col overflow-hidden rounded-xl border bg-white/60 backdrop-blur-sm transition-all duration-300">
+        <div className="border-border dark:bg-ocean-deep/40 hover:border-ocean-teal/50 hover:shadow-glow flex h-full flex-col overflow-hidden rounded-xl border bg-white/90 backdrop-blur-sm transition-all duration-300">
           <Spotlight
             className={cn(
               "z-0 blur-3xl transition-opacity duration-500",
@@ -58,7 +60,8 @@ const ProjectCard = ({
                   {locale === "id" ? "Proyek" : "Project"}
                 </span>
                 <span className="text-ocean-teal/40 ml-1 tracking-tighter">
-                  # {String(index + 1).padStart(2, "0")}
+                  #{" "}
+                  {index < 10 ? String(index + 1).padStart(2, "0") : index + 1}
                 </span>
               </p>
 
@@ -68,7 +71,7 @@ const ProjectCard = ({
               </div>
             </div>
 
-            <h4 className="group-hover:text-ocean-teal dark:group-hover:text-ocean-teal text-muted-foreground/60 dark:text-foreground mb-4 text-xl font-bold tracking-tight transition-colors">
+            <h4 className="group-hover:text-ocean-teal dark:group-hover:text-ocean-teal text-foreground mb-4 text-xl font-bold tracking-tight transition-colors">
               {project.title}
             </h4>
 
@@ -86,10 +89,11 @@ const ProjectCard = ({
                 alt={project.title}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover grayscale transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0"
+                loading={imageLoading}
               />
             </div>
 
-            <p className="text-muted-foreground grow text-sm leading-relaxed">
+            <p className="text-muted-foreground group-hover:text-foreground grow text-sm leading-relaxed">
               {description}
             </p>
 
@@ -118,7 +122,7 @@ const ProjectCard = ({
             <div className="border-border/50 flex items-center justify-start gap-4 border-t pt-4">
               <motion.a
                 whileHover={{ scale: 1.2 }}
-                href={project.urls.github}
+                href={project.urls?.github}
                 target="_blank"
                 className="text-muted-foreground hover:text-ocean-teal transition-colors"
                 onClick={(e) => e.stopPropagation()}
@@ -128,7 +132,7 @@ const ProjectCard = ({
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.2 }}
-                href={project.urls.demo}
+                href={project.urls?.demo}
                 target="_blank"
                 className="text-muted-foreground hover:text-ocean-teal transition-colors"
                 onClick={(e) => e.stopPropagation()}
