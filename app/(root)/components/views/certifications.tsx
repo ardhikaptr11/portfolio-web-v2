@@ -19,6 +19,7 @@ import { STAGGERED_COLUMN_VARIANTS } from "../../constants/variants.constants";
 import { ICertificate } from "../../types/data";
 import { CertificationCard } from "../cards";
 import SectionHeader from "../section-header";
+import Link from "next/link";
 
 const Certifications = ({ data }: { data: ICertificate[] }) => {
   const t = useTranslations("Certifications");
@@ -118,23 +119,19 @@ const Certifications = ({ data }: { data: ICertificate[] }) => {
         </motion.div>
 
         <div className="absolute top-1/2 right-4 hidden -translate-y-1/2 lg:block">
-          <motion.a
+          <Link
             href="https://linkedin.com/in/ardhikaptr11/details/certifications"
             target="_blank"
             rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            whileTap={{ scale: 0.95 }}
-            className="text-muted-foreground/40 hover:text-ocean-teal flex items-center gap-4 transition-colors [writing-mode:vertical-lr]"
+            className="text-ocean-teal lg:text-muted-foreground/40 lg:hover:text-ocean-teal flex items-center gap-4 transition-colors lg:[writing-mode:vertical-lr]"
           >
             <p className="font-mono text-[10px] tracking-[0.4em] uppercase">
               {locale === "id" ? "Telusuri lebih banyak" : "Explore more"}
             </p>
-            <div className="bg-ocean-teal/20 relative h-20 w-px">
+            <div className="bg-ocean-teal/20 relative hidden h-20 w-px lg:block">
               <div className="bg-ocean-teal animate-scan-vertical absolute top-0 left-0 h-3/10 w-full" />
             </div>
-          </motion.a>
+          </Link>
         </div>
 
         <AnimatePresence>

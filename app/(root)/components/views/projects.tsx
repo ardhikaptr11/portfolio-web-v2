@@ -169,15 +169,11 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
       <div
         className={cn(
           "-mt-24 flex justify-center py-8",
-          "lg:absolute lg:top-1/2 lg:right-4 lg:block lg:-translate-y-1/2 lg:m-0 lg:p-0",
+          "lg:absolute lg:top-1/2 lg:right-4 lg:m-0 lg:block lg:-translate-y-1/2 lg:p-0",
         )}
       >
-        <MotionLink
+        <Link
           href="/projects"
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          whileTap={{ scale: 0.95 }}
           className="text-ocean-teal lg:text-muted-foreground/40 lg:hover:text-ocean-teal flex items-center gap-4 transition-colors lg:[writing-mode:vertical-lr]"
         >
           <p className="font-mono text-[10px] tracking-[0.4em] uppercase">
@@ -186,7 +182,7 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
           <div className="bg-ocean-teal/20 relative hidden h-20 w-px lg:block">
             <div className="bg-ocean-teal animate-scan-vertical absolute top-0 left-0 h-3/10 w-full" />
           </div>
-        </MotionLink>
+        </Link>
       </div>
     </section>
   );
