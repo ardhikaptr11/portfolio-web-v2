@@ -37,7 +37,7 @@ export const translates = {
     
     STRICT INSTRUCTIONS:
     1. PROHIBITED: Do not change the JSON structure or keys. 
-    2. SKIP: Do not translate any node with type "toc", "h1", "code_block", "code_line", or if it has "code": true.
+    2. SKIP: Do not translate any node with type "code_block", "code_line", or if it has "code": true.
     3. TARGET: Only translate strings within the "text" property.
     4. PRESERVE: Keep id, type, url, and children properties exactly as they are.
     5. OUTPUT: Return only the final translated JSON array.

@@ -1,4 +1,3 @@
-import * as React from "react";
 
 import type { SlateElementProps } from "platejs/static";
 
@@ -15,11 +14,11 @@ const headingItemVariants = cva(
     variants: {
       depth: {
         1: "pl-0",
-        2: "pl-1",
-        3: "pl-2",
-        4: "pl-3",
-        5: "pl-5",
-        6: "pl-8",
+        2: "pl-3",
+        3: "pl-5",
+        4: "pl-7",
+        5: "pl-9",
+        6: "pl-11",
       },
     },
   },

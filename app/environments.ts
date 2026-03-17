@@ -15,6 +15,6 @@ export const environments = {
   DEEPL_AUTH_KEY: process.env.DEEPL_AUTH_KEY!,
   OWNER_EMAIL: process.env.OWNER_EMAIL!,
   GUEST_EMAIL: process.env.NEXT_PUBLIC_GUEST_EMAIL!,
-  GUEST_PASSWORD: process.env.NEXT_PUBLIC_GUEST_PASSWORD!,
+  GUEST_PASSWORD: process.env.GUEST_PASSWORD!,
   OWNER_ID: process.env.OWNER_ID!,
 };

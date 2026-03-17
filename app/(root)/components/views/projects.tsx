@@ -137,7 +137,7 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
               {projects.map((project, index) => (
                 <div
                   key={index}
-                  className="min-w-0 flex-[0_0_100%] pl-4 sm:flex-[0_0_50%] sm:pl-6 lg:flex-[0_0_33.333%]"
+                  className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_50%] sm:px-6 lg:flex-[0_0_33.333%]"
                 >
                   <ProjectCard project={project} index={index} />
                 </div>
@@ -148,7 +148,7 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
 
         {/* Dot Indicators */}
         {isCarousel && (
-          <div className="mt-8 flex flex-wrap justify-center gap-2 sm:mt-12 sm:gap-3">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
             {scrollSnaps.map((_, index) => (
               <button
                 key={index}
@@ -166,19 +166,24 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
         )}
       </div>
 
-      <div className="absolute top-1/2 right-4 hidden -translate-y-1/2 lg:block">
+      <div
+        className={cn(
+          "-mt-24 flex justify-center py-8",
+          "lg:absolute lg:top-1/2 lg:right-4 lg:block lg:-translate-y-1/2 lg:m-0 lg:p-0",
+        )}
+      >
         <MotionLink
           href="/projects"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           whileTap={{ scale: 0.95 }}
-          className="text-muted-foreground/40 hover:text-ocean-teal flex items-center gap-4 transition-colors [writing-mode:vertical-lr]"
+          className="text-ocean-teal lg:text-muted-foreground/40 lg:hover:text-ocean-teal flex items-center gap-4 transition-colors lg:[writing-mode:vertical-lr]"
         >
           <p className="font-mono text-[10px] tracking-[0.4em] uppercase">
             {locale === "id" ? "Telusuri lebih banyak" : "Explore more"}
           </p>
-          <div className="bg-ocean-teal/20 relative h-20 w-px">
+          <div className="bg-ocean-teal/20 relative hidden h-20 w-px lg:block">
             <div className="bg-ocean-teal animate-scan-vertical absolute top-0 left-0 h-3/10 w-full" />
           </div>
         </MotionLink>
