@@ -25,7 +25,13 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const MotionLink = motion(Link);
+  // The animation start when the top of the element just appears from the bottom of
+  const offset: UseScrollOptions["offset"] = ["start end", "end start"];
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset,
+  });
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
@@ -36,6 +42,7 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
     },
   });
 
+  const pathLengthTop = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
@@ -67,13 +74,12 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
 
   const isCarousel = projects.length > 3;
 
-  const offset: UseScrollOptions["offset"] = ["start end", "end start"];
-  const { scrollYProgress } = useScroll({ target: containerRef, offset });
   const ambientLightOpacity = useTransform(
     scrollYProgress,
     [0.15, 0.25, 0.5],
     [0, 1, 0.4],
   );
+  const lightRayScale = useTransform(scrollYProgress, [0.15, 0.3], [0.8, 1]);
 
   return (
     <section
@@ -81,21 +87,61 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
       className="relative overflow-hidden px-4 pt-0 sm:px-6"
       id="projects"
     >
+      {/* Ambient Light */}
       <motion.div
         style={{
           opacity: ambientLightOpacity,
+          scale: lightRayScale,
           background:
             "radial-gradient(circle at 50% 0%, rgba(20, 255, 236, 0.15) 0%, transparent 70%)",
         }}
-        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-150"
+        className="pointer-events-none absolute inset-x-0 top-0 h-150"
       />
 
-      <div className="relative mx-auto max-w-7xl pt-32 pb-16 sm:pt-40">
+      {/* Seamless connector pillar */}
+      <div className="absolute top-0 left-1/2 h-40 w-2 -translate-x-1/2">
+        <svg
+          className="size-full"
+          viewBox="0 0 2 100"
+          preserveAspectRatio="none"
+        >
+          <rect
+            x="0"
+            y="0"
+            width="2"
+            height="100"
+            className="fill-slate-800/40"
+          />
+          <motion.rect
+            x="0"
+            y="0"
+            width="2"
+            height="100"
+            className="fill-ocean-teal"
+            style={{
+              scaleY: pathLengthTop,
+              originY: 0,
+              filter: "drop-shadow(0 0 12px #14ffec)",
+            }}
+          />
+        </svg>
+      </div>
+
+      <div className="relative mx-auto max-w-6xl pt-40 pb-16">
         <SectionHeader
           title={t("title")}
           subtitle={t("subtitle")}
+          style={{
+            opacity: useTransform(scrollYProgress, [0.1, 0.25], [0, 1]),
+            y: useTransform(scrollYProgress, [0.1, 0.25], [40, 0]),
+            filter: useTransform(
+              scrollYProgress,
+              [0.1, 0.25],
+              ["blur(10px)", "blur(0px)"],
+            ),
+          }}
           align="center"
-          className="mb-10 sm:mb-16"
+          className="mt-12 mb-12!"
         />
 
         <div className="relative">
@@ -107,7 +153,7 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
                 variant="ghost"
                 size="icon"
                 onClick={scrollPrev}
-                className="absolute top-1/2 -left-4 z-20 hidden -translate-y-1/2 items-center justify-center active:scale-90 sm:flex lg:-left-12 lg:size-12"
+                className="absolute top-1/2 -left-4 hidden -translate-y-1/2 items-center justify-center active:scale-90 sm:flex lg:-left-12 lg:size-12"
                 aria-label="Previous page"
               >
                 <Icons.chevronLeft className="size-5 text-slate-400 lg:size-6" />
@@ -117,7 +163,7 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
                 variant="ghost"
                 size="icon"
                 onClick={scrollNext}
-                className="absolute top-1/2 -right-4 z-20 hidden -translate-y-1/2 items-center justify-center active:scale-90 sm:flex lg:-right-12 lg:size-12"
+                className="absolute top-1/2 -right-4 hidden -translate-y-1/2 items-center justify-center active:scale-90 sm:flex lg:-right-12 lg:size-12"
                 aria-label="Next page"
               >
                 <Icons.chevronRight className="size-5 text-slate-400 lg:size-6" />
@@ -168,7 +214,7 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
 
       <div
         className={cn(
-          "-mt-24 flex justify-center py-8",
+          "-mt-24 flex justify-center py-8 z-50 relative",
           "lg:absolute lg:top-1/2 lg:right-4 lg:m-0 lg:block lg:-translate-y-1/2 lg:p-0",
         )}
       >
