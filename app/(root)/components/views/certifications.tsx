@@ -20,6 +20,7 @@ import { ICertificate } from "../../types/data";
 import { CertificationCard } from "../cards";
 import SectionHeader from "../section-header";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const Certifications = ({ data }: { data: ICertificate[] }) => {
   const t = useTranslations("Certifications");
@@ -118,7 +119,12 @@ const Certifications = ({ data }: { data: ICertificate[] }) => {
           </div>
         </motion.div>
 
-        <div className="absolute top-1/2 right-4 hidden -translate-y-1/2 lg:block">
+        <div
+          className={cn(
+            "relative flex justify-center py-8",
+            "lg:absolute lg:top-1/2 lg:right-4 lg:m-0 lg:block lg:-translate-y-1/2 lg:p-0",
+          )}
+        >
           <Link
             href="https://linkedin.com/in/ardhikaptr11/details/certifications"
             target="_blank"
