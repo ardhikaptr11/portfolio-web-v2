@@ -152,6 +152,11 @@ const bulkAddProject = async (payload: TAddProjectsFormValues["projects"]) => {
       description: project.description,
       description_id: await translates.deepl({ texts: project.description }),
       tech_stack: project.tech_stack,
+      roles: project.roles,
+      project_status: project.project_status,
+      start_date: project.start_date,
+      is_current: project.is_current,
+      end_date: project.end_date,
       urls: project.urls,
     })),
   );
