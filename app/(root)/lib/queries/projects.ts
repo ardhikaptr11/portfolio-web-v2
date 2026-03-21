@@ -79,6 +79,7 @@ export const getFilteredProjects = async (filters: {
     description, 
     description_id,
     tech_stack,
+    urls,
     thumbnail:assets(url)
   `,
     {

@@ -120,7 +120,7 @@ const ProjectCard = ({
             </div>
 
             <div className="border-border/50 flex items-center justify-start gap-4 border-t pt-4">
-              <motion.a
+              {project.urls?.github && <motion.a
                 whileHover={{ scale: 1.2 }}
                 href={project.urls?.github}
                 target="_blank"
@@ -129,8 +129,8 @@ const ProjectCard = ({
                 aria-label={`View ${project.title} on GitHub`}
               >
                 <Icons.github className="size-4.5" />
-              </motion.a>
-              <motion.a
+              </motion.a>}
+              {project.urls?.demo && <motion.a
                 whileHover={{ scale: 1.2 }}
                 href={project.urls?.demo}
                 target="_blank"
@@ -139,7 +139,7 @@ const ProjectCard = ({
                 aria-label={`View ${project.title} live demo`}
               >
                 <Icons.externalLink className="size-4.5" />
-              </motion.a>
+              </motion.a>}
             </div>
           </div>
         </div>
