@@ -73,7 +73,7 @@ const Stats = ({ yoe, totalProjects }: { yoe: number; totalProjects: number }) =
       {/* Icon Wheel */}
       <div className="group flex min-w-18.75 flex-col items-center justify-center gap-y-1.5 md:min-w-22.5 md:gap-y-2 lg:min-w-27.5 xl:min-w-32.5">
         <div className="flex h-9 items-center justify-center lg:h-12 xl:h-15">
-          <IconWheel targetIndex={5} />
+          <IconWheel />
         </div>
         <p className="text-ocean-teal text-center text-[8px] font-bold tracking-widest uppercase opacity-70 md:text-[10px] lg:text-xs">
           {TRANSLATIONS[locale].tech[0]} <br />

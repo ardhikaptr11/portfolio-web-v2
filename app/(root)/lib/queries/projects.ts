@@ -23,7 +23,7 @@ export const getAllExistingProjects = async () => {
         url
       )
     `
-  );
+  )
 
   if (error) throw error;
 

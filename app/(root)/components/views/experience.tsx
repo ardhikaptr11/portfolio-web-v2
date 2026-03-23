@@ -330,7 +330,7 @@ const Experience = ({ data }: { data: IExperience[] }) => {
           subtitle={t("subtitle")}
           align="center"
           shouldAnimate={false}
-          className="mb-12!"
+          className="mb-12! text-center"
         />
 
         <div

@@ -15,7 +15,8 @@ const shadowStyle = {
 };
 
 const CustomCursor = () => {
-  const isMobile = useIsMobile();
+  const [isEnabled, setIsEnabled] = useState(false);
+  // const isMobile = useIsMobile();
   const [cursorMode, setCursorMode] = useState<"default" | "morph" | "text">(
     "default",
   );
@@ -33,9 +34,11 @@ const CustomCursor = () => {
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      if (isMobile) return;
-
+      // if (isMobile) return;
       const target = e.target as HTMLElement;
+
+      if (!target) return;
+
       const interactiveEl = target?.closest(
         "a, button, .magnetic-item",
       ) as HTMLElement;
@@ -83,7 +86,16 @@ const CustomCursor = () => {
   );
 
   useEffect(() => {
-    if (isMobile) return;
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+
+    const checkSize = () => setIsEnabled(mediaQuery.matches);
+
+    checkSize();
+
+    if (!mediaQuery.matches) {
+      mediaQuery.addEventListener("change", checkSize);
+      return () => mediaQuery.removeEventListener("change", checkSize);
+    }
 
     const handleScroll = () => {
       setCursorMode("default");
@@ -92,15 +104,17 @@ const CustomCursor = () => {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseover", handleMouseMove);
     window.addEventListener("scroll", handleScroll, { passive: true });
+    mediaQuery.addEventListener("change", checkSize);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseover", handleMouseMove);
       window.removeEventListener("scroll", handleScroll);
+      mediaQuery.removeEventListener("change", checkSize);
     };
-  }, [handleMouseMove, isMobile]);
+  }, [handleMouseMove]);
 
-  if (isMobile) return null;
+  if (!isEnabled) return null;
 
   const getWrapperVariant = () => {
     if (cursorMode === "morph" && hoveredElement) {

@@ -141,7 +141,7 @@ export const ContentArea = ({ project, children }: ContentAreaProps) => {
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 {project.tech_stack.map((stack: string) => {
-                  const Icon = ICON_MAP[stack];
+                  const Icon = ICON_MAP[stack] ?? Icons.blocks;
                   return (
                     <div
                       key={stack}
@@ -150,7 +150,7 @@ export const ContentArea = ({ project, children }: ContentAreaProps) => {
                         "border-ocean-teal/10 bg-ocean-teal/5 text-muted-foreground hover:border-ocean-teal/40 hover:text-ocean-teal hover:scale-105",
                       )}
                     >
-                      {Icon && <Icon className="size-3" />}
+                      <Icon className="size-3" />
                       <span className="text-[9px] font-medium">{stack}</span>
                     </div>
                   );
@@ -209,7 +209,7 @@ export const ContentArea = ({ project, children }: ContentAreaProps) => {
                   const Icon =
                     Icons[key as keyof typeof Icons] ?? Icons["home"];
 
-                  return (
+                  return value && (
                     <Button
                       key={key}
                       asChild

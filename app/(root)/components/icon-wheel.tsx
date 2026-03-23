@@ -35,7 +35,7 @@ interface IconWheelProps {
   targetIndex?: number;
 }
 
-const IconWheel = ({ targetIndex = 5 }: IconWheelProps) => {
+const IconWheel = ({ targetIndex = 6 }: IconWheelProps) => {
   const controls = useAnimation();
   const [itemHeight, setItemHeight] = useState(0);
   const measureRef = useRef<HTMLDivElement>(null);

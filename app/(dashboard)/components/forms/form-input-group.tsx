@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 interface InputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-  > extends BaseFormFieldProps<TFieldValues, TName> {
+> extends BaseFormFieldProps<TFieldValues, TName> {
   type?: "text" | "email" | "password" | "number" | "tel" | "url";
   placeholder?: string;
   step?: string | number;
@@ -45,7 +45,6 @@ interface FormInputGroupProps<
     >;
   };
   disabled?: boolean;
-  // errors?: FieldErrors
 }
 
 function FormInputGroup<
@@ -54,12 +53,10 @@ function FormInputGroup<
 >({
   control,
   label,
-  name,
   inputs,
   className,
   required,
   disabled,
-  // errors
 }: FormInputGroupProps<TFieldValues, TName>) {
   return (
     <div className={className}>

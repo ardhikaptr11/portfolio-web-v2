@@ -2,7 +2,8 @@ import { Icons } from "@/components/icons";
 import { TablerIcon } from "@tabler/icons-react";
 
 const ICON_MAP: Record<string, TablerIcon> = {
-  "Express.js": Icons.brandExpress as unknown as TablerIcon, // This is a custom icon
+  Axios: Icons.brandAxios as unknown as TablerIcon, // This is a custom icon
+  "Express.js": Icons.brandExpress as unknown as TablerIcon,
   Firebase: Icons.brandFirebase,
   HTML: Icons.brandHtml,
   Javascript: Icons.brandJavascript,
@@ -10,9 +11,10 @@ const ICON_MAP: Record<string, TablerIcon> = {
   "Next.js": Icons.brandNextJs,
   "Node.js": Icons.brandNodejs,
   Python: Icons.brandPython,
-  React: Icons.brandReact,
+  React: Icons.brandReact, 
   Supabase: Icons.brandSupabase,
   "Tailwind CSS": Icons.brandTailwind,
+  Tanstack: Icons.brandTanstack as unknown as TablerIcon,
   Typescript: Icons.brandTypescript,
   "Vanilla CSS": Icons.brandCss,
   Zod: Icons.brandZod as unknown as TablerIcon,

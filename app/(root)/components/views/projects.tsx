@@ -11,75 +11,99 @@ import {
   useTransform,
 } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+} from "react";
 import { IProject } from "../../types/data";
 import { ProjectCard } from "../cards";
 import SectionHeader from "../section-header";
 import { GRID_VARIANTS } from "../../constants/variants.constants";
 import { Link } from "../../i18n/navigation";
-import { ArrowUpRight } from "lucide-react";
+
+const groupSlides = (slides: IProject[], size: number) => {
+  const grouped = [];
+  for (let i = 0; i < slides.length; i += size) {
+    grouped.push(slides.slice(i, i + size));
+  }
+  return grouped;
+};
 
 const Projects = ({ projects }: { projects: IProject[] }) => {
   const t = useTranslations("Projects");
   const locale = useLocale();
-
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // The animation start when the top of the element just appears from the bottom of
   const offset: UseScrollOptions["offset"] = ["start end", "end start"];
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset,
-  });
+  const [current, setCurrent] = useState(0);
+  const [groupSize, setGroupSize] = useState(1);
+
+  // Update group size and dots on window resize
+  useEffect(() => {
+    const updateSize = () => {
+      if (window.innerWidth >= 1024)
+        setGroupSize(3); // LG: 1 group = 3 cards (6 cards = 2 dots)
+      else if (window.innerWidth >= 768)
+        setGroupSize(2); // MD: 1 group = 2 cards (6 cards = 3 dots)
+      else setGroupSize(1); // SM: 1 group = 1 card (6 cards = 6 dots)
+    };
+
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  // Re-calculate group size
+  const groupedProjects = useMemo(
+    () => groupSlides(projects, groupSize),
+    [projects, groupSize],
+  );
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: "start",
-    slidesToScroll: "auto",
     loop: true,
-    breakpoints: {
-      "(max-width: 640px)": { slidesToScroll: 1 },
-    },
+    align: "start",
+    slidesToScroll: 1,
   });
-
-  const pathLengthTop = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-
-  const scrollPrev = useCallback(
-    () => emblaApi && emblaApi.scrollPrev(),
-    [emblaApi],
-  );
-  const scrollNext = useCallback(
-    () => emblaApi && emblaApi.scrollNext(),
-    [emblaApi],
-  );
-  const scrollTo = useCallback(
-    (index: number) => emblaApi && emblaApi.scrollTo(index),
-    [emblaApi],
-  );
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
+    setCurrent(emblaApi.selectedScrollSnap());
   }, [emblaApi]);
 
   useEffect(() => {
     if (!emblaApi) return;
     onSelect();
-    setScrollSnaps(emblaApi.scrollSnapList());
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
   }, [emblaApi, onSelect]);
 
-  const isCarousel = projects.length > 3;
+  // Reset slide position to zero while group size changes
+  useEffect(() => {
+    if (emblaApi) emblaApi.scrollTo(0);
+  }, [groupSize, emblaApi]);
 
+  const scrollTo = useCallback(
+    (index: number) => emblaApi?.scrollTo(index),
+    [emblaApi],
+  );
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset,
+  });
   const ambientLightOpacity = useTransform(
     scrollYProgress,
     [0.15, 0.25, 0.5],
     [0, 1, 0.4],
   );
-  const lightRayScale = useTransform(scrollYProgress, [0.15, 0.3], [0.8, 1]);
+  const pathLengthTop = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
 
   return (
     <section
@@ -87,11 +111,9 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
       className="relative overflow-hidden px-4 pt-0 sm:px-6"
       id="projects"
     >
-      {/* Ambient Light */}
       <motion.div
         style={{
           opacity: ambientLightOpacity,
-          scale: lightRayScale,
           background:
             "radial-gradient(circle at 50% 0%, rgba(20, 255, 236, 0.15) 0%, transparent 70%)",
         }}
@@ -141,91 +163,111 @@ const Projects = ({ projects }: { projects: IProject[] }) => {
             ),
           }}
           align="center"
-          className="mt-12 mb-12!"
+          className="mt-12 mb-12! text-center"
         />
 
         <div className="relative">
-          {/* Navigation Buttons */}
-          {isCarousel && (
-            <Fragment>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                onClick={scrollPrev}
-                className="absolute top-1/2 -left-4 hidden -translate-y-1/2 items-center justify-center active:scale-90 sm:flex lg:-left-12 lg:size-12"
-                aria-label="Previous page"
-              >
-                <Icons.chevronLeft className="size-5 text-slate-400 lg:size-6" />
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                onClick={scrollNext}
-                className="absolute top-1/2 -right-4 hidden -translate-y-1/2 items-center justify-center active:scale-90 sm:flex lg:-right-12 lg:size-12"
-                aria-label="Next page"
-              >
-                <Icons.chevronRight className="size-5 text-slate-400 lg:size-6" />
-              </Button>
-            </Fragment>
-          )}
-
-          {/* Carousel */}
-          <div className="overflow-hidden" ref={emblaRef}>
-            <motion.div
-              initial="hidden"
-              whileInView="show"
-              viewport={{ margin: "-100px", once: true }}
-              variants={GRID_VARIANTS}
-              className="flex py-8"
+          <Fragment>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={scrollPrev}
+              className="absolute top-1/2 -left-4 z-40 hidden -translate-y-1/2 sm:flex md:-left-8"
             >
-              {projects.map((project, index) => (
-                <div
-                  key={index}
-                  className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_50%] sm:px-6 lg:flex-[0_0_33.333%]"
-                >
-                  <ProjectCard project={project} index={index} />
+              <Icons.chevronLeft className="text-muted-foreground size-6" />
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={scrollNext}
+              className="absolute top-1/2 -right-4 z-40 hidden -translate-y-1/2 sm:flex md:-right-8"
+            >
+              <Icons.chevronRight className="text-muted-foreground size-6" />
+            </Button>
+          </Fragment>
+
+          <div
+            className="overflow-hidden"
+            ref={emblaRef}
+            key={`carousel-${groupSize}`}
+          >
+            <div className="flex">
+              {groupedProjects.map((group, groupIndex) => (
+                <div key={groupIndex} className="min-w-0 flex-[0_0_100%] px-2">
+                  <motion.div
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true }}
+                    variants={GRID_VARIANTS}
+                    className={cn("grid gap-6 py-8", {
+                      "grid-cols-1": groupSize === 1,
+                      "grid-cols-2": groupSize === 2,
+                      "grid-cols-3": groupSize === 3,
+                    })}
+                  >
+                    {group.map((project, index) => (
+                      <ProjectCard
+                        key={index}
+                        project={project}
+                        index={index}
+                      />
+                    ))}
+
+                    {/* Empty slots if total card is less than groupSize */}
+                    {group.length < groupSize &&
+                      Array.from({ length: groupSize - group.length }).map(
+                        (_, i) => (
+                          <div
+                            key={`empty-${i}`}
+                            className="invisible"
+                            aria-hidden="true"
+                          />
+                        ),
+                      )}
+                  </motion.div>
                 </div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
 
         {/* Dot Indicators */}
-        {isCarousel && (
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-            {scrollSnaps.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => scrollTo(index)}
-                className={cn(
-                  "h-1.5 rounded-full transition-all duration-300",
-                  selectedIndex === index
-                    ? "bg-ocean-teal w-6 shadow-[0_0_8px_#14ffec] sm:w-8"
-                    : "w-1.5 bg-slate-700 hover:bg-slate-500 sm:w-2",
-                )}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        )}
+        <div className="relative z-50 mb-8 flex justify-center gap-3">
+          {groupedProjects.map((_, index) => (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              key={index}
+              onClick={() => scrollTo(index)}
+              className={cn(
+                "h-1.5 cursor-pointer rounded-full transition-all duration-300 ease-in-out",
+                index === current
+                  ? "bg-ocean-teal w-8 shadow-[0_0_8px_#14ffec] hover:bg-ocean-teal!"
+                  : "w-2 bg-slate-700 hover:bg-slate-700!",
+              )}
+            />
+          ))}
+        </div>
       </div>
 
+      {/* CTA */}
       <div
         className={cn(
-          "-mt-24 flex justify-center py-8 z-50 relative",
-          "lg:absolute lg:top-1/2 lg:right-4 lg:m-0 lg:block lg:-translate-y-1/2 lg:p-0",
+          "relative z-50 -mt-24 flex justify-center py-8",
+          "xl:absolute xl:top-1/2 xl:right-4 xl:m-0 xl:block xl:-translate-y-1/2 xl:p-0",
         )}
       >
         <Link
           href="/projects"
-          className="text-ocean-teal lg:text-muted-foreground/40 lg:hover:text-ocean-teal flex items-center gap-4 transition-colors lg:[writing-mode:vertical-lr]"
+          className="text-ocean-teal xl:text-muted-foreground/40 xl:hover:text-ocean-teal flex items-center gap-4 transition-colors xl:[writing-mode:vertical-lr]"
         >
           <p className="font-mono text-[10px] tracking-[0.4em] uppercase">
             {locale === "id" ? "Telusuri lebih banyak" : "Explore more"}
           </p>
-          <div className="bg-ocean-teal/20 relative hidden h-20 w-px lg:block">
+          <div className="bg-ocean-teal/20 relative hidden h-20 w-px xl:block">
             <div className="bg-ocean-teal animate-scan-vertical absolute top-0 left-0 h-3/10 w-full" />
           </div>
         </Link>

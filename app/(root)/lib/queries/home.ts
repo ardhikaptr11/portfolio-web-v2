@@ -96,7 +96,7 @@ export const getProjects = async (client?: SupabaseClient) => {
       url
     ),
     updated_at
-  `).limit(6);
+  `).limit(6).order("start_date", { ascending: false });
 
   if (error) throw error;
 

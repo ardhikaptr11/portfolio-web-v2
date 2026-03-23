@@ -36,8 +36,10 @@
   --shadow-glow: var(--ocean-glow);
   --drop-shadow-silhouette: var(--silhouette);
   --drop-shadow-glow: var(--glow);
-  --animate-glitch-after: glitch var(--after-duration) infinite linear alternate-reverse;
-  --animate-glitch-before: glitch var(--before-duration) infinite linear alternate-reverse;
+  --animate-glitch-after: glitch var(--after-duration) infinite linear
+    alternate-reverse;
+  --animate-glitch-before: glitch var(--before-duration) infinite linear
+    alternate-reverse;
 }
 
 :root {
@@ -103,7 +105,7 @@ body {
 }
 
 @layer base {
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     body,
     a,
     button,
@@ -129,7 +131,7 @@ body {
 }
 
 @utility oceanic-scrollbar {
-  @apply [&::-webkit-scrollbar-track]:bg-background [&::-webkit-scrollbar-thumb]:bg-ocean-teal [&::-webkit-scrollbar]:w-3;
+  @apply [&::-webkit-scrollbar-track]:bg-background [&::-webkit-scrollbar-thumb]:bg-ocean-teal [&::-webkit-scrollbar]:w-2!;
 }
 
 @utility oceanic-pdf-previewer {

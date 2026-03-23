@@ -89,7 +89,10 @@ const AppSidebar = ({
             <SidebarMenuButton asChild>
               <div className="inline-flex justify-center hover:bg-transparent!">
                 <Icons.brandLogo className="size-6!" />
-                <Separator orientation="vertical" className="bg-muted-foreground"/>
+                <Separator
+                  orientation="vertical"
+                  className="bg-muted-foreground group-data-[collapsible=icon]:hidden"
+                />
                 <span className="text-base font-semibold group-data-[collapsible=icon]:hidden">
                   Admin Panel
                 </span>
