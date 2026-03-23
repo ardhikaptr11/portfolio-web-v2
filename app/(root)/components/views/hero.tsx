@@ -66,7 +66,13 @@ const Hero = ({ data }: HeroProps) => {
   const currentYear = new Date().getFullYear();
   const yoe = currentYear - startYear - 1;
 
-  const totalProjects = useMemo(() => data.projects.length, [data.projects]);
+  const totalProjects = useMemo(() => {
+    const total = data.projects.length;
+
+    if (total <= 5) return total;
+    else if (total > 5) return 5;
+    else if (total > 10) return 10;
+  }, [data.projects]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -279,7 +285,7 @@ const Hero = ({ data }: HeroProps) => {
             "z-50 flex items-end transition-all duration-500",
           )}
         >
-          <Stats yoe={yoe} totalProjects={totalProjects}/>
+          <Stats yoe={yoe} totalProjects={totalProjects ?? 0} />
         </div>
 
         <div className="relative z-10 flex h-full items-end justify-center md:justify-end">

@@ -121,20 +121,20 @@ const Certifications = ({ data }: { data: ICertificate[] }) => {
 
         <div
           className={cn(
-            "relative flex justify-center py-8",
-            "lg:absolute lg:top-1/2 lg:right-4 lg:m-0 lg:block lg:-translate-y-1/2 lg:p-0",
+            "relative flex justify-center pt-8",
+            "xl:absolute xl:top-1/2 xl:right-4 xl:m-0 xl:block xl:-translate-y-1/2 xl:p-0",
           )}
         >
           <Link
             href="https://linkedin.com/in/ardhikaptr11/details/certifications"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-ocean-teal lg:text-muted-foreground/40 lg:hover:text-ocean-teal flex items-center gap-4 transition-colors lg:[writing-mode:vertical-lr]"
+            className="text-ocean-teal xl:text-muted-foreground/40 xl:hover:text-ocean-teal flex items-center gap-4 transition-colors xl:[writing-mode:vertical-lr]"
           >
             <p className="font-mono text-[10px] tracking-[0.4em] uppercase">
               {locale === "id" ? "Telusuri lebih banyak" : "Explore more"}
             </p>
-            <div className="bg-ocean-teal/20 relative hidden h-20 w-px lg:block">
+            <div className="bg-ocean-teal/20 relative hidden h-20 w-px xl:block">
               <div className="bg-ocean-teal animate-scan-vertical absolute top-0 left-0 h-3/10 w-full" />
             </div>
           </Link>

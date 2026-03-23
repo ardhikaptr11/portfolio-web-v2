@@ -19,7 +19,13 @@ const TRANSLATIONS: Record<string, Record<string, string[]>> = {
   },
 };
 
-const Stats = ({ yoe, totalProjects }: { yoe: number; totalProjects: number }) => {
+const Stats = ({
+  yoe,
+  totalProjects,
+}: {
+  yoe: number;
+  totalProjects: number;
+}) => {
   const locale = useLocale();
 
   return (
@@ -58,7 +64,14 @@ const Stats = ({ yoe, totalProjects }: { yoe: number; totalProjects: number }) =
             )}
             transition={{ stiffness: 10, damping: 12, mass: 1 }}
           />
-          <span className="text-ocean-teal ml-0.5 text-xl font-bold lg:text-2xl xl:text-3xl">
+          <span
+            className={cn(
+              "text-ocean-teal ml-0.5 text-xl font-bold lg:text-2xl xl:text-3xl",
+              {
+                hidden: totalProjects <= 5,
+              },
+            )}
+          >
             +
           </span>
         </div>
