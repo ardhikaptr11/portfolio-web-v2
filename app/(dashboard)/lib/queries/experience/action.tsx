@@ -156,7 +156,9 @@ const bulkAddExperience = async (
     };
   });
 
-  const { error } = await supabase.from(TABLE_NAME).insert(modifiedPayload);
+  const dataToInsert = await Promise.all(modifiedPayload);
+
+  const { error } = await supabase.from(TABLE_NAME).insert(dataToInsert);
 
   if (error) throw error;
 };
