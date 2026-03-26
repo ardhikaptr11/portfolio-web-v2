@@ -51,30 +51,13 @@ const getExperiences = async (client: SupabaseClient) => {
   const { data, error } = await supabase
     .from("experiences")
     .select(
-      `
-    role,
-    organization,
-    work_category,
-    work_type,
-    responsibilities,
-    responsibilities_id,
-    location,
-    start_date,
-    end_date,
-    duration,
-    related_asset (
-      url
-    )
-  `,
+      "role, organization, work_category, work_type, responsibilities, responsibilities_id, location, start_date, end_date, duration",
     )
     .order("ordering", { ascending: true });
 
   if (error) throw error;
 
-  const experiences = data.map(({ related_asset, ...rest }) => ({
-    ...rest,
-    related_asset_url: getAssetUrl(related_asset),
-  })) as IExperience[];
+  const experiences = data as IExperience[];
 
   return experiences;
 };
@@ -83,7 +66,10 @@ export const getProjects = async (client?: SupabaseClient) => {
   const supabase = client ?? (await createClient());
 
   // description_id is the description in Indonesian
-  const { data, error } = await supabase.from("projects").select(`
+  const { data, error } = await supabase
+    .from("projects")
+    .select(
+      `
     id,
     title,
     slug,
@@ -96,7 +82,10 @@ export const getProjects = async (client?: SupabaseClient) => {
       url
     ),
     updated_at
-  `).limit(6).order("start_date", { ascending: false });
+  `,
+    )
+    .limit(6)
+    .order("start_date", { ascending: false });
 
   if (error) throw error;
 

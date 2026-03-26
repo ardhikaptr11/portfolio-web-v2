@@ -50,7 +50,7 @@ const ItemsGrid = ({ data }: { data: IExperience[] }) => {
   };
 
   return (
-    <div className="lg:col-span-1">
+    <div className="flex flex-col gap-4 lg:col-span-1">
       {data.map((item) => {
         const formattedStartDate = format(item.start_date, "PPP").replace(
           /\d+(st|nd|rd|th),/g,

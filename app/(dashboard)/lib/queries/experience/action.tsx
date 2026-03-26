@@ -14,15 +14,14 @@ const TABLE_NAME = "experiences";
 const convertDuration = (duration: string) => {
   const [number, unit] = duration.split(" ");
 
-  switch (unit) {
-    case "year":
-      return Number(number) * 365;
-    case "month":
-      return Number(number) * 30;
-    case "week":
-      return Number(number) * 7;
-    default:
-      return number;
+  if (unit.includes("year")) {
+    return Number(number) * 365;
+  } else if (unit.includes("month")) {
+    return Number(number) * 30;
+  } else if (unit.includes("week")) {
+    return Number(number) * 7;
+  } else {
+    return number;
   }
 };
 
