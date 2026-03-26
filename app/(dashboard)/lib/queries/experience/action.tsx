@@ -148,7 +148,7 @@ const bulkAddExperience = async (
 
     return {
       ...experience,
-      experience_id: translated_texts.map((text) => text.text),
+      responsibilities_id: translated_texts.map((text) => text.text),
       start_date: experience.start_date?.toISOString(),
       end_date: experience.end_date?.toISOString(),
       duration,
