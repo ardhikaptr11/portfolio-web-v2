@@ -6,7 +6,7 @@ import { IExperience } from "@/app/(dashboard)/types/data";
 import readUserSession from "@/lib/read-session";
 import { createClient } from "@/lib/supabase/server";
 import { translates } from "@/lib/translations";
-import { formatDistance } from "date-fns";
+import { formatDistanceStrict } from "date-fns";
 import { TextResult } from "deepl-node";
 
 const TABLE_NAME = "experiences";
@@ -136,7 +136,7 @@ const bulkAddExperience = async (
 
   const modifiedPayload = payload.map(async (experience) => {
     const duration = experience.end_date
-      ? formatDistance(experience.end_date, experience.start_date as Date)
+      ? formatDistanceStrict(experience.end_date, experience.start_date as Date)
       : null;
 
     const translated_texts = (await translates.deepl({
@@ -204,5 +204,6 @@ export {
   deleteSelectedExperience,
   getFilteredExperiences,
   getSelectedExperience,
-  updateSelectedExperience,
+  updateSelectedExperience
 };
+
